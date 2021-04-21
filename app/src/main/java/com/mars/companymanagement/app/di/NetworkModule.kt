@@ -2,6 +2,7 @@ package com.mars.companymanagement.app.di
 
 import com.google.gson.Gson
 import com.mars.companymanagement.data.network.auth.AuthApi
+import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
@@ -10,7 +11,9 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
+@Module
 @InstallIn(SingletonComponent::class)
 class NetworkModule {
 
@@ -25,13 +28,12 @@ class NetworkModule {
     @Provides
     fun provideHttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor,
-        cache: Cache
     ): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(httpLoggingInterceptor)
-        .cache(cache)
         .build()
 
     @Provides
+    @Singleton
     fun providesRetrofit(gson: Gson, client: OkHttpClient): Retrofit {
         val serverUrl = "https://companymanagementapi.azurewebsites.net/"
         return Retrofit.Builder()
@@ -39,10 +41,5 @@ class NetworkModule {
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(client)
             .build()
-    }
-
-    @Provides
-    fun provideAuthApi(retrofit: Retrofit): AuthApi  {
-        return retrofit.create(AuthApi::class.java)
     }
 }

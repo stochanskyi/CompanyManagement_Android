@@ -8,7 +8,7 @@ import com.mars.companymanagement.data.network.common.asRequestResult
 import javax.inject.Inject
 
 interface LoginDataSource {
-    fun login(request: LoginRequest): RequestResult<LoginResponse>
+    suspend fun login(request: LoginRequest): RequestResult<LoginResponse>
 }
 
 class LoginDataSourceImpl @Inject constructor(
@@ -16,7 +16,7 @@ class LoginDataSourceImpl @Inject constructor(
     private val gson: Gson
 ) : LoginDataSource {
 
-    override fun login(request: LoginRequest): RequestResult<LoginResponse> {
+    override suspend fun login(request: LoginRequest): RequestResult<LoginResponse> {
         return authApi.login(request).asRequestResult(gson)
     }
 }

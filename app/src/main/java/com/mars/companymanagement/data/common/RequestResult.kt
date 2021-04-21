@@ -1,17 +1,21 @@
 package com.mars.companymanagement.data.common
 
 sealed class RequestResult<out T> {
-    class Success<T>(val data: T): RequestResult<T>()
+    class Success<T>(val data: T) : RequestResult<T>()
 
     open class Error(val message: String) : RequestResult<Nothing>()
 
     class UnknownError : Error("")
 
-    fun onSuccess(action: (T) -> Unit) {
+    fun onSuccess(action: (T) -> Unit): RequestResult<T> = apply {
         if (this is Success) action(data)
     }
 
-    fun onError(action: (String) -> Unit) {
+    suspend fun suspendOnSuccess(action: suspend (T) -> Unit) = apply {
+        if (this is Success) action(data)
+    }
+
+    suspend fun onError(action: suspend (String) -> Unit) = apply {
         if (this is Error) action(message)
     }
 
@@ -20,6 +24,10 @@ sealed class RequestResult<out T> {
             is Success -> Success(action(data))
             is Error -> Error(message)
         }
+    }
+
+    fun ignoreValue(): RequestResult<Unit> {
+        return map { }
     }
 }
 
