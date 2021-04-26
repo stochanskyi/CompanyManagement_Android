@@ -26,7 +26,7 @@ class LoginRepositoryImpl @Inject constructor(
 
     private fun LoginResponse.toDataModel(): UserDataModel {
         return UserDataModel(
-            id, name, email, UserDataModel.AccessLevel(accessLevel.id, accessLevel.name), token
+            id, name, email, UserDataModel.AccessLevelDataModel(accessLevel.id, accessLevel.name), token
         )
     }
 

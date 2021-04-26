@@ -3,4 +3,10 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="log_in">Log In</string>
+
+<!--    Bottom Navigation Item Titles-->
+
+    <string name="employees_action_title">Employees</string>
+    <string name="customers_action_title">Customers</string>
+    <string name="projects_action_title">Projects</string>
 </resources>

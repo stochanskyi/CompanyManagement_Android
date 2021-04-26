@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_employees"
+        android:icon="@drawable/ic_badge"
+        android:title="@string/employees_action_title"/>
+
+    <item
+        android:id="@+id/action_customers"
+        android:icon="@drawable/ic_customers"
+        android:title="@string/customers_action_title" />
+
+    <item
+        android:id="@+id/action_projects"
+        android:icon="@drawable/ic_project"
+        android:title="@string/projects_action_title" />
+
+</menu>
