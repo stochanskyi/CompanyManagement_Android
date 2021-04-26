@@ -1,5 +1,6 @@
 package com.mars.companymanagement.presentation.screens.base
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mars.companymanagement.data.common.RequestResult
@@ -8,6 +9,11 @@ abstract class BaseViewModel : ViewModel() {
 
     private val _requestErrorLiveData: MutableLiveData<String?> = MutableLiveData()
     val requestErrorLiveData: MutableLiveData<String?> = _requestErrorLiveData
+
+    protected suspend fun <T> safeRequestCallWithLoading(loadingLiveData: MutableLiveData<Boolean>, safeCall: suspend () -> RequestResult<T>): T? {
+        loadingLiveData.value = true
+        return safeRequestCall(safeCall).also { loadingLiveData.value = false }
+    }
 
     protected suspend fun <T> safeRequestCall(safeCall: suspend () -> RequestResult<T>): T? {
         return try {
@@ -20,7 +26,7 @@ abstract class BaseViewModel : ViewModel() {
         }
     }
 
-    private suspend fun <T> processRequestResult(result: RequestResult<T>): T? {
+    private fun <T> processRequestResult(result: RequestResult<T>): T? {
         return when (result) {
             is RequestResult.Success -> return result.data
             is RequestResult.Error -> {

@@ -5,6 +5,7 @@ import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isInvisible
 import androidx.core.widget.doAfterTextChanged
 import com.mars.companymanagement.databinding.ActivityLoginBinding
 import com.mars.companymanagement.presentation.screens.main.MainActivity
@@ -38,9 +39,16 @@ class LoginActivity : AppCompatActivity() {
         viewModel.loginSuccessLiveData.observe(this) {
             MainActivity.start(this)
         }
+        viewModel.loginLoadingLiveData.observe(this) {
+            binding.apply {
+                emailEditText.isInvisible = it
+                passwordEditText.isInvisible = it
+                submitButton.isInvisible = it
+                progressBar.isInvisible = !it
+            }
+        }
         viewModel.requestErrorLiveData.observe(this) {
             Toast.makeText(this, it, LENGTH_SHORT).show()
         }
     }
-
 }

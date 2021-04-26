@@ -1,29 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingStart="20dp"
     android:paddingEnd="20dp"
     android:orientation="vertical">
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_logo"
+        android:layout_gravity="center" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_name" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.4" />
+
     <EditText
         android:id="@+id/email_editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textEmailAddress" />
+        android:background="@drawable/bg_input"
+        android:inputType="textEmailAddress"
+        android:hint="@string/email" />
 
     <EditText
         android:id="@+id/password_EditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:inputType="textPassword"/>
+        android:background="@drawable/bg_input"
+        android:inputType="textPassword"
+        android:hint="@string/password"/>
 
     <Button
         android:id="@+id/submit_button"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:foreground="?android:attr/selectableItemBackgroundBorderless"
+        android:background="@drawable/bg_button_rounded"
+        android:textAllCaps="false"
+        android:fontFamily="sans-serif-medium"
+        android:textSize="17sp"
+        android:text="@string/log_in"
+        app:backgroundTint="@color/colorPrimary" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Submit"/>
+        android:indeterminateTint="@color/colorPrimaryDark"
+        android:visibility="invisible"
+        android:layout_gravity="center" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.4" />
 
 </LinearLayout>

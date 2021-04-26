@@ -1,6 +1,7 @@
 package com.mars.companymanagement.presentation.screens.login
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.mars.companymanagement.data.repositories.LoginRepository
 import com.mars.companymanagement.presentation.screens.base.BaseViewModel
@@ -13,6 +14,9 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val loginRepository: LoginRepository
 ) : BaseViewModel() {
+
+    private val _loginLoadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    val loginLoadingLiveData: LiveData<Boolean> = _loginLoadingLiveData
 
     private val _loginSuccessLiveData: SingleLiveData<Unit> = SingleLiveData()
     val loginSuccessLiveData: LiveData<Unit> = _loginSuccessLiveData
@@ -30,7 +34,7 @@ class LoginViewModel @Inject constructor(
 
     fun login() {
         viewModelScope.launch {
-            safeRequestCall { loginRepository.login(email, password) }?.let {
+            safeRequestCallWithLoading(_loginLoadingLiveData) { loginRepository.login(email, password) }?.let {
                 _loginSuccessLiveData.call()
             }
         }
