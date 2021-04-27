@@ -5,15 +5,23 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.*
+import androidx.navigation.NavController
 import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.setupWithNavController
 import com.mars.companymanagement.databinding.ActivityMainBinding
+import com.mars.companymanagement.presentation.screens.main.toolbar.EmptyToolbarConfigurationChanges
+import com.mars.companymanagement.presentation.screens.main.toolbar.ToolbarConfigurationChanges
+import com.mars.companymanagement.presentation.screens.main.toolbar.ToolbarConfigurator
+import com.mars.companymanagement.presentation.screens.main.toolbar.ToolbarMenuListener
 import dagger.hilt.android.AndroidEntryPoint
 import today.magnolia.android.screens.main.bottomnavigation.BottomNavigationController
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ToolbarConfigurator {
     private val viewModel: MainViewModel by viewModels()
+
+    private var binding: ActivityMainBinding? = null
 
     companion object {
         fun start(context: Context) {
@@ -27,17 +35,17 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        ActivityMainBinding.inflate(layoutInflater).run {
-            setContentView(this.root)
-            initViews(this)
-            initObservers(this)
+        binding = ActivityMainBinding.inflate(layoutInflater).also {
+            setContentView(it.root)
+            setSupportActionBar(it.toolbar)
+            initViews(it)
+            initObservers(it)
         }
     }
 
     private fun initViews(binding: ActivityMainBinding) {
         bottomNavigationController =
             BottomNavigationController(supportFragmentManager, binding.fragmentContainer.id)
-
     }
 
     private fun initObservers(binding: ActivityMainBinding) {
@@ -50,8 +58,51 @@ class MainActivity : AppCompatActivity() {
             }
         }
         bottomNavigationController?.currentNavControllerLiveData?.observe(this) {
-            NavigationUI.setupWithNavController(binding.toolbar, it)
+            onNavControllerChanged(it)
         }
+    }
+
+    private fun onNavControllerChanged(navController: NavController) {
+        NavigationUI.setupWithNavController(binding?.toolbar ?: return, navController)
+        navController.addOnDestinationChangedListener { _, _, _ ->  clearToolbar()}
+    }
+
+    private fun clearToolbar() {
+        binding?.toolbar?.apply {
+            setOnMenuItemClickListener(null)
+            menu.clear()
+        }
+    }
+
+    override fun modifyToolbarConfiguration(modifyAction: ToolbarConfigurationChanges.() -> Unit) {
+        val configurationChanges = EmptyToolbarConfigurationChanges()
+        configurationChanges.modifyAction()
+
+        binding?.toolbar?.applyToolbarChanges(configurationChanges)
+    }
+
+    override fun setMenuItemsListener(
+        lifecycleOwner: LifecycleOwner,
+        listener: ToolbarMenuListener
+    ) {
+        binding?.toolbar?.setOnMenuItemClickListener {
+            listener.onItemSelected(it.itemId)
+            true
+        }
+
+        lifecycleOwner.lifecycle.addObserver(object : LifecycleObserver {
+            @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+            fun removeListener() {
+                binding?.toolbar?.setOnMenuItemClickListener(null)
+            }
+        })
+
+    }
+
+    private fun Toolbar.applyToolbarChanges(changes: ToolbarConfigurationChanges) {
+        changes.name?.let { title = it }
+        changes.showNavigateBack?.let { supportActionBar?.setDisplayHomeAsUpEnabled(it) }
+        changes.menuId?.let { inflateMenu(it) }
     }
 
     override fun onDestroy() {
