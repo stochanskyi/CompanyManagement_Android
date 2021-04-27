@@ -8,6 +8,7 @@
     <fragment
         android:id="@+id/fragment_projects"
         android:name="com.mars.companymanagement.presentation.screens.projects.list.ProjectsListFragment"
-        tools:layout="@layout/fragment_employees"/>
+        tools:layout="@layout/fragment_employees"
+        android:label="@string/projects_action_title"/>
 
 </navigation>

@@ -3,9 +3,10 @@ package com.mars.companymanagement.presentation.screens.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupWithNavController
 import com.mars.companymanagement.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import today.magnolia.android.screens.main.bottomnavigation.BottomNavigationController
@@ -36,6 +37,7 @@ class MainActivity : AppCompatActivity() {
     private fun initViews(binding: ActivityMainBinding) {
         bottomNavigationController =
             BottomNavigationController(supportFragmentManager, binding.fragmentContainer.id)
+
     }
 
     private fun initObservers(binding: ActivityMainBinding) {
@@ -46,6 +48,9 @@ class MainActivity : AppCompatActivity() {
                 it.setItems(level.provideItemsList())
                 it.setup(binding.bottomNavigationView)
             }
+        }
+        bottomNavigationController?.currentNavControllerLiveData?.observe(this) {
+            NavigationUI.setupWithNavController(binding.toolbar, it)
         }
     }
 

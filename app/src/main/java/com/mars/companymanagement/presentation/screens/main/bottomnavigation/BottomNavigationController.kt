@@ -2,6 +2,9 @@ package today.magnolia.android.screens.main.bottomnavigation
 
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mars.companymanagement.presentation.screens.main.bottomnavigation.items.NavigationItem
@@ -21,6 +24,9 @@ class BottomNavigationController(
     private var currentItem: NavigationItem? = null
 
     private var navigationView: BottomNavigationView? = null
+
+    private val _currentNavController: MutableLiveData<NavController> = MutableLiveData()
+    val currentNavControllerLiveData: LiveData<NavController> = _currentNavController
 
     fun setItems(items: List<NavigationItem>) {
         this.items = items
@@ -95,8 +101,14 @@ class BottomNavigationController(
             setPrimaryNavigationFragment(it)
         }
         currentItem = item
+        updateCurrentHost()
 
         return this
+    }
+
+    private fun updateCurrentHost() {
+        val currentNavController = currentItem?.getHost()?.navController ?: return
+        _currentNavController.value = currentNavController
     }
 
     private fun NavigationItem.getHost(): NavHostFragment? {
