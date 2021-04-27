@@ -6,7 +6,10 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.lifecycle.*
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.OnLifecycleEvent
 import androidx.navigation.NavController
 import androidx.navigation.ui.NavigationUI
 import com.mars.companymanagement.databinding.ActivityMainBinding
@@ -51,7 +54,6 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurator {
         when {
             bottomNavigationController?.canHandleBackPressInternal() == true -> super.onBackPressed()
             bottomNavigationController?.handleBackPressed() == true -> return
-            //TODO Should be replaced by displaying message if user wants to exit from the app
             else -> super.onBackPressed()
         }
     }
