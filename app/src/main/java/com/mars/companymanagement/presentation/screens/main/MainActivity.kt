@@ -43,12 +43,28 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurator {
         }
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        return onBackPressed().let { true }
+    }
+
+    override fun onBackPressed() {
+        when {
+            bottomNavigationController?.canHandleBackPressInternal() == true -> super.onBackPressed()
+            bottomNavigationController?.handleBackPressed() == true -> return
+            //TODO Should be replaced by displaying message if user wants to exit from the app
+            else -> super.onBackPressed()
+        }
+    }
+
     private fun initViews(binding: ActivityMainBinding) {
         bottomNavigationController =
             BottomNavigationController(supportFragmentManager, binding.fragmentContainer.id)
     }
 
     private fun initObservers(binding: ActivityMainBinding) {
+        bottomNavigationController?.currentNavControllerLiveData?.observe(this) {
+            onNavControllerChanged(it)
+        }
         viewModel.accessLevelLiveData.observe(this) { level ->
             bottomNavigationController?.let {
                 binding.bottomNavigationView.menu.clear()
@@ -57,13 +73,10 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurator {
                 it.setup(binding.bottomNavigationView)
             }
         }
-        bottomNavigationController?.currentNavControllerLiveData?.observe(this) {
-            onNavControllerChanged(it)
-        }
     }
 
     private fun onNavControllerChanged(navController: NavController) {
-        NavigationUI.setupWithNavController(binding?.toolbar ?: return, navController)
+        NavigationUI.setupActionBarWithNavController(this, navController)
         navController.addOnDestinationChangedListener { _, _, _ ->  clearToolbar()}
     }
 

@@ -7,6 +7,7 @@ import com.mars.companymanagement.data.repositories.employees.EmployeesRepositor
 import com.mars.companymanagement.data.repositories.employees.models.Employee
 import com.mars.companymanagement.presentation.screens.base.BaseViewModel
 import com.mars.companymanagement.presentation.screens.employees.list.models.EmployeeViewData
+import com.mars.companymanagement.utils.liveData.SingleLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,6 +23,9 @@ class EmployeesListViewModel @Inject constructor(
     private val _employeesLiveData: MutableLiveData<List<EmployeeViewData>> = MutableLiveData()
     val employeesLiveData: LiveData<List<EmployeeViewData>> = _employeesLiveData
 
+    private val _openEmployeeDetailsLiveData: MutableLiveData<Employee> = SingleLiveData()
+    val openEmployeeDetailsLiveData: LiveData<Employee> = _openEmployeeDetailsLiveData
+
     private var employees: List<Employee> = emptyList()
         set(value) {
             field = value
@@ -33,6 +37,7 @@ class EmployeesListViewModel @Inject constructor(
     }
 
     fun openEmployeeInfo(id: String) {
+        _openEmployeeDetailsLiveData.value = employees.firstOrNull { it.id == id } ?: return
     }
 
     private fun loadEmployees() {

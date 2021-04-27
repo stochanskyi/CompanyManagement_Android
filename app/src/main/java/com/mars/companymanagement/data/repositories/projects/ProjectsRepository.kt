@@ -10,6 +10,8 @@ import javax.inject.Inject
 
 interface ProjectsRepository {
     suspend fun getProjects(): RequestResult<List<Project>>
+
+    suspend fun getProjectsForEmployee(employeeId: String): RequestResult<List<Project>>
 }
 
 class ProjectsRepositoryImpl @Inject constructor(
@@ -19,6 +21,9 @@ class ProjectsRepositoryImpl @Inject constructor(
     override suspend fun getProjects(): RequestResult<List<Project>> = withIoContext {
         projectsDataSource.getProjects().map { it.parse() }
     }
+
+    override suspend fun getProjectsForEmployee(employeeId: String): RequestResult<List<Project>> =
+        withIoContext { projectsDataSource.getProjectsForEmployee(employeeId.toInt()).map { it.parse() } }
 
     private fun List<ProjectResponse>.parse() = map { it.parse() }
 

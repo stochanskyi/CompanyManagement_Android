@@ -5,6 +5,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mars.companymanagement.R
@@ -37,6 +38,10 @@ class EmployeesListFragment : Fragment(R.layout.fragment_employees) {
         }
         viewModel.employeesLiveData.observe(viewLifecycleOwner) { employees ->
             binding.employeesRecyclerView.adapterAction { setItems(employees) }
+        }
+        viewModel.openEmployeeDetailsLiveData.observe(viewLifecycleOwner) {
+            val action = EmployeesListFragmentDirections.toEmployeeDetails(it)
+            Navigation.findNavController(binding.root).navigate(action)
         }
     }
 

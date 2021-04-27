@@ -8,6 +8,7 @@ import javax.inject.Inject
 
 interface ProjectsDataSource {
     suspend fun getProjects(): RequestResult<List<ProjectResponse>>
+    suspend fun getProjectsForEmployee(employeeId: Int): RequestResult<List<ProjectResponse>>
 }
 
 class ProjectsDataSourceImpl @Inject constructor(
@@ -17,5 +18,9 @@ class ProjectsDataSourceImpl @Inject constructor(
 
     override suspend fun getProjects(): RequestResult<List<ProjectResponse>> {
         return projectsApi.getProjects().asRequestResult(gson)
+    }
+
+    override suspend fun getProjectsForEmployee(employeeId: Int): RequestResult<List<ProjectResponse>> {
+        return projectsApi.getEmployeeProjects(employeeId).asRequestResult(gson)
     }
 }

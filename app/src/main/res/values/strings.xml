@@ -9,4 +9,5 @@
     <string name="employees_action_title">Employees</string>
     <string name="customers_action_title">Customers</string>
     <string name="projects_action_title">Projects</string>
+    <string name="projects">Projects</string>
 </resources>
