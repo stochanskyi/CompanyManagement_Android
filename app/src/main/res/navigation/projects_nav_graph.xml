@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/projects_nav_graph"
-    app:startDestination="@id/start">
+    app:startDestination="@id/fragment_projects">
 
     <fragment
-        android:id="@+id/start"
-        android:name="com.mars.companymanagement.presentation.screens.TestFragment" />
+        android:id="@+id/fragment_projects"
+        android:name="com.mars.companymanagement.presentation.screens.projects.list.ProjectsListFragment"
+        tools:layout="@layout/fragment_employees"/>
 
 </navigation>

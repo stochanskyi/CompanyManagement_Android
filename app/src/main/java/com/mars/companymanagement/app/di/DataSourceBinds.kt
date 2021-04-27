@@ -4,6 +4,8 @@ import com.mars.companymanagement.data.network.auth.LoginDataSource
 import com.mars.companymanagement.data.network.auth.LoginDataSourceImpl
 import com.mars.companymanagement.data.network.employees.EmployeesDataSource
 import com.mars.companymanagement.data.network.employees.EmployeesDataSourceImpl
+import com.mars.companymanagement.data.network.projects.ProjectsDataSource
+import com.mars.companymanagement.data.network.projects.ProjectsDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -19,4 +21,6 @@ abstract class DataSourceBinds {
     @Binds
     abstract fun bindEmployeesDataSource(employeesDataSource: EmployeesDataSourceImpl): EmployeesDataSource
 
+    @Binds
+    abstract fun bindProjectsDataSource(projectsDataSource: ProjectsDataSourceImpl): ProjectsDataSource
 }

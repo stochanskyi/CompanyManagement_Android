@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.mars.companymanagement.data.common.RequestResult
 import com.mars.companymanagement.data.network.common.asRequestResult
 import com.mars.companymanagement.data.network.employees.models.EmployeeResponse
+import com.mars.companymanagement.ext.withIoContext
 import javax.inject.Inject
 
 interface EmployeesDataSource {
@@ -15,8 +16,8 @@ class EmployeesDataSourceImpl @Inject constructor(
     private val employeesApi: EmployeesApi
 ) : EmployeesDataSource {
 
-    override suspend  fun getEmployees(): RequestResult<List<EmployeeResponse>> {
-        return employeesApi.getEmployees().asRequestResult(gson)
+    override suspend fun getEmployees(): RequestResult<List<EmployeeResponse>> = withIoContext {
+        employeesApi.getEmployees().asRequestResult(gson)
     }
 
 }

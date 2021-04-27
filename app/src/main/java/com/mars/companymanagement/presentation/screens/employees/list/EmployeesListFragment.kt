@@ -8,29 +8,29 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mars.companymanagement.R
-import com.mars.companymanagement.databinding.FragmentEmployeesFragmentBinding
+import com.mars.companymanagement.databinding.FragmentEmployeesBinding
 import com.mars.companymanagement.presentation.screens.employees.list.adapter.EmployeesAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class EmployeesListFragment : Fragment(R.layout.fragment_employees_fragment) {
+class EmployeesListFragment : Fragment(R.layout.fragment_employees) {
     private val viewModel: EmployeesListViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        FragmentEmployeesFragmentBinding.bind(view).run {
+        FragmentEmployeesBinding.bind(view).run {
             initViews(this)
             initObservers(this)
         }
     }
 
-    private fun initViews(binding: FragmentEmployeesFragmentBinding) {
+    private fun initViews(binding: FragmentEmployeesBinding) {
         binding.employeesRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = EmployeesAdapter(viewModel::openEmployeeInfo)
         }
     }
 
-    private fun initObservers(binding: FragmentEmployeesFragmentBinding) {
+    private fun initObservers(binding: FragmentEmployeesBinding) {
         viewModel.employeesLoadingLiveData.observe(viewLifecycleOwner) { isLoading ->
             binding.employeesRecyclerView.isVisible = !isLoading
             binding.progressBar.isVisible = isLoading

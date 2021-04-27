@@ -4,6 +4,8 @@ import com.mars.companymanagement.data.repositories.LoginRepository
 import com.mars.companymanagement.data.repositories.LoginRepositoryImpl
 import com.mars.companymanagement.data.repositories.employees.EmployeesRepository
 import com.mars.companymanagement.data.repositories.employees.EmployeesRepositoryImpl
+import com.mars.companymanagement.data.repositories.projects.ProjectsRepository
+import com.mars.companymanagement.data.repositories.projects.ProjectsRepositoryImpl
 import com.mars.companymanagement.data.repositories.user.UserRepository
 import com.mars.companymanagement.data.repositories.user.UserRepositoryImpl
 import dagger.Binds
@@ -23,4 +25,7 @@ abstract class RepositoryBindsModule {
 
     @Binds
     abstract fun bindEmployeesRepository(employeesRepository: EmployeesRepositoryImpl): EmployeesRepository
+
+    @Binds
+    abstract fun bindProjectsRepository(projectsRepository: ProjectsRepositoryImpl): ProjectsRepository
 }
