@@ -2,6 +2,8 @@ package com.mars.companymanagement.app.di
 
 import com.mars.companymanagement.data.network.auth.LoginDataSource
 import com.mars.companymanagement.data.network.auth.LoginDataSourceImpl
+import com.mars.companymanagement.data.network.customers.models.CustomersDataSource
+import com.mars.companymanagement.data.network.customers.models.CustomersDataSourceImpl
 import com.mars.companymanagement.data.network.employees.EmployeesDataSource
 import com.mars.companymanagement.data.network.employees.EmployeesDataSourceImpl
 import com.mars.companymanagement.data.network.projects.ProjectsDataSource
@@ -23,4 +25,7 @@ abstract class DataSourceBinds {
 
     @Binds
     abstract fun bindProjectsDataSource(projectsDataSource: ProjectsDataSourceImpl): ProjectsDataSource
+
+    @Binds
+    abstract fun bindCustomersDataSource(customersDataSource: CustomersDataSourceImpl): CustomersDataSource
 }

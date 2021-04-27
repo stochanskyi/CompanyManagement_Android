@@ -2,6 +2,8 @@ package com.mars.companymanagement.app.di
 
 import com.mars.companymanagement.data.repositories.LoginRepository
 import com.mars.companymanagement.data.repositories.LoginRepositoryImpl
+import com.mars.companymanagement.data.repositories.customers.CustomersRepository
+import com.mars.companymanagement.data.repositories.customers.CustomersRepositoryImpl
 import com.mars.companymanagement.data.repositories.employees.EmployeesRepository
 import com.mars.companymanagement.data.repositories.employees.EmployeesRepositoryImpl
 import com.mars.companymanagement.data.repositories.projects.ProjectsRepository
@@ -28,4 +30,8 @@ abstract class RepositoryBindsModule {
 
     @Binds
     abstract fun bindProjectsRepository(projectsRepository: ProjectsRepositoryImpl): ProjectsRepository
+
+    @Binds
+    abstract fun bindCustomersRepository(customersRepository: CustomersRepositoryImpl): CustomersRepository
+
 }

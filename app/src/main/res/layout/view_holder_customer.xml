@@ -19,14 +19,14 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-medium"
             android:textSize="20sp"
-            tools:text="David Markins" />
+            tools:text="John Smith" />
 
         <TextView
-            android:id="@+id/position_textView"
+            android:id="@+id/country_textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            tools:text="USA" />
+            tools:text="Android Developer" />
 
     </LinearLayout>
 

@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/customers_nav_graph"
-    app:startDestination="@id/start">
+    app:startDestination="@id/fragment_customers">
 
     <fragment
-        android:id="@+id/start"
-        android:name="com.mars.companymanagement.presentation.screens.TestFragment" />
+        android:id="@+id/fragment_customers"
+        android:name="com.mars.companymanagement.presentation.screens.customers.list.CustomersListFragment"
+        tools:layout="@layout/fragment_customers" />
 
 </navigation>

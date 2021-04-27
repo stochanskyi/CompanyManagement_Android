@@ -1,6 +1,7 @@
 package com.mars.companymanagement.app.di
 
 import com.mars.companymanagement.data.network.auth.AuthApi
+import com.mars.companymanagement.data.network.customers.CustomersApi
 import com.mars.companymanagement.data.network.employees.EmployeesApi
 import com.mars.companymanagement.data.network.projects.ProjectsApi
 import dagger.Module
@@ -26,6 +27,11 @@ class ApiModule {
     @Provides
     fun provideProjectsApi(retrofit: Retrofit): ProjectsApi {
         return retrofit.create(ProjectsApi::class.java)
+    }
+
+    @Provides
+    fun provideCustomersApi(retrofit: Retrofit): CustomersApi {
+        return retrofit.create(CustomersApi::class.java)
     }
 
 }
