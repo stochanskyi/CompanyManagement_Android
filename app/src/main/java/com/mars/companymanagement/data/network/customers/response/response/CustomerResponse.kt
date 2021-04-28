@@ -1,4 +1,4 @@
-package com.mars.companymanagement.data.network.customers.models.response
+package com.mars.companymanagement.data.network.customers.response.response
 
 import com.google.gson.annotations.SerializedName
 

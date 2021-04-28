@@ -1,7 +1,7 @@
 package com.mars.companymanagement.data.network.projects.response
 
 import com.google.gson.annotations.SerializedName
-import com.mars.companymanagement.data.network.customers.models.response.CustomerResponse
+import com.mars.companymanagement.data.network.customers.response.response.CustomerResponse
 
 data class ProjectDetailsResponse(
 

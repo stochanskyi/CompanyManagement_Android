@@ -1,7 +1,7 @@
 package com.mars.companymanagement.data.repositories.projects
 
 import com.mars.companymanagement.data.common.RequestResult
-import com.mars.companymanagement.data.network.customers.models.response.CustomerResponse
+import com.mars.companymanagement.data.network.customers.response.response.CustomerResponse
 import com.mars.companymanagement.data.network.projects.ProjectsDataSource
 import com.mars.companymanagement.data.network.projects.response.ProjectDetailsResponse
 import com.mars.companymanagement.data.network.projects.response.ProjectResponse
