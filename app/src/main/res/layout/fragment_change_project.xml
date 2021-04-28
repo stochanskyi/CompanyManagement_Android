@@ -92,11 +92,11 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/employees_recyclerView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
-            android:nestedScrollingEnabled="false"
-            android:visibility="gone" />
+            android:nestedScrollingEnabled="false" />
 
         <Button
             android:layout_width="wrap_content"

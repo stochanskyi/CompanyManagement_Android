@@ -4,16 +4,22 @@ import com.mars.companymanagement.data.common.RequestResult
 import com.mars.companymanagement.data.network.customers.response.response.CustomerResponse
 import com.mars.companymanagement.data.network.employees.response.EmployeeResponse
 import com.mars.companymanagement.data.network.projects.ProjectsDataSource
+import com.mars.companymanagement.data.network.projects.request.CreateProjectRequest
+import com.mars.companymanagement.data.network.projects.request.UpdateProjectRequest
 import com.mars.companymanagement.data.network.projects.response.ProjectDetailsResponse
 import com.mars.companymanagement.data.network.projects.response.ProjectResponse
 import com.mars.companymanagement.data.repositories.customers.models.Customer
 import com.mars.companymanagement.data.repositories.employees.models.Employee
 import com.mars.companymanagement.data.repositories.employees.models.EmployeePosition
+import com.mars.companymanagement.data.repositories.projects.models.details.CreateProjectData
 import com.mars.companymanagement.data.repositories.projects.models.details.ProjectDetails
+import com.mars.companymanagement.data.repositories.projects.models.details.UpdateProjectData
 import com.mars.companymanagement.data.repositories.projects.models.info.Project
 import com.mars.companymanagement.data.repositories.projects.models.info.ProjectStatus
 import com.mars.companymanagement.ext.withIoContext
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -28,6 +34,9 @@ interface ProjectsRepository {
 
     suspend fun getCustomerProjects(customerId: String): RequestResult<List<Project>>
 
+    suspend fun updateProject(date: UpdateProjectData): RequestResult<ProjectDetails>
+
+    suspend fun createProject(date: CreateProjectData): RequestResult<ProjectDetails>
 }
 
 private const val DATE_SERVER_PATTERN = "yyyy-MM-dd'T'HH:mm:ss"
@@ -49,6 +58,12 @@ class ProjectsRepositoryImpl @Inject constructor(
 
     override suspend fun getCustomerProjects(customerId: String): RequestResult<List<Project>> =
         withIoContext { projectsDataSource.getCustomerProjects(customerId.toInt()).map { it.parse() } }
+
+    override suspend fun updateProject(date: UpdateProjectData): RequestResult<ProjectDetails> =
+        withIoContext { projectsDataSource.updateProject(date.createRequest()) }.map { it.parse() }
+
+    override suspend fun createProject(date: CreateProjectData): RequestResult<ProjectDetails> =
+        withIoContext { projectsDataSource.createProject(date.createRequest()) }.map { it.parse() }
 
     private fun List<ProjectResponse>.parse() = map { it.parse() }
 
@@ -93,4 +108,25 @@ class ProjectsRepositoryImpl @Inject constructor(
         )
 
     private fun EmployeeResponse.EmployeePositionResponse.parse() = EmployeePosition(id, name)
+
+    private fun UpdateProjectData.createRequest() = UpdateProjectRequest(
+        projectId.toInt(),
+        name,
+        description,
+        customerId.toInt(),
+        statusId.toInt(),
+        createTimestamp(deadline),
+        employeeIds.map { it.toInt() }
+    )
+
+    private fun CreateProjectData.createRequest() = CreateProjectRequest(
+        name,
+        description,
+        customerId.toInt(),
+        statusId.toInt(),
+        createTimestamp(deadline),
+        employeeIds.map { it.toInt() }
+    )
+
+    private fun createTimestamp(date: LocalDate): String = LocalDateTime.of(date, LocalTime.now()).format(DateTimeFormatter.ofPattern(DATE_SERVER_PATTERN))
 }

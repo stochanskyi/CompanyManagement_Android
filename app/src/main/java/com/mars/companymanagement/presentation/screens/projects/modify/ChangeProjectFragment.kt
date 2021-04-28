@@ -8,10 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.mars.companymanagement.R
 import com.mars.companymanagement.databinding.FragmentChangeProjectBinding
 import com.mars.companymanagement.presentation.screens.main.toolbar.ToolbarConfigurator
 import com.mars.companymanagement.presentation.screens.main.toolbar.ToolbarMenuListener
+import com.mars.companymanagement.presentation.screens.projects.modify.adapter.ProjectEmployeesAdapter
 import com.mars.companymanagement.presentation.screens.projects.modify.models.PreliminaryProjectViewData
 import com.mars.companymanagement.presentation.views.IdentifiableArrayAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,7 +39,10 @@ class ChangeProjectFragment : Fragment(R.layout.fragment_change_project), Toolba
     }
 
     private fun initViews(binding: FragmentChangeProjectBinding) {
-
+        binding.employeesRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = ProjectEmployeesAdapter()
+        }
     }
 
     private fun setupToolbar() {
@@ -67,14 +73,18 @@ class ChangeProjectFragment : Fragment(R.layout.fragment_change_project), Toolba
             Navigation.findNavController(view ?: return@observe).navigateUp()
         }
         viewModel.validationErrorLiveData.observe(viewLifecycleOwner) {
-//            showValidationErrors(binding, it)
+            //TODO
         }
         viewModel.savingChangesLiveData.observe(viewLifecycleOwner) {
+            //TODO
         }
         viewModel.projectStatusesLiveData.observe(viewLifecycleOwner) {
             binding.dropdown.setAdapter(
                 ArrayAdapter(requireContext(), R.layout.list_item, it)
             )
+        }
+        viewModel.projectEmployeesLiveData.observe(viewLifecycleOwner) {
+            binding.employeesRecyclerView.adapterAction { setItems(it) }
         }
     }
 
@@ -96,6 +106,10 @@ class ChangeProjectFragment : Fragment(R.layout.fragment_change_project), Toolba
             customerNameEditText.setText(data.customerName)
             dropdown.setText(data.status)
         }
+    }
+
+    private fun RecyclerView.adapterAction(action: ProjectEmployeesAdapter.() -> Unit) {
+        (adapter as? ProjectEmployeesAdapter)?.action()
     }
 
     override fun onItemSelected(itemId: Int) {

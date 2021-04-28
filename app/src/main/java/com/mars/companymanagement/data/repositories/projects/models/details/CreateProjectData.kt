@@ -1,11 +1,8 @@
 package com.mars.companymanagement.data.repositories.projects.models.details
 
-import com.google.gson.annotations.SerializedName
 import java.time.LocalDate
 
-data class UpdateProjectData(
-
-    val projectId: String,
+data class CreateProjectData(
 
     val name: String,
 
@@ -18,5 +15,4 @@ data class UpdateProjectData(
     val customerId: String,
 
     val employeeIds: List<String>
-
 )

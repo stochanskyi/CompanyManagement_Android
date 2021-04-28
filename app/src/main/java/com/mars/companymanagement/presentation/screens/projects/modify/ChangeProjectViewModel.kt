@@ -10,6 +10,7 @@ import com.mars.companymanagement.data.repositories.taxonomies.TaxonomyRepositor
 import com.mars.companymanagement.ext.launchSafeCall
 import com.mars.companymanagement.presentation.screens.base.BaseViewModel
 import com.mars.companymanagement.presentation.screens.customers.modify.models.CustomerValidationErrorViewData
+import com.mars.companymanagement.presentation.screens.employees.list.models.EmployeeViewData
 import com.mars.companymanagement.presentation.screens.projects.modify.behaviour.ChangeProjectBehaviour
 import com.mars.companymanagement.presentation.screens.projects.modify.models.PreliminaryProjectViewData
 import com.mars.companymanagement.presentation.screens.projects.modify.models.ProjectChanges
@@ -44,8 +45,8 @@ class ChangeProjectViewModel @Inject constructor(
     private val _savingChangesLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val savingChangesLiveData: LiveData<Boolean> = _savingChangesLiveData
 
-    private val _projectEmployeesLiveData: MutableLiveData<List<Employee>> = SingleLiveData()
-    val projectEmployeesLiveData: LiveData<List<Employee>> = _projectEmployeesLiveData
+    private val _projectEmployeesLiveData: MutableLiveData<List<EmployeeViewData>> = MutableLiveData()
+    val projectEmployeesLiveData: LiveData<List<EmployeeViewData>> = _projectEmployeesLiveData
 
     fun setup(behaviour: ChangeProjectBehaviour) {
         this.behaviour = behaviour
@@ -64,7 +65,10 @@ class ChangeProjectViewModel @Inject constructor(
             deadline = preliminaryData.deadline
             ownerId = preliminaryData.projectOwner.id
             employees = preliminaryData.employees
+            statusId = preliminaryData.status.id
         }
+
+        _projectEmployeesLiveData.value = preliminaryData.employees.map { EmployeeViewData(it.id, it.fullName, it.position.name) }
 
         _preliminaryCustomerLiveData.value = PreliminaryProjectViewData(
             preliminaryData.name,
