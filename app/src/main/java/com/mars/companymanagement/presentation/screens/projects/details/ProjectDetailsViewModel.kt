@@ -36,6 +36,9 @@ class ProjectDetailsViewModel @Inject constructor(
     private val _openCustomerDetailsLiveData: MutableLiveData<Customer> = SingleLiveData()
     val openCustomerDetailsLiveData: LiveData<Customer> = _openCustomerDetailsLiveData
 
+    private val _openEditProjectLiveData: MutableLiveData<ProjectDetails> = SingleLiveData()
+    val openEditProjectLiveData: LiveData<ProjectDetails> = _openEditProjectLiveData
+
     private lateinit var projectDetails: ProjectDetails
 
     fun setup(project: Project) {
@@ -53,6 +56,10 @@ class ProjectDetailsViewModel @Inject constructor(
 
     fun openCustomerDetails() {
         _openCustomerDetailsLiveData.value = projectDetails.projectOwner
+    }
+
+    fun editProject() {
+        _openEditProjectLiveData.value = projectDetails
     }
 
     private fun Employee.toViewData() = EmployeeDetailsViewData(fullName, position.name, email)

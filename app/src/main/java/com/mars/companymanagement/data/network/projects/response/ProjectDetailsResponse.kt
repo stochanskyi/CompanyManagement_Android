@@ -2,6 +2,7 @@ package com.mars.companymanagement.data.network.projects.response
 
 import com.google.gson.annotations.SerializedName
 import com.mars.companymanagement.data.network.customers.response.response.CustomerResponse
+import com.mars.companymanagement.data.network.employees.response.EmployeeResponse
 
 data class ProjectDetailsResponse(
 
@@ -21,5 +22,12 @@ data class ProjectDetailsResponse(
 	val budget: Float,
 
 	@field:SerializedName("customer")
-	val customer: CustomerResponse
+	val customer: CustomerResponse,
+
+	@field:SerializedName("status")
+	val status: ProjectResponse.ProjectStatusResponse,
+
+	@field:SerializedName("employees")
+	val employees: List<EmployeeResponse>
+
 )

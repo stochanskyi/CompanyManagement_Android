@@ -10,12 +10,14 @@ import androidx.navigation.fragment.navArgs
 import com.mars.companymanagement.R
 import com.mars.companymanagement.databinding.FragmentProjectDetailsBinding
 import com.mars.companymanagement.presentation.screens.main.toolbar.ToolbarConfigurator
+import com.mars.companymanagement.presentation.screens.main.toolbar.ToolbarMenuListener
 import com.mars.companymanagement.presentation.screens.projects.details.models.PreliminaryProjectViewData
 import com.mars.companymanagement.presentation.screens.projects.details.models.ProjectDetailsViewData
+import com.mars.companymanagement.presentation.screens.projects.modify.behaviour.EditProjectBehaviour
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ProjectDetailsFragment : Fragment(R.layout.fragment_project_details) {
+class ProjectDetailsFragment : Fragment(R.layout.fragment_project_details), ToolbarMenuListener {
     private val viewModel: ProjectDetailsViewModel by viewModels()
     private val args: ProjectDetailsFragmentArgs by navArgs()
 
@@ -25,6 +27,11 @@ class ProjectDetailsFragment : Fragment(R.layout.fragment_project_details) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        (activity as? ToolbarConfigurator)?.apply {
+            modifyToolbarConfiguration { menuId = R.menu.menu_edit_item }
+            setMenuItemsListener(viewLifecycleOwner, this@ProjectDetailsFragment)
+        }
         FragmentProjectDetailsBinding.bind(view).run {
             initListeners(this)
             initObservers(this)
@@ -49,6 +56,10 @@ class ProjectDetailsFragment : Fragment(R.layout.fragment_project_details) {
             val action = ProjectDetailsFragmentDirections.toCustomerDetails(it)
             Navigation.findNavController(view ?: return@observe).navigate(action)
         }
+        viewModel.openEditProjectLiveData.observe(viewLifecycleOwner) {
+            val action = ProjectDetailsFragmentDirections.toChangeProject(EditProjectBehaviour(it))
+            Navigation.findNavController(view ?: return@observe).navigate(action)
+        }
     }
 
     private fun setPreliminaryProjectInfo(binding: FragmentProjectDetailsBinding, preliminaryInfo: PreliminaryProjectViewData) = binding.run {
@@ -68,5 +79,10 @@ class ProjectDetailsFragment : Fragment(R.layout.fragment_project_details) {
             customerNameTextView.text = projectDetails.ownerName
             customerCountryTextView.text = projectDetails.ownerCountry
         }
+    }
+
+    override fun onItemSelected(itemId: Int) {
+        if (itemId == R.id.edit_item_action) viewModel.editProject()
+
     }
 }

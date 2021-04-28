@@ -2,10 +2,13 @@ package com.mars.companymanagement.data.repositories.projects
 
 import com.mars.companymanagement.data.common.RequestResult
 import com.mars.companymanagement.data.network.customers.response.response.CustomerResponse
+import com.mars.companymanagement.data.network.employees.response.EmployeeResponse
 import com.mars.companymanagement.data.network.projects.ProjectsDataSource
 import com.mars.companymanagement.data.network.projects.response.ProjectDetailsResponse
 import com.mars.companymanagement.data.network.projects.response.ProjectResponse
 import com.mars.companymanagement.data.repositories.customers.models.Customer
+import com.mars.companymanagement.data.repositories.employees.models.Employee
+import com.mars.companymanagement.data.repositories.employees.models.EmployeePosition
 import com.mars.companymanagement.data.repositories.projects.models.details.ProjectDetails
 import com.mars.companymanagement.data.repositories.projects.models.info.Project
 import com.mars.companymanagement.data.repositories.projects.models.info.ProjectStatus
@@ -24,6 +27,7 @@ interface ProjectsRepository {
     suspend fun getProjectDetails(projectId: String): RequestResult<ProjectDetails>
 
     suspend fun getCustomerProjects(customerId: String): RequestResult<List<Project>>
+
 }
 
 private const val DATE_SERVER_PATTERN = "yyyy-MM-dd'T'HH:mm:ss"
@@ -58,7 +62,9 @@ class ProjectsRepositoryImpl @Inject constructor(
         description = description,
         budget = budget,
         deadline = parseDate(deadline),
-        projectOwner = customer.parse()
+        projectOwner = customer.parse(),
+        status = status.parse(),
+        employees = employees.map { it.parse() }
     )
 
     private fun CustomerResponse.parse() = Customer(
@@ -76,4 +82,15 @@ class ProjectsRepositoryImpl @Inject constructor(
             .withZoneSameInstant(ZoneId.systemDefault())
             .toLocalDate()
     }
+
+    private fun EmployeeResponse.parse() =
+        Employee(
+            id,
+            firstName,
+            lastName,
+            email,
+            position.parse()
+        )
+
+    private fun EmployeeResponse.EmployeePositionResponse.parse() = EmployeePosition(id, name)
 }

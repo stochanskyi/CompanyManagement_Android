@@ -26,6 +26,10 @@
 
     <string name="country_error">Country cannot be empty</string>
     <string name="phone_number_error">Phone number cannot be empty</string>
+    <string name="name">Name</string>
+    <string name="description">Description</string>
+    <string name="deadline">Deadline</string>
+    <string name="edit_employees">Edit employees</string>
 
 
 </resources>
