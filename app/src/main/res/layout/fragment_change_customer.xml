@@ -60,7 +60,6 @@
                 android:id="@+id/country_editText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="phone"
                 android:hint="@string/country"/>
 
         </com.google.android.material.textfield.TextInputLayout>

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mars.companymanagement.R
 import com.mars.companymanagement.databinding.FragmentCustomersBinding
 import com.mars.companymanagement.presentation.screens.customers.list.adapter.CustomersAdapter
+import com.mars.companymanagement.presentation.screens.customers.modify.behaviour.CreateCustomerBehaviour
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,6 +21,7 @@ class CustomersListFragment : Fragment(R.layout.fragment_customers) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         FragmentCustomersBinding.bind(view).run {
             initViews(this)
+            initListeners(this)
             initObservers(this)
         }
     }
@@ -28,6 +30,13 @@ class CustomersListFragment : Fragment(R.layout.fragment_customers) {
         binding.customersRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = CustomersAdapter(viewModel::openCustomerDetails)
+        }
+    }
+
+    private fun initListeners(binding: FragmentCustomersBinding) {
+        binding.addCustomerButton.setOnClickListener() {
+            val action = CustomersListFragmentDirections.toChangeCustomer(CreateCustomerBehaviour())
+            Navigation.findNavController(view ?: return@setOnClickListener).navigate(action)
         }
     }
 

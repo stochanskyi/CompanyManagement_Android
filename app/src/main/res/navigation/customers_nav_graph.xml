@@ -15,6 +15,10 @@
             android:id="@+id/to_customer_details"
             app:destination="@id/fragment_customer_details" />
 
+        <action
+            android:id="@+id/to_change_customer"
+            app:destination="@id/fragment_change_customer" />
+
     </fragment>
 
     <fragment
