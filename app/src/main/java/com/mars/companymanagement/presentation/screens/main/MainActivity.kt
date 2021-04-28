@@ -104,14 +104,6 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurator {
             listener.onItemSelected(it.itemId)
             true
         }
-
-        lifecycleOwner.lifecycle.addObserver(object : LifecycleObserver {
-            @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-            fun removeListener() {
-                binding?.toolbar?.setOnMenuItemClickListener(null)
-            }
-        })
-
     }
 
     private fun Toolbar.applyToolbarChanges(changes: ToolbarConfigurationChanges) {

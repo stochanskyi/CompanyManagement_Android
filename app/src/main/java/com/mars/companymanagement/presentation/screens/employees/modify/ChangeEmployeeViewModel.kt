@@ -2,6 +2,7 @@ package com.mars.companymanagement.presentation.screens.employees.modify
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.mars.companymanagement.data.repositories.employees.EmployeesRepository
 import com.mars.companymanagement.data.repositories.employees.models.Employee
 import com.mars.companymanagement.data.repositories.employees.models.EmployeePosition
@@ -14,6 +15,7 @@ import com.mars.companymanagement.presentation.screens.employees.modify.models.V
 import com.mars.companymanagement.presentation.views.IdentifiableAdapterItem
 import com.mars.companymanagement.utils.liveData.SingleLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,6 +36,8 @@ class ChangeEmployeeViewModel @Inject constructor(
     private val _preliminaryEmployeeLiveData: MutableLiveData<PreliminaryEmployeeViewData> = SingleLiveData()
     val preliminaryEmployeeLiveData: LiveData<PreliminaryEmployeeViewData> = _preliminaryEmployeeLiveData
 
+    private val _closeChangeScreenLiveData: SingleLiveData<Unit> = SingleLiveData()
+    val closeChangeScreenLiveData: LiveData<Unit> = _closeChangeScreenLiveData
 
     fun setup(behaviour: ChangeEmployeeBehaviour) {
         this.behaviour = behaviour
@@ -75,7 +79,10 @@ class ChangeEmployeeViewModel @Inject constructor(
     }
 
     fun saveChanges() {
-        //TODO
+        viewModelScope.launch {
+            val result = safeRequestCall { behaviour.applyChanges(employeesRepository, changes) }
+            if (result != null) _closeChangeScreenLiveData.call()
+        }
     }
 
 //    override fun validateChanges(changes: EmployeeChanges): Boolean {

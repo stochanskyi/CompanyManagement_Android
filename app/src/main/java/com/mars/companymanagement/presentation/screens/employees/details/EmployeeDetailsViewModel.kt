@@ -3,6 +3,7 @@ package com.mars.companymanagement.presentation.screens.employees.details
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.mars.companymanagement.data.repositories.employees.EmployeesRepository
 import com.mars.companymanagement.data.repositories.employees.models.Employee
 import com.mars.companymanagement.data.repositories.projects.ProjectsRepository
 import com.mars.companymanagement.data.repositories.projects.models.info.Project
@@ -12,11 +13,14 @@ import com.mars.companymanagement.presentation.screens.employees.details.models.
 import com.mars.companymanagement.presentation.screens.projects.list.models.ProjectViewData
 import com.mars.companymanagement.utils.liveData.SingleLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class EmployeeDetailsViewModel @Inject constructor(
-    private val projectsRepository: ProjectsRepository
+    private val projectsRepository: ProjectsRepository,
+    private val employeesRepository: EmployeesRepository
 ) : BaseViewModel() {
 
     private val _employeeInfoViewData: MutableLiveData<EmployeeDetailsViewData> = MutableLiveData()
@@ -36,6 +40,22 @@ class EmployeeDetailsViewModel @Inject constructor(
 
     private lateinit var employee: Employee
     private lateinit var projects: List<Project>
+
+    init {
+        viewModelScope.launch {
+            employeesRepository.employeeUpdatedFlow.collect {
+                if (employee.id == it.id) {
+                    employee = employee.copy(
+                        firstName = it.firstName,
+                        lastName = it.lastName,
+                        email = it.email,
+                        position = it.position
+                    )
+                    _employeeInfoViewData.value = employee.toViewData()
+                }
+            }
+        }
+    }
 
     fun setup(employee: Employee) {
         this.employee = employee

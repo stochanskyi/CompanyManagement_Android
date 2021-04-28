@@ -5,6 +5,7 @@ import android.view.View
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.mars.companymanagement.R
 import com.mars.companymanagement.databinding.FragmentChangeEmployeeBinding
@@ -39,6 +40,7 @@ class ChangeEmployeeFragment : Fragment(R.layout.fragment_change_employee), Tool
             modifyToolbarConfiguration {
                 menuId = R.menu.menu_save_changes
             }
+            setMenuItemsListener(viewLifecycleOwner, this@ChangeEmployeeFragment)
         }
     }
 
@@ -60,6 +62,9 @@ class ChangeEmployeeFragment : Fragment(R.layout.fragment_change_employee), Tool
         }
         viewModel.preliminaryEmployeeLiveData.observe(viewLifecycleOwner) {
             setPreliminaryData(binding, it)
+        }
+        viewModel.closeChangeScreenLiveData.observe(viewLifecycleOwner) {
+            Navigation.findNavController(view ?: return@observe).navigateUp()
         }
     }
 

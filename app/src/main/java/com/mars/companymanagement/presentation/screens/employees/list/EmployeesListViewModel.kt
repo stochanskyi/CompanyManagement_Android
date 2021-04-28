@@ -9,6 +9,7 @@ import com.mars.companymanagement.presentation.screens.base.BaseViewModel
 import com.mars.companymanagement.presentation.screens.employees.list.models.EmployeeViewData
 import com.mars.companymanagement.utils.liveData.SingleLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,13 +27,22 @@ class EmployeesListViewModel @Inject constructor(
     private val _openEmployeeDetailsLiveData: MutableLiveData<Employee> = SingleLiveData()
     val openEmployeeDetailsLiveData: LiveData<Employee> = _openEmployeeDetailsLiveData
 
-    private var employees: List<Employee> = emptyList()
-        set(value) {
-            field = value
-            _employeesLiveData.value = value.toViewData()
-        }
+    private var employees: MutableList<Employee> = mutableListOf()
 
     init {
+        viewModelScope.launch {
+            employeesRepository.employeeUpdatedFlow.collect { employee ->
+                val modifiedEmployeeIndex = employees.indexOfFirst { it.id == employee.id }
+                    .takeIf { it >= 0 }?: return@collect
+                employees.apply {
+                    removeAt(modifiedEmployeeIndex)
+                    add(modifiedEmployeeIndex, employee)
+                }
+
+                _employeesLiveData.value = employees.toViewData()
+            }
+        }
+
         loadEmployees()
     }
 
@@ -42,9 +52,15 @@ class EmployeesListViewModel @Inject constructor(
 
     private fun loadEmployees() {
         viewModelScope.launch {
-            employees = safeRequestCallWithLoading(_employeesLoadingLiveData) {
+            val loadedEmployees = safeRequestCallWithLoading(_employeesLoadingLiveData) {
                 employeesRepository.getEmployees()
             } ?: return@launch
+            employees.apply {
+                clear()
+                addAll(loadedEmployees)
+            }
+            _employeesLiveData.value = loadedEmployees.toViewData()
+
         }
     }
 
