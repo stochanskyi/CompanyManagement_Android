@@ -68,6 +68,10 @@
             android:id="@+id/to_project_details"
             app:destination="@id/fragment_project_details" />
 
+        <action
+            android:id="@+id/to_change_customer"
+            app:destination="@id/fragment_change_customer" />
+
     </fragment>
 
     <fragment
@@ -78,6 +82,17 @@
         <argument
             android:name="behaviour"
             app:argType="com.mars.companymanagement.presentation.screens.employees.modify.behaviour.ChangeEmployeeBehaviour" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_change_customer"
+        android:name="com.mars.companymanagement.presentation.screens.customers.modify.ChangeCustomerFragment"
+        tools:layout="@layout/fragment_change_customer">
+
+        <argument
+            android:name="behaviour"
+            app:argType="com.mars.companymanagement.presentation.screens.customers.modify.behaviour.ChangeCustomerBehaviour" />
 
     </fragment>
 
