@@ -27,6 +27,7 @@ class EmployeesListViewModel @Inject constructor(
     private val _openEmployeeDetailsLiveData: MutableLiveData<Employee> = SingleLiveData()
     val openEmployeeDetailsLiveData: LiveData<Employee> = _openEmployeeDetailsLiveData
 
+
     private var employees: MutableList<Employee> = mutableListOf()
 
     init {
@@ -39,6 +40,13 @@ class EmployeesListViewModel @Inject constructor(
                     add(modifiedEmployeeIndex, employee)
                 }
 
+                _employeesLiveData.value = employees.toViewData()
+            }
+        }
+
+        viewModelScope.launch {
+            employeesRepository.employeeAddedFlow.collect {
+                employees.add(it)
                 _employeesLiveData.value = employees.toViewData()
             }
         }

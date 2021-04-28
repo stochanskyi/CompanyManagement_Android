@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mars.companymanagement.R
 import com.mars.companymanagement.databinding.FragmentEmployeesBinding
 import com.mars.companymanagement.presentation.screens.employees.list.adapter.EmployeesAdapter
+import com.mars.companymanagement.presentation.screens.employees.modify.behaviour.CreateEmployeeBehaviour
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,7 +21,15 @@ class EmployeesListFragment : Fragment(R.layout.fragment_employees) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         FragmentEmployeesBinding.bind(view).run {
             initViews(this)
+            initListeners(this)
             initObservers(this)
+        }
+    }
+
+    private fun initListeners(binding: FragmentEmployeesBinding) {
+        binding.addEmployeeButton.setOnClickListener {
+            val action = EmployeesListFragmentDirections.toChangeEmployee(CreateEmployeeBehaviour())
+            Navigation.findNavController(view ?: return@setOnClickListener).navigate(action)
         }
     }
 
