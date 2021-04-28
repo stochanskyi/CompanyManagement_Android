@@ -9,6 +9,23 @@
         android:id="@+id/fragment_projects"
         android:name="com.mars.companymanagement.presentation.screens.projects.list.ProjectsListFragment"
         tools:layout="@layout/fragment_employees"
-        android:label="@string/projects_action_title"/>
+        android:label="@string/projects_action_title">
+
+        <action
+            android:id="@+id/to_project_details"
+            app:destination="@id/fragment_project_details" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_project_details"
+        android:name="com.mars.companymanagement.presentation.screens.projects.details.ProjectDetailsFragment"
+        tools:layout="@layout/fragment_project_details">
+
+        <argument
+            android:name="preliminaryProject"
+            app:argType="com.mars.companymanagement.data.repositories.projects.models.info.Project" />
+
+    </fragment>
 
 </navigation>

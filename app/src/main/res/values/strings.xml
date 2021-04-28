@@ -10,4 +10,8 @@
     <string name="customers_action_title">Customers</string>
     <string name="projects_action_title">Projects</string>
     <string name="projects">Projects</string>
+    <string name="employees">Employees</string>
+    <string name="customer">Customer</string>
+
+    <string name="project_complete_until">Complete until %1$s</string>
 </resources>

@@ -4,9 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.mars.companymanagement.data.repositories.projects.ProjectsRepository
-import com.mars.companymanagement.data.repositories.projects.models.Project
+import com.mars.companymanagement.data.repositories.projects.models.info.Project
 import com.mars.companymanagement.presentation.screens.base.BaseViewModel
 import com.mars.companymanagement.presentation.screens.projects.list.models.ProjectViewData
+import com.mars.companymanagement.utils.liveData.SingleLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,6 +23,9 @@ class ProjectsListViewModel @Inject constructor(
     private val _projectsLiveData: MutableLiveData<List<ProjectViewData>> = MutableLiveData()
     val projectsLiveData: LiveData<List<ProjectViewData>> = _projectsLiveData
 
+    private val _openProjectDetailsLiveData: MutableLiveData<Project> = SingleLiveData()
+    val openProjectDetailsLiveData: LiveData<Project> = _openProjectDetailsLiveData
+
     private var projects: List<Project> = emptyList()
 
     init {
@@ -29,7 +33,7 @@ class ProjectsListViewModel @Inject constructor(
     }
 
     fun openProjectDetails(projectId: String) {
-        //TODO
+        _openProjectDetailsLiveData.value = projects.firstOrNull { it.id == projectId } ?: return
     }
 
     private fun loadProjects() {

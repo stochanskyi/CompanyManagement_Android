@@ -6,6 +6,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -56,6 +57,10 @@ class EmployeeDetailsFragment : Fragment(R.layout.fragment_employee_details) {
             binding.nameTextView.text = it.name
             binding.positionTextView.text = it.position
             binding.emailTextView.text = it.email
+        }
+        viewModel.openProjectDetailsLiveData.observe(viewLifecycleOwner) {
+            val action = EmployeeDetailsFragmentDirections.toProjectDetails(it)
+            Navigation.findNavController(view ?: return@observe).navigate(action)
         }
     }
 
