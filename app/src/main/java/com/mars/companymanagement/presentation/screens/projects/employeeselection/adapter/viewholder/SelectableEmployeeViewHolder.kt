@@ -8,7 +8,7 @@ import com.mars.companymanagement.presentation.screens.projects.employeeselectio
 
 class SelectableEmployeeViewHolder private constructor(
     private val binding: ViewHolderSelectableEmployeeBinding
-) : RecyclerView.ViewHolder(binding.nameTextView) {
+) : RecyclerView.ViewHolder(binding.root) {
 
     companion object {
         fun create(parent: ViewGroup) = SelectableEmployeeViewHolder(

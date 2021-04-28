@@ -76,6 +76,21 @@
             android:name="behaviour"
             app:argType="com.mars.companymanagement.presentation.screens.projects.modify.behaviour.ChangeProjectBehaviour" />
 
+        <action
+            android:id="@+id/to_employees_selection"
+            app:destination="@id/fragment_employee_selection" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_employee_selection"
+        android:name="com.mars.companymanagement.presentation.screens.projects.employeeselection.EmployeeSelectionFragment"
+        tools:layout="@layout/fragment_employees_selection">
+
+        <argument
+            android:name="selectedEmployees"
+            app:argType="string[]" />
+
     </fragment>
 
 </navigation>

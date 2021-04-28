@@ -11,9 +11,11 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mars.companymanagement.R
+import com.mars.companymanagement.data.repositories.employees.models.Employee
 import com.mars.companymanagement.databinding.FragmentChangeProjectBinding
 import com.mars.companymanagement.presentation.screens.main.toolbar.ToolbarConfigurator
 import com.mars.companymanagement.presentation.screens.main.toolbar.ToolbarMenuListener
+import com.mars.companymanagement.presentation.screens.projects.employeeselection.EmployeeSelectionFragment
 import com.mars.companymanagement.presentation.screens.projects.modify.adapter.ProjectEmployeesAdapter
 import com.mars.companymanagement.presentation.screens.projects.modify.models.PreliminaryProjectViewData
 import com.mars.companymanagement.presentation.views.IdentifiableArrayAdapter
@@ -63,9 +65,16 @@ class ChangeProjectFragment : Fragment(R.layout.fragment_change_project), Toolba
             binding.deadlineLayout.isErrorEnabled = false
             viewModel.descriptionChanged(it.toString())
         }
+        binding.editEmployeesButton.setOnClickListener { viewModel.openEmployeesSelection() }
     }
 
     private fun initObservers(binding: FragmentChangeProjectBinding) {
+        Navigation.findNavController(requireView()).currentBackStackEntry?.savedStateHandle
+            ?.getLiveData<List<Employee>>(EmployeeSelectionFragment.SELECTED_EMPLOYEES_DATA_KEY)
+            ?.observe(viewLifecycleOwner) {
+                viewModel.employeesChanged(it)
+            }
+
         viewModel.preliminaryCustomerLiveData.observe(viewLifecycleOwner) {
             setPreliminaryData(binding, it)
         }
@@ -85,6 +94,10 @@ class ChangeProjectFragment : Fragment(R.layout.fragment_change_project), Toolba
         }
         viewModel.projectEmployeesLiveData.observe(viewLifecycleOwner) {
             binding.employeesRecyclerView.adapterAction { setItems(it) }
+        }
+        viewModel.openEmployeesSelectionLiveData.observe(viewLifecycleOwner) {
+            val action = ChangeProjectFragmentDirections.toEmployeesSelection(it.toTypedArray())
+            Navigation.findNavController(view ?: return@observe).navigate(action)
         }
     }
 

@@ -7,10 +7,13 @@ import com.mars.companymanagement.presentation.screens.projects.modify.adapter.v
 
 class ProjectEmployeesAdapter : RecyclerView.Adapter<ProjectEmployeeViewHolder>() {
 
-    private var items: List<EmployeeViewData> = emptyList()
+    private var items: MutableList<EmployeeViewData> = mutableListOf()
 
     fun setItems(items: List<EmployeeViewData>) {
-        this.items = items
+        this.items.apply {
+            clear()
+            addAll(items)
+        }
         notifyDataSetChanged()
     }
 

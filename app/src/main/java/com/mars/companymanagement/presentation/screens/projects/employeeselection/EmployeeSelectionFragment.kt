@@ -6,6 +6,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mars.companymanagement.R
@@ -15,7 +16,18 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class EmployeeSelectionFragment : Fragment(R.layout.fragment_employees_selection) {
+
+    companion object {
+        const val SELECTED_EMPLOYEES_DATA_KEY = "selected_employees_data_key"
+    }
+
     private val viewModel: EmployeeSelectionViewModel by viewModels()
+    private val args: EmployeeSelectionFragmentArgs by navArgs()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.setup(args.selectedEmployees.asList())
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         FragmentEmployeesSelectionBinding.bind(view).run {
@@ -40,7 +52,7 @@ class EmployeeSelectionFragment : Fragment(R.layout.fragment_employees_selection
         }
         viewModel.checkedEmployeesLiveData.observe(viewLifecycleOwner) {
             Navigation.findNavController(view ?: return@observe)
-                .previousBackStackEntry?.savedStateHandle?.set("asd", it)
+                .previousBackStackEntry?.savedStateHandle?.set(SELECTED_EMPLOYEES_DATA_KEY, it)
         }
     }
 
