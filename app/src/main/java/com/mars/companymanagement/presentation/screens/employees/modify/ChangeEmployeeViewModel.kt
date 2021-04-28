@@ -3,8 +3,9 @@ package com.mars.companymanagement.presentation.screens.employees.modify
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.mars.companymanagement.R
+import com.mars.companymanagement.data.common.StringProvider
 import com.mars.companymanagement.data.repositories.employees.EmployeesRepository
-import com.mars.companymanagement.data.repositories.employees.models.Employee
 import com.mars.companymanagement.data.repositories.employees.models.EmployeePosition
 import com.mars.companymanagement.data.repositories.taxonomies.TaxonomyRepository
 import com.mars.companymanagement.presentation.screens.base.BaseViewModel
@@ -21,10 +22,11 @@ import javax.inject.Inject
 @HiltViewModel
 class ChangeEmployeeViewModel @Inject constructor(
     private val taxonomyRepository: TaxonomyRepository,
-    private val employeesRepository: EmployeesRepository
+    private val employeesRepository: EmployeesRepository,
+    private val stringProvider: StringProvider
 ) : BaseViewModel() {
 
-    private val changes =  EmployeeChanges()
+    private val changes = EmployeeChanges()
 
     private lateinit var behaviour: ChangeEmployeeBehaviour
 
@@ -39,6 +41,9 @@ class ChangeEmployeeViewModel @Inject constructor(
     private val _closeChangeScreenLiveData: SingleLiveData<Unit> = SingleLiveData()
     val closeChangeScreenLiveData: LiveData<Unit> = _closeChangeScreenLiveData
 
+    private val _validationErrorLiveData: MutableLiveData<ValidationErrorViewData> = SingleLiveData()
+    val validationErrorLiveData: LiveData<ValidationErrorViewData> = _validationErrorLiveData
+
     fun setup(behaviour: ChangeEmployeeBehaviour) {
         this.behaviour = behaviour
 
@@ -50,16 +55,20 @@ class ChangeEmployeeViewModel @Inject constructor(
 
     private fun applyPreliminaryData() {
         val preliminaryData = behaviour.getPreliminaryData() ?: return
+
+        changes.apply {
+            firstName = preliminaryData.firstName
+            lastName = preliminaryData.lastName
+            email = preliminaryData.email
+            positionId = preliminaryData.position.id
+        }
+
         _preliminaryEmployeeLiveData.value = PreliminaryEmployeeViewData(
             preliminaryData.firstName,
             preliminaryData.lastName,
             preliminaryData.email,
             preliminaryData.position.name
         )
-    }
-
-    fun onNothingSelected() {
-        //TODO
     }
 
     fun firstNameChanged(firstName: String) {
@@ -79,16 +88,32 @@ class ChangeEmployeeViewModel @Inject constructor(
     }
 
     fun saveChanges() {
+        val validationData = getValidationErrorData()
+
+        if (validationData != null) {
+            _validationErrorLiveData.value = validationData
+            return
+        }
+
         viewModelScope.launch {
             val result = safeRequestCall { behaviour.applyChanges(employeesRepository, changes) }
             if (result != null) _closeChangeScreenLiveData.call()
         }
     }
 
-//    override fun validateChanges(changes: EmployeeChanges): Boolean {
-//        return changes.firstName.isNullOrBlank().not() &&
-//            changes.lastName.isNullOrBlank().not() &&
-//            changes.email.isNullOrBlank().not() &&
-//            changes.positionId.isNullOrBlank().not()
-//    }
+    private fun getValidationErrorData(): ValidationErrorViewData? {
+        val firstNameError = if (changes.firstName.isNullOrBlank()) R.string.first_name_error else null
+        val lastNameError = if (changes.lastName.isNullOrBlank()) R.string.last_name_error else null
+        val emailError = if (changes.email.isNullOrBlank()) R.string.email_error else null
+        val positionError = if (changes.email.isNullOrBlank()) R.string.email_error else null
+
+        if (firstNameError == null && lastNameError == null && emailError == null && positionError == null) return null
+
+        return ValidationErrorViewData(
+            firstNameError?.let { stringProvider.getString(it) },
+            lastNameError?.let { stringProvider.getString(it) },
+            emailError?.let { stringProvider.getString(it) },
+            positionError?.let { stringProvider.getString(it) }
+        )
+    }
 }

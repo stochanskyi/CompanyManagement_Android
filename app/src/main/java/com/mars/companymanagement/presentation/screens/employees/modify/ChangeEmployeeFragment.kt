@@ -10,6 +10,7 @@ import androidx.navigation.fragment.navArgs
 import com.mars.companymanagement.R
 import com.mars.companymanagement.databinding.FragmentChangeEmployeeBinding
 import com.mars.companymanagement.presentation.screens.employees.modify.models.PreliminaryEmployeeViewData
+import com.mars.companymanagement.presentation.screens.employees.modify.models.ValidationErrorViewData
 import com.mars.companymanagement.presentation.screens.main.toolbar.ToolbarConfigurator
 import com.mars.companymanagement.presentation.screens.main.toolbar.ToolbarMenuListener
 import com.mars.companymanagement.presentation.views.IdentifiableAdapterItem
@@ -45,15 +46,25 @@ class ChangeEmployeeFragment : Fragment(R.layout.fragment_change_employee), Tool
     }
 
     private fun initViews(binding: FragmentChangeEmployeeBinding) {
-        binding.dropdown.doAfterTextChanged {
-            viewModel.positionChanged(it.toString())
-        }
     }
 
     private fun initListeners(binding: FragmentChangeEmployeeBinding) {
-        binding.firstNameEditText.doAfterTextChanged { viewModel.firstNameChanged(it.toString()) }
-        binding.lastNameEditText.doAfterTextChanged { viewModel.lastNameChanged(it.toString()) }
-        binding.emailEditText.doAfterTextChanged { viewModel.emailChanged(it.toString()) }
+        binding.firstNameEditText.doAfterTextChanged {
+            binding.firstNameLayout.isErrorEnabled = false
+            viewModel.firstNameChanged(it.toString())
+        }
+        binding.lastNameEditText.doAfterTextChanged {
+            binding.lastNameLayout.isErrorEnabled = false
+            viewModel.lastNameChanged(it.toString())
+        }
+        binding.emailEditText.doAfterTextChanged {
+            binding.emailLayout.isErrorEnabled = false
+            viewModel.emailChanged(it.toString())
+        }
+        binding.dropdown.doAfterTextChanged {
+            binding.dropdownLayout.isErrorEnabled = false
+            viewModel.positionChanged(it.toString())
+        }
     }
 
     private fun initObservers(binding: FragmentChangeEmployeeBinding) {
@@ -65,6 +76,18 @@ class ChangeEmployeeFragment : Fragment(R.layout.fragment_change_employee), Tool
         }
         viewModel.closeChangeScreenLiveData.observe(viewLifecycleOwner) {
             Navigation.findNavController(view ?: return@observe).navigateUp()
+        }
+        viewModel.validationErrorLiveData.observe(viewLifecycleOwner) {
+            showValidationErrors(binding, it)
+        }
+    }
+
+    private fun showValidationErrors(binding: FragmentChangeEmployeeBinding, data: ValidationErrorViewData) {
+        binding.apply {
+            data.firstNameValidationError?.let { binding.firstNameLayout.error = it }
+            data.lastNameValidationError?.let { binding.lastNameLayout.error = it }
+            data.emailValidationError?.let { binding.emailLayout.error = it }
+            data.positionValidationError?.let { binding.dropdownLayout.error = it }
         }
     }
 
