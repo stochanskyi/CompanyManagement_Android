@@ -1,11 +1,12 @@
 package com.mars.companymanagement.data.repositories.projects
 
 import com.mars.companymanagement.data.common.RequestResult
+import com.mars.companymanagement.data.network.customers.models.response.CustomerResponse
 import com.mars.companymanagement.data.network.projects.ProjectsDataSource
 import com.mars.companymanagement.data.network.projects.response.ProjectDetailsResponse
 import com.mars.companymanagement.data.network.projects.response.ProjectResponse
+import com.mars.companymanagement.data.repositories.customers.models.Customer
 import com.mars.companymanagement.data.repositories.projects.models.details.ProjectDetails
-import com.mars.companymanagement.data.repositories.projects.models.details.ProjectOwner
 import com.mars.companymanagement.data.repositories.projects.models.info.Project
 import com.mars.companymanagement.data.repositories.projects.models.info.ProjectStatus
 import com.mars.companymanagement.ext.withIoContext
@@ -21,6 +22,8 @@ interface ProjectsRepository {
     suspend fun getProjectsForEmployee(employeeId: String): RequestResult<List<Project>>
 
     suspend fun getProjectDetails(projectId: String): RequestResult<ProjectDetails>
+
+    suspend fun getCustomerProjects(customerId: String): RequestResult<List<Project>>
 }
 
 private const val DATE_SERVER_PATTERN = "yyyy-MM-dd'T'HH:mm:ss"
@@ -40,6 +43,9 @@ class ProjectsRepositoryImpl @Inject constructor(
     override suspend fun getProjectDetails(projectId: String): RequestResult<ProjectDetails> =
         withIoContext { projectsDataSource.getProjectDetails(projectId.toInt()).map { it.parse() } }
 
+    override suspend fun getCustomerProjects(customerId: String): RequestResult<List<Project>> =
+        withIoContext { projectsDataSource.getCustomerProjects(customerId.toInt()).map { it.parse() } }
+
     private fun List<ProjectResponse>.parse() = map { it.parse() }
 
     private fun ProjectResponse.parse() = Project(id, name, status.parse())
@@ -55,10 +61,13 @@ class ProjectsRepositoryImpl @Inject constructor(
         projectOwner = customer.parse()
     )
 
-    private fun ProjectDetailsResponse.CustomerResponse.parse() = ProjectOwner(
+    private fun CustomerResponse.parse() = Customer(
         id.toString(),
-        "$firstName $lastName",
-        country
+        firstName,
+        lastName,
+        country,
+        email,
+        phoneNumber
     )
 
     private fun parseDate(date: String): LocalDate {

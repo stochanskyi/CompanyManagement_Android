@@ -1,6 +1,7 @@
 package com.mars.companymanagement.data.network.projects.response
 
 import com.google.gson.annotations.SerializedName
+import com.mars.companymanagement.data.network.customers.models.response.CustomerResponse
 
 data class ProjectDetailsResponse(
 
@@ -21,19 +22,4 @@ data class ProjectDetailsResponse(
 
 	@field:SerializedName("customer")
 	val customer: CustomerResponse
-) {
-	data class CustomerResponse(
-
-		@field:SerializedName("firstName")
-		val firstName: String,
-
-		@field:SerializedName("lastName")
-		val lastName: String,
-
-		@field:SerializedName("country")
-		val country: String,
-
-		@field:SerializedName("custId")
-		val id: Int
-	)
-}
+)

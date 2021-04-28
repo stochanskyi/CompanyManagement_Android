@@ -9,6 +9,42 @@
         android:id="@+id/fragment_customers"
         android:name="com.mars.companymanagement.presentation.screens.customers.list.CustomersListFragment"
         tools:layout="@layout/fragment_customers"
-        android:label="@string/customers_action_title"/>
+        android:label="@string/customers_action_title">
+
+        <action
+            android:id="@+id/to_customer_details"
+            app:destination="@id/fragment_customer_details" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_customer_details"
+        android:name="com.mars.companymanagement.presentation.screens.customers.details.CustomerDetailsFragment"
+        tools:layout="@layout/fragment_customer_details">
+
+        <argument
+            android:name="customerInfo"
+            app:argType="com.mars.companymanagement.data.repositories.customers.models.Customer" />
+
+        <action
+            android:id="@+id/to_project_details"
+            app:destination="@id/fragment_project_details" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_project_details"
+        android:name="com.mars.companymanagement.presentation.screens.projects.details.ProjectDetailsFragment"
+        tools:layout="@layout/fragment_project_details">
+
+        <argument
+            android:name="preliminaryProject"
+            app:argType="com.mars.companymanagement.data.repositories.projects.models.info.Project" />
+
+        <action
+            android:id="@+id/to_customer_details"
+            app:destination="@id/fragment_customer_details" />
+
+    </fragment>
 
 </navigation>

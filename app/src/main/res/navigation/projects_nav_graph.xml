@@ -26,6 +26,24 @@
             android:name="preliminaryProject"
             app:argType="com.mars.companymanagement.data.repositories.projects.models.info.Project" />
 
+        <action
+            android:id="@+id/to_customer_details"
+            app:destination="@id/fragment_customer_details" />
+
     </fragment>
 
+    <fragment
+        android:id="@+id/fragment_customer_details"
+        android:name="com.mars.companymanagement.presentation.screens.customers.details.CustomerDetailsFragment"
+        tools:layout="@layout/fragment_customer_details">
+
+        <argument
+            android:name="customerInfo"
+            app:argType="com.mars.companymanagement.data.repositories.customers.models.Customer" />
+
+        <action
+            android:id="@+id/to_project_details"
+            app:destination="@id/fragment_project_details" />
+
+    </fragment>
 </navigation>

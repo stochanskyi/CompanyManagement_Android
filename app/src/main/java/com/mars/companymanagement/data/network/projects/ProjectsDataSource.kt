@@ -11,6 +11,7 @@ interface ProjectsDataSource {
     suspend fun getProjects(): RequestResult<List<ProjectResponse>>
     suspend fun getProjectsForEmployee(employeeId: Int): RequestResult<List<ProjectResponse>>
     suspend fun getProjectDetails(projectId: Int): RequestResult<ProjectDetailsResponse>
+    suspend fun getCustomerProjects(customerId: Int): RequestResult<List<ProjectResponse>>
 }
 
 class ProjectsDataSourceImpl @Inject constructor(
@@ -28,5 +29,9 @@ class ProjectsDataSourceImpl @Inject constructor(
 
     override suspend fun getProjectDetails(projectId: Int): RequestResult<ProjectDetailsResponse> {
         return projectsApi.getProjectDetails(projectId).asRequestResult(gson)
+    }
+
+    override suspend fun getCustomerProjects(customerId: Int): RequestResult<List<ProjectResponse>> {
+        return projectsApi.getCustomerProjects(customerId).asRequestResult(gson)
     }
 }

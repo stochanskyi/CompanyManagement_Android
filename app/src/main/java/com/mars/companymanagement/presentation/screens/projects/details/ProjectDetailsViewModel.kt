@@ -3,6 +3,7 @@ package com.mars.companymanagement.presentation.screens.projects.details
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.mars.companymanagement.data.repositories.customers.models.Customer
 import com.mars.companymanagement.data.repositories.employees.models.Employee
 import com.mars.companymanagement.data.repositories.projects.ProjectsRepository
 import com.mars.companymanagement.data.repositories.projects.models.details.ProjectDetails
@@ -12,6 +13,7 @@ import com.mars.companymanagement.presentation.screens.base.BaseViewModel
 import com.mars.companymanagement.presentation.screens.employees.details.models.EmployeeDetailsViewData
 import com.mars.companymanagement.presentation.screens.projects.details.models.PreliminaryProjectViewData
 import com.mars.companymanagement.presentation.screens.projects.details.models.ProjectDetailsViewData
+import com.mars.companymanagement.utils.liveData.SingleLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -31,6 +33,9 @@ class ProjectDetailsViewModel @Inject constructor(
     private val _projectDetailsLoadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val projectDetailsLoadingLiveData: LiveData<Boolean> = _projectDetailsLoadingLiveData
 
+    private val _openCustomerDetailsLiveData: MutableLiveData<Customer> = SingleLiveData()
+    val openCustomerDetailsLiveData: LiveData<Customer> = _openCustomerDetailsLiveData
+
     private lateinit var projectDetails: ProjectDetails
 
     fun setup(project: Project) {
@@ -47,7 +52,7 @@ class ProjectDetailsViewModel @Inject constructor(
     }
 
     fun openCustomerDetails() {
-        //TODO
+        _openCustomerDetailsLiveData.value = projectDetails.projectOwner
     }
 
     private fun Employee.toViewData() = EmployeeDetailsViewData(fullName, position.name, email)
@@ -57,7 +62,7 @@ class ProjectDetailsViewModel @Inject constructor(
     private fun ProjectDetails.toViewData() = ProjectDetailsViewData(
         formatDeadline(deadline),
         description,
-        projectOwner.name,
+        projectOwner.fullName,
         projectOwner.country
     )
 

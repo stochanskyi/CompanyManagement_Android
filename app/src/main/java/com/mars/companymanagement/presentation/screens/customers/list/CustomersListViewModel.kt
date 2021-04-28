@@ -7,6 +7,7 @@ import com.mars.companymanagement.data.repositories.customers.CustomersRepositor
 import com.mars.companymanagement.data.repositories.customers.models.Customer
 import com.mars.companymanagement.presentation.screens.base.BaseViewModel
 import com.mars.companymanagement.presentation.screens.customers.list.models.CustomerViewData
+import com.mars.companymanagement.utils.liveData.SingleLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,6 +22,9 @@ class CustomersListViewModel @Inject constructor(
     private val _customersLiveData: MutableLiveData<List<CustomerViewData>> = MutableLiveData()
     val customersLiveData: LiveData<List<CustomerViewData>> = _customersLiveData
 
+    private val _openCustomerDetailsLiveData: MutableLiveData<Customer> = SingleLiveData()
+    val openCustomerDetailsLiveData: LiveData<Customer> = _openCustomerDetailsLiveData
+
     private var customers: List<Customer> = emptyList()
 
     init {
@@ -28,7 +32,7 @@ class CustomersListViewModel @Inject constructor(
     }
 
     fun openCustomerDetails(customerId: String) {
-        //TODO
+        _openCustomerDetailsLiveData.value = customers.firstOrNull { it.id == customerId } ?: return
     }
 
     private fun loadCustomers() {

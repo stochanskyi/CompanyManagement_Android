@@ -5,6 +5,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.mars.companymanagement.R
 import com.mars.companymanagement.databinding.FragmentProjectDetailsBinding
@@ -25,14 +26,9 @@ class ProjectDetailsFragment : Fragment(R.layout.fragment_project_details) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         FragmentProjectDetailsBinding.bind(view).run {
-            initViews(this)
             initListeners(this)
             initObservers(this)
         }
-    }
-
-    private fun initViews(binding: FragmentProjectDetailsBinding) {
-
     }
 
     private fun initListeners(binding: FragmentProjectDetailsBinding) {
@@ -48,6 +44,10 @@ class ProjectDetailsFragment : Fragment(R.layout.fragment_project_details) {
         }
         viewModel.projectDetailsLiveData.observe(viewLifecycleOwner) {
             setProjectDetails(binding, it)
+        }
+        viewModel.openCustomerDetailsLiveData.observe(viewLifecycleOwner) {
+            val action = ProjectDetailsFragmentDirections.toCustomerDetails(it)
+            Navigation.findNavController(view ?: return@observe).navigate(action)
         }
     }
 
