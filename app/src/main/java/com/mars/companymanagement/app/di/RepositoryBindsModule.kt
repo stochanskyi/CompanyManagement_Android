@@ -26,6 +26,7 @@ abstract class RepositoryBindsModule {
     abstract fun bindLoginRepository(repository: LoginRepositoryImpl): LoginRepository
 
     @Binds
+    @Singleton
     abstract fun bindUserRepository(userRepositoryImpl: UserRepositoryImpl): UserRepository
 
     @Binds
@@ -33,9 +34,11 @@ abstract class RepositoryBindsModule {
     abstract fun bindEmployeesRepository(employeesRepository: EmployeesRepositoryImpl): EmployeesRepository
 
     @Binds
+    @Singleton
     abstract fun bindProjectsRepository(projectsRepository: ProjectsRepositoryImpl): ProjectsRepository
 
     @Binds
+    @Singleton
     abstract fun bindCustomersRepository(customersRepository: CustomersRepositoryImpl): CustomersRepository
 
     @Binds

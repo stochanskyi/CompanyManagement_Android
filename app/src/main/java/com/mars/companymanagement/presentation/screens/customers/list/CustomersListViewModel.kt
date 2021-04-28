@@ -9,6 +9,7 @@ import com.mars.companymanagement.presentation.screens.base.BaseViewModel
 import com.mars.companymanagement.presentation.screens.customers.list.models.CustomerViewData
 import com.mars.companymanagement.utils.liveData.SingleLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,9 +26,28 @@ class CustomersListViewModel @Inject constructor(
     private val _openCustomerDetailsLiveData: MutableLiveData<Customer> = SingleLiveData()
     val openCustomerDetailsLiveData: LiveData<Customer> = _openCustomerDetailsLiveData
 
-    private var customers: List<Customer> = emptyList()
+    private val customers: MutableList<Customer> = mutableListOf()
 
     init {
+        viewModelScope.launch {
+            customersRepository.customerUpdatedFlow.collect { customer ->
+                val customerIndex = customers.indexOfFirst { it.id == customer.id }.takeIf { it >= 0 } ?: return@collect
+
+                customers.apply {
+                    removeAt(customerIndex)
+                    add(customerIndex, customer)
+                }
+                _customersLiveData.value = customers.map { it.toViewData() }
+            }
+        }
+
+        viewModelScope.launch {
+            customersRepository.customerCreatedFlow.collect { customer ->
+                customers += customer
+                _customersLiveData.value = customers.map { it.toViewData() }
+            }
+        }
+
         loadCustomers()
     }
 
@@ -37,9 +57,13 @@ class CustomersListViewModel @Inject constructor(
 
     private fun loadCustomers() {
         viewModelScope.launch {
-            customers = safeRequestCallWithLoading(_customersLoadingLiveData) {
+            val loadedCustomers = safeRequestCallWithLoading(_customersLoadingLiveData) {
                 customersRepository.getCustomers()
             } ?: return@launch
+
+            customers.clear()
+            customers.addAll(loadedCustomers)
+
             _customersLiveData.value = customers.map { it.toViewData() }
         }
     }

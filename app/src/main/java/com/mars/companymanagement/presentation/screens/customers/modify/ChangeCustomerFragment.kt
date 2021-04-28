@@ -1,4 +1,4 @@
-package com.mars.companymanagement.presentation.screens.employees.modify
+package com.mars.companymanagement.presentation.screens.customers.modify
 
 import android.os.Bundle
 import android.view.View
@@ -9,19 +9,18 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.mars.companymanagement.R
-import com.mars.companymanagement.databinding.FragmentChangeEmployeeBinding
-import com.mars.companymanagement.presentation.screens.employees.modify.models.PreliminaryEmployeeViewData
-import com.mars.companymanagement.presentation.screens.employees.modify.models.ValidationErrorViewData
+import com.mars.companymanagement.databinding.FragmentChangeCustomerBinding
+import com.mars.companymanagement.presentation.screens.customers.modify.models.CustomerValidationErrorViewData
+import com.mars.companymanagement.presentation.screens.customers.modify.models.PreliminaryCustomerViewData
 import com.mars.companymanagement.presentation.screens.main.toolbar.ToolbarConfigurator
 import com.mars.companymanagement.presentation.screens.main.toolbar.ToolbarMenuListener
-import com.mars.companymanagement.presentation.views.IdentifiableAdapterItem
-import com.mars.companymanagement.presentation.views.IdentifiableArrayAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ChangeEmployeeFragment : Fragment(R.layout.fragment_change_employee), ToolbarMenuListener {
-    private val args: ChangeEmployeeFragmentArgs by navArgs()
-    private val viewModel: ChangeEmployeeViewModel by viewModels()
+class ChangeCustomerFragment : Fragment(R.layout.fragment_change_customer), ToolbarMenuListener {
+    val viewModel: ChangeCustomerViewModel by viewModels()
+    val args: ChangeCustomerFragmentArgs by navArgs()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +28,7 @@ class ChangeEmployeeFragment : Fragment(R.layout.fragment_change_employee), Tool
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        FragmentChangeEmployeeBinding.bind(view).apply {
+        FragmentChangeCustomerBinding.bind(view).apply {
             setupToolbar()
             initListeners(this)
             initObservers(this)
@@ -41,11 +40,11 @@ class ChangeEmployeeFragment : Fragment(R.layout.fragment_change_employee), Tool
             modifyToolbarConfiguration {
                 menuId = R.menu.menu_save_changes
             }
-            setMenuItemsListener(viewLifecycleOwner, this@ChangeEmployeeFragment)
+            setMenuItemsListener(viewLifecycleOwner, this@ChangeCustomerFragment)
         }
     }
 
-    private fun initListeners(binding: FragmentChangeEmployeeBinding) {
+    private fun initListeners(binding: FragmentChangeCustomerBinding) {
         binding.firstNameEditText.doAfterTextChanged {
             binding.firstNameLayout.isErrorEnabled = false
             viewModel.firstNameChanged(it.toString())
@@ -54,21 +53,22 @@ class ChangeEmployeeFragment : Fragment(R.layout.fragment_change_employee), Tool
             binding.lastNameLayout.isErrorEnabled = false
             viewModel.lastNameChanged(it.toString())
         }
+        binding.countryEditText.doAfterTextChanged {
+            binding.countryLayout.isErrorEnabled = false
+            viewModel.countryChanged(it.toString())
+        }
         binding.emailEditText.doAfterTextChanged {
             binding.emailLayout.isErrorEnabled = false
             viewModel.emailChanged(it.toString())
         }
-        binding.dropdown.doAfterTextChanged {
-            binding.dropdownLayout.isErrorEnabled = false
-            viewModel.positionChanged(it.toString())
+        binding.phoneNumberEditText.doAfterTextChanged {
+            binding.phoneNumberLayout.isErrorEnabled = false
+            viewModel.phoneNumberChanged(it.toString())
         }
     }
 
-    private fun initObservers(binding: FragmentChangeEmployeeBinding) {
-        viewModel.positionsLiveData.observe(viewLifecycleOwner) {
-            setItems(binding, it)
-        }
-        viewModel.preliminaryEmployeeLiveData.observe(viewLifecycleOwner) {
+    private fun initObservers(binding: FragmentChangeCustomerBinding) {
+        viewModel.preliminaryCustomerLiveData.observe(viewLifecycleOwner) {
             setPreliminaryData(binding, it)
         }
         viewModel.closeChangeScreenLiveData.observe(viewLifecycleOwner) {
@@ -82,28 +82,24 @@ class ChangeEmployeeFragment : Fragment(R.layout.fragment_change_employee), Tool
         }
     }
 
-    private fun showValidationErrors(binding: FragmentChangeEmployeeBinding, data: ValidationErrorViewData) {
+    private fun showValidationErrors(binding: FragmentChangeCustomerBinding, data: CustomerValidationErrorViewData) {
         binding.apply {
             data.firstNameValidationError?.let { binding.firstNameLayout.error = it }
             data.lastNameValidationError?.let { binding.lastNameLayout.error = it }
+            data.countryValidationError?.let { binding.countryLayout.error = it }
             data.emailValidationError?.let { binding.emailLayout.error = it }
-            data.positionValidationError?.let { binding.dropdownLayout.error = it }
+            data.phoneNumberValidationError?.let { binding.phoneNumberEditText.error = it }
         }
     }
 
-    private fun setPreliminaryData(binding: FragmentChangeEmployeeBinding, data: PreliminaryEmployeeViewData) {
+    private fun setPreliminaryData(binding: FragmentChangeCustomerBinding, data: PreliminaryCustomerViewData) {
         binding.apply {
             firstNameEditText.setText(data.firstName)
             lastNameEditText.setText(data.lastName)
+            countryEditText.setText(data.country)
             emailEditText.setText(data.email)
-            dropdown.setText(data.position)
+            phoneNumberEditText.setText(data.phoneNumber)
         }
-    }
-
-    private fun setItems(binding: FragmentChangeEmployeeBinding, items: List<IdentifiableAdapterItem>) {
-        binding.dropdown.setAdapter(
-            IdentifiableArrayAdapter(requireContext(), R.layout.list_item, items)
-        )
     }
 
     override fun onItemSelected(itemId: Int) {

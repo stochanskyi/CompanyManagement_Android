@@ -12,12 +12,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mars.companymanagement.R
 import com.mars.companymanagement.databinding.FragmentCustomerDetailsBinding
 import com.mars.companymanagement.presentation.screens.customers.details.models.CustomerInfoViewData
+import com.mars.companymanagement.presentation.screens.customers.modify.behaviour.ChangeCustomerBehaviour
+import com.mars.companymanagement.presentation.screens.customers.modify.behaviour.EditCustomerBehaviour
 import com.mars.companymanagement.presentation.screens.main.toolbar.ToolbarConfigurator
+import com.mars.companymanagement.presentation.screens.main.toolbar.ToolbarMenuListener
 import com.mars.companymanagement.presentation.screens.projects.list.adapter.ProjectsAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CustomerDetailsFragment : Fragment(R.layout.fragment_customer_details) {
+class CustomerDetailsFragment : Fragment(R.layout.fragment_customer_details), ToolbarMenuListener {
     private val viewModel: CustomerDetailsViewModel by viewModels()
     private val args: CustomerDetailsFragmentArgs by navArgs()
 
@@ -34,6 +37,10 @@ class CustomerDetailsFragment : Fragment(R.layout.fragment_customer_details) {
     }
 
     private fun initViews(binding: FragmentCustomerDetailsBinding) {
+        (activity as? ToolbarConfigurator)?.apply {
+            modifyToolbarConfiguration { menuId = R.menu.menu_edit_item }
+            setMenuItemsListener(viewLifecycleOwner, this@CustomerDetailsFragment)
+        }
         binding.projectsRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = ProjectsAdapter(viewModel::openProjectDetails)
@@ -55,6 +62,10 @@ class CustomerDetailsFragment : Fragment(R.layout.fragment_customer_details) {
             val action = CustomerDetailsFragmentDirections.toProjectDetails(it)
             Navigation.findNavController(view ?: return@observe).navigate(action)
         }
+        viewModel.editCustomerLiveData.observe(viewLifecycleOwner) {
+            val action = CustomerDetailsFragmentDirections.toChangeCustomer(EditCustomerBehaviour(it))
+            Navigation.findNavController(view ?: return@observe).navigate(action)
+        }
     }
 
     private fun setCustomerInfo(binding: FragmentCustomerDetailsBinding, info: CustomerInfoViewData) {
@@ -69,5 +80,9 @@ class CustomerDetailsFragment : Fragment(R.layout.fragment_customer_details) {
 
     private fun RecyclerView.adapterAction(action: ProjectsAdapter.() -> Unit) {
         (adapter as? ProjectsAdapter)?.action()
+    }
+
+    override fun onItemSelected(itemId: Int) {
+        if (itemId == R.id.edit_item_action) viewModel.editCustomer()
     }
 }

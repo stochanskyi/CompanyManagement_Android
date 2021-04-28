@@ -109,7 +109,7 @@ class ChangeEmployeeViewModel @Inject constructor(
         val firstNameError = if (changes.firstName.isNullOrBlank()) R.string.first_name_error else null
         val lastNameError = if (changes.lastName.isNullOrBlank()) R.string.last_name_error else null
         val emailError = if (changes.email.isNullOrBlank()) R.string.email_error else null
-        val positionError = if (changes.email.isNullOrBlank()) R.string.email_error else null
+        val positionError = if (changes.positionId.isNullOrBlank()) R.string.position_error else null
 
         if (firstNameError == null && lastNameError == null && emailError == null && positionError == null) return null
 
