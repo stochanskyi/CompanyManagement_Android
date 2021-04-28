@@ -2,6 +2,7 @@ package com.mars.companymanagement.presentation.screens.employees.modify
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -79,6 +80,9 @@ class ChangeEmployeeFragment : Fragment(R.layout.fragment_change_employee), Tool
         }
         viewModel.validationErrorLiveData.observe(viewLifecycleOwner) {
             showValidationErrors(binding, it)
+        }
+        viewModel.savingChangesLiveData.observe(viewLifecycleOwner) {
+            binding.progressBar.isVisible = it
         }
     }
 

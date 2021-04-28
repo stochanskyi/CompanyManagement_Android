@@ -8,6 +8,7 @@ import com.mars.companymanagement.data.common.StringProvider
 import com.mars.companymanagement.data.repositories.employees.EmployeesRepository
 import com.mars.companymanagement.data.repositories.employees.models.EmployeePosition
 import com.mars.companymanagement.data.repositories.taxonomies.TaxonomyRepository
+import com.mars.companymanagement.ext.launchSafeCall
 import com.mars.companymanagement.presentation.screens.base.BaseViewModel
 import com.mars.companymanagement.presentation.screens.employees.modify.behaviour.ChangeEmployeeBehaviour
 import com.mars.companymanagement.presentation.screens.employees.modify.models.EmployeeChanges
@@ -43,6 +44,9 @@ class ChangeEmployeeViewModel @Inject constructor(
 
     private val _validationErrorLiveData: MutableLiveData<ValidationErrorViewData> = SingleLiveData()
     val validationErrorLiveData: LiveData<ValidationErrorViewData> = _validationErrorLiveData
+
+    private val _savingChangesLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    val savingChangesLiveData: LiveData<Boolean> = _savingChangesLiveData
 
     fun setup(behaviour: ChangeEmployeeBehaviour) {
         this.behaviour = behaviour
@@ -95,7 +99,7 @@ class ChangeEmployeeViewModel @Inject constructor(
             return
         }
 
-        viewModelScope.launch {
+        viewModelScope.launchSafeCall(_savingChangesLiveData) {
             val result = safeRequestCall { behaviour.applyChanges(employeesRepository, changes) }
             if (result != null) _closeChangeScreenLiveData.call()
         }
