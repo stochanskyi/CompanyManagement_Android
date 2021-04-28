@@ -14,4 +14,6 @@
     <string name="customer">Customer</string>
 
     <string name="project_complete_until">Complete until %1$s</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
 </resources>

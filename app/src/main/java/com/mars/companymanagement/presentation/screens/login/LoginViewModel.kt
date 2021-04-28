@@ -3,7 +3,7 @@ package com.mars.companymanagement.presentation.screens.login
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.mars.companymanagement.data.repositories.LoginRepository
+import com.mars.companymanagement.data.repositories.login.LoginRepository
 import com.mars.companymanagement.presentation.screens.base.BaseViewModel
 import com.mars.companymanagement.utils.liveData.SingleLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel

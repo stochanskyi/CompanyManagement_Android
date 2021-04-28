@@ -1,4 +1,4 @@
-package com.mars.companymanagement.data.storages
+package com.mars.companymanagement.data.storages.user
 
 import com.mars.companymanagement.data.repositories.user.models.levels.AdminAccessLevel
 import com.mars.companymanagement.data.repositories.user.models.levels.BookkeeperAccessLevel

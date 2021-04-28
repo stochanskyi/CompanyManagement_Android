@@ -31,6 +31,9 @@ class EmployeeDetailsViewModel @Inject constructor(
     private val _openProjectDetailsLiveData: MutableLiveData<Project> = SingleLiveData()
     val openProjectDetailsLiveData: LiveData<Project> = _openProjectDetailsLiveData
 
+    private val _openEditEmployeeLiveData: MutableLiveData<Employee> = SingleLiveData()
+    val openEditEmployeeLiveData: LiveData<Employee> = _openEditEmployeeLiveData
+
     private lateinit var employee: Employee
     private lateinit var projects: List<Project>
 
@@ -42,6 +45,10 @@ class EmployeeDetailsViewModel @Inject constructor(
 
     fun openProjectDetails(projectId: String) {
         _openProjectDetailsLiveData.value = projects.firstOrNull { it.id == projectId } ?: return
+    }
+
+    fun openEditEmployee() {
+        _openEditEmployeeLiveData.value = employee
     }
 
     private fun loadProjects() {

@@ -31,10 +31,8 @@ sealed class RequestResult<out T> {
     }
 }
 
-fun <T> RequestResult<T?>.takeIfDataNotNull(): RequestResult<T> {
-    return return when (this) {
-        is RequestResult.Error -> this
-        is RequestResult.Success -> this.data?.let { RequestResult.Success(it) }
-            ?: RequestResult.UnknownError()
-    }
+fun <T> RequestResult<T?>.takeIfDataNotNull(): RequestResult<T> = when (this) {
+    is RequestResult.Error -> this
+    is RequestResult.Success -> this.data?.let { RequestResult.Success(it) }
+        ?: RequestResult.UnknownError()
 }

@@ -1,7 +1,9 @@
 package com.mars.companymanagement.app.di
 
-import com.mars.companymanagement.data.storages.UserStorage
-import com.mars.companymanagement.data.storages.UserStorageImpl
+import com.mars.companymanagement.data.storages.taxonomy.TaxonomyStorage
+import com.mars.companymanagement.data.storages.taxonomy.TaxonomyStorageImpl
+import com.mars.companymanagement.data.storages.user.UserStorage
+import com.mars.companymanagement.data.storages.user.UserStorageImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -15,5 +17,9 @@ abstract class StorageBindsModule {
     @Binds
     @Singleton
     abstract fun bindUserStorage(storage: UserStorageImpl): UserStorage
+
+    @Binds
+    @Singleton
+    abstract fun bindTaxonomyStorage(storage: TaxonomyStorageImpl): TaxonomyStorage
 
 }

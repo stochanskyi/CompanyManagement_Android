@@ -1,8 +1,8 @@
 package com.mars.companymanagement.data.repositories.user
 
 import com.mars.companymanagement.data.repositories.user.models.User
-import com.mars.companymanagement.data.storages.UserDataModel
-import com.mars.companymanagement.data.storages.UserStorage
+import com.mars.companymanagement.data.storages.user.UserDataModel
+import com.mars.companymanagement.data.storages.user.UserStorage
 import java.lang.IllegalStateException
 import javax.inject.Inject
 

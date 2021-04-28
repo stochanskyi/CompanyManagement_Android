@@ -17,5 +17,5 @@ class AdminAccessLevel : AccessLevel {
         ProjectsNavigationItem()
     )
 
-    override fun provideMenuRes(): Int = R.menu.admin_bottom_menu
+    override fun provideMenuRes(): Int = R.menu.menu_admin_bottom
 }

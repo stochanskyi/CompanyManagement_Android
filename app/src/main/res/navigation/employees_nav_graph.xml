@@ -30,6 +30,10 @@
             android:id="@+id/to_project_details"
             app:destination="@id/fragment_project_details" />
 
+        <action
+            android:id="@+id/to_change_employee"
+            app:destination="@id/fragment_change_employee" />
+
     </fragment>
 
     <fragment
@@ -59,6 +63,17 @@
         <action
             android:id="@+id/to_project_details"
             app:destination="@id/fragment_project_details" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_change_employee"
+        android:name="com.mars.companymanagement.presentation.screens.employees.modify.ChangeEmployeeFragment"
+        tools:layout="@layout/fragment_change_employee">
+
+        <argument
+            android:name="behaviour"
+            app:argType="com.mars.companymanagement.presentation.screens.employees.modify.behaviour.ChangeEmployeeBehaviour" />
 
     </fragment>
 

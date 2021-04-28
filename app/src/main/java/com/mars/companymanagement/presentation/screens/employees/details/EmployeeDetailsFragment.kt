@@ -12,12 +12,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mars.companymanagement.R
 import com.mars.companymanagement.databinding.FragmentEmployeeDetailsBinding
+import com.mars.companymanagement.presentation.screens.employees.modify.behaviour.EditEmployeeBehaviour
 import com.mars.companymanagement.presentation.screens.main.toolbar.ToolbarConfigurator
+import com.mars.companymanagement.presentation.screens.main.toolbar.ToolbarMenuListener
 import com.mars.companymanagement.presentation.screens.projects.list.adapter.ProjectsAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class EmployeeDetailsFragment : Fragment(R.layout.fragment_employee_details) {
+class EmployeeDetailsFragment : Fragment(R.layout.fragment_employee_details), ToolbarMenuListener {
     private val args: EmployeeDetailsFragmentArgs by navArgs()
     private val viewModel: EmployeeDetailsViewModel by viewModels()
 
@@ -34,6 +36,7 @@ class EmployeeDetailsFragment : Fragment(R.layout.fragment_employee_details) {
     }
 
     private fun initViews(binding: FragmentEmployeeDetailsBinding) {
+        changeToolbar()
         binding.projectsRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = ProjectsAdapter(viewModel::openProjectDetails)
@@ -62,13 +65,24 @@ class EmployeeDetailsFragment : Fragment(R.layout.fragment_employee_details) {
             val action = EmployeeDetailsFragmentDirections.toProjectDetails(it)
             Navigation.findNavController(view ?: return@observe).navigate(action)
         }
+        viewModel.openEditEmployeeLiveData.observe(viewLifecycleOwner) {
+            val action = EmployeeDetailsFragmentDirections.toChangeEmployee(EditEmployeeBehaviour(it))
+            Navigation.findNavController(view ?: return@observe).navigate(action)
+        }
     }
 
     private fun changeToolbar() {
+        (activity as? ToolbarConfigurator)?.apply {
+            modifyToolbarConfiguration { menuId = R.menu.menu_edit_item }
+            setMenuItemsListener(viewLifecycleOwner, this@EmployeeDetailsFragment)
+        }
     }
 
     private fun RecyclerView.adapterAction(action: ProjectsAdapter.() -> Unit) {
         (adapter as? ProjectsAdapter)?.action()
     }
 
+    override fun onItemSelected(itemId: Int) {
+        if (itemId == R.id.edit_item_action) viewModel.openEditEmployee()
+    }
 }

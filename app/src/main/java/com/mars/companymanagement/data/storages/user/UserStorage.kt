@@ -1,4 +1,4 @@
-package com.mars.companymanagement.data.storages
+package com.mars.companymanagement.data.storages.user
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
