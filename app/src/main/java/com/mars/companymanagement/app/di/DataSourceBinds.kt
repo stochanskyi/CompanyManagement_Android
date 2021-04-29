@@ -10,6 +10,8 @@ import com.mars.companymanagement.data.network.projects.ProjectsDataSource
 import com.mars.companymanagement.data.network.projects.ProjectsDataSourceImpl
 import com.mars.companymanagement.data.network.taxonomy.TaxonomyDataSource
 import com.mars.companymanagement.data.network.taxonomy.TaxonomyDataSourceImpl
+import com.mars.companymanagement.data.network.transactions.TransactionsDataSource
+import com.mars.companymanagement.data.network.transactions.TransactionsDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -33,4 +35,7 @@ abstract class DataSourceBinds {
 
     @Binds
     abstract fun bindTaxonomiesDataStore(taxonomiesDataStore: TaxonomyDataSourceImpl): TaxonomyDataSource
+
+    @Binds
+    abstract fun bindTransactionsDataStore(transactionsDataSource: TransactionsDataSourceImpl): TransactionsDataSource
 }

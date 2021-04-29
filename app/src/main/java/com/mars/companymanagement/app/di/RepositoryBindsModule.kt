@@ -10,6 +10,8 @@ import com.mars.companymanagement.data.repositories.projects.ProjectsRepository
 import com.mars.companymanagement.data.repositories.projects.ProjectsRepositoryImpl
 import com.mars.companymanagement.data.repositories.taxonomies.TaxonomyRepository
 import com.mars.companymanagement.data.repositories.taxonomies.TaxonomyRepositoryImpl
+import com.mars.companymanagement.data.repositories.transactions.TransactionsRepository
+import com.mars.companymanagement.data.repositories.transactions.TransactionsRepositoryImpl
 import com.mars.companymanagement.data.repositories.user.UserRepository
 import com.mars.companymanagement.data.repositories.user.UserRepositoryImpl
 import dagger.Binds
@@ -40,6 +42,10 @@ abstract class RepositoryBindsModule {
     @Binds
     @Singleton
     abstract fun bindCustomersRepository(customersRepository: CustomersRepositoryImpl): CustomersRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindTransactionsRepository(transactionsRepositoryImpl: TransactionsRepositoryImpl): TransactionsRepository
 
     @Binds
     abstract fun bindTaxonomyRepository(taxonomyRepository: TaxonomyRepositoryImpl): TaxonomyRepository

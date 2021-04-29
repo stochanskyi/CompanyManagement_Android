@@ -5,6 +5,7 @@ import com.mars.companymanagement.data.network.customers.CustomersApi
 import com.mars.companymanagement.data.network.employees.EmployeesApi
 import com.mars.companymanagement.data.network.projects.ProjectsApi
 import com.mars.companymanagement.data.network.taxonomy.TaxonomyApi
+import com.mars.companymanagement.data.network.transactions.TransactionsApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -38,6 +39,11 @@ class ApiModule {
     @Provides
     fun provideTaxonomyApi(retrofit: Retrofit): TaxonomyApi {
         return retrofit.create(TaxonomyApi::class.java)
+    }
+
+    @Provides
+    fun provideTransactionsApi(retrofit: Retrofit): TransactionsApi {
+        return retrofit.create(TransactionsApi::class.java)
     }
 
 }
