@@ -7,12 +7,14 @@ import com.mars.companymanagement.data.repositories.customers.models.Customer
 import com.mars.companymanagement.data.repositories.employees.models.Employee
 import com.mars.companymanagement.data.repositories.projects.ProjectsRepository
 import com.mars.companymanagement.data.repositories.projects.models.details.ProjectDetails
+import com.mars.companymanagement.data.repositories.projects.models.details.ProjectEmployee
 import com.mars.companymanagement.data.repositories.projects.models.info.Project
 import com.mars.companymanagement.ext.launchSafeCall
 import com.mars.companymanagement.presentation.screens.base.BaseViewModel
 import com.mars.companymanagement.presentation.screens.employees.details.models.EmployeeDetailsViewData
 import com.mars.companymanagement.presentation.screens.projects.details.models.PreliminaryProjectViewData
 import com.mars.companymanagement.presentation.screens.projects.details.models.ProjectDetailsViewData
+import com.mars.companymanagement.presentation.screens.projects.details.models.ProjectEmployeeViewData
 import com.mars.companymanagement.utils.liveData.SingleLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
@@ -39,6 +41,9 @@ class ProjectDetailsViewModel @Inject constructor(
 
     private val _projectDetailsLoadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val projectDetailsLoadingLiveData: LiveData<Boolean> = _projectDetailsLoadingLiveData
+
+    private val _employeesLiveData: MutableLiveData<List<ProjectEmployeeViewData>> = MutableLiveData()
+    val employeesLiveData: LiveData<List<ProjectEmployeeViewData>> = _employeesLiveData
 
     private val _openCustomerDetailsLiveData: MutableLiveData<Customer> = SingleLiveData()
     val openCustomerDetailsLiveData: LiveData<Customer> = _openCustomerDetailsLiveData
@@ -70,6 +75,7 @@ class ProjectDetailsViewModel @Inject constructor(
             projectDetails = safeRequestCall { projectsRepository.getProjectDetails(id) }
                 ?: return@launchSafeCall
             _projectDetailsLiveData.value = projectDetails.toViewData()
+            _employeesLiveData.value = projectDetails.employees.map { it.toViewData() }
         }
     }
 
@@ -81,6 +87,10 @@ class ProjectDetailsViewModel @Inject constructor(
         _openEditProjectLiveData.value = projectDetails
     }
 
+    fun employeeSelected(id: String) {
+
+    }
+
     private fun Employee.toViewData() = EmployeeDetailsViewData(fullName, position.name, email)
 
     private fun Project.toViewData() = PreliminaryProjectViewData(name, status.name)
@@ -88,7 +98,7 @@ class ProjectDetailsViewModel @Inject constructor(
     private fun ProjectDetails.toViewData() = ProjectDetailsViewData(
         formatDeadline(deadline),
         description,
-        moneyFormatter.format(budget),
+        moneyFormatter.format(salary),
         projectOwner.fullName,
         projectOwner.country
     )
@@ -97,4 +107,8 @@ class ProjectDetailsViewModel @Inject constructor(
         val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
         return date.format(formatter)
     }
+
+    private fun ProjectEmployee.toViewData() = ProjectEmployeeViewData(
+        id, fullName, position.name, salary?.let { moneyFormatter.format(it) } ?: "-"
+    )
 }

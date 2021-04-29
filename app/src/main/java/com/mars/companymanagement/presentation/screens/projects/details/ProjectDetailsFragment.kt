@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.mars.companymanagement.R
 import com.mars.companymanagement.databinding.FragmentProjectDetailsBinding
 import com.mars.companymanagement.presentation.screens.main.toolbar.ToolbarConfigurator
@@ -33,8 +34,16 @@ class ProjectDetailsFragment : Fragment(R.layout.fragment_project_details), Tool
             setMenuItemsListener(viewLifecycleOwner, this@ProjectDetailsFragment)
         }
         FragmentProjectDetailsBinding.bind(view).run {
+            initViews(this)
             initListeners(this)
             initObservers(this)
+        }
+    }
+
+    private fun initViews(binding: FragmentProjectDetailsBinding) {
+        binding.employeesRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = ProjectEmployeeAdapter(viewModel::employeeSelected)
         }
     }
 
@@ -51,6 +60,10 @@ class ProjectDetailsFragment : Fragment(R.layout.fragment_project_details), Tool
         }
         viewModel.projectDetailsLiveData.observe(viewLifecycleOwner) {
             setProjectDetails(binding, it)
+        }
+        viewModel.employeesLiveData.observe(viewLifecycleOwner) {
+            binding.employeeTextView.isVisible = true
+            (binding.employeesRecyclerView.adapter as? ProjectEmployeeAdapter)?.setItems(it)
         }
         viewModel.openCustomerDetailsLiveData.observe(viewLifecycleOwner) {
             val action = ProjectDetailsFragmentDirections.toCustomerDetails(it)
@@ -85,6 +98,5 @@ class ProjectDetailsFragment : Fragment(R.layout.fragment_project_details), Tool
 
     override fun onItemSelected(itemId: Int) {
         if (itemId == R.id.edit_item_action) viewModel.editProject()
-
     }
 }

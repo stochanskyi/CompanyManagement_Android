@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.mars.companymanagement.data.repositories.employees.models.Employee
 import com.mars.companymanagement.data.repositories.projects.ProjectsRepository
-import com.mars.companymanagement.data.repositories.projects.models.details.ProjectEmployee
 import com.mars.companymanagement.data.repositories.projects.models.info.ProjectStatus
 import com.mars.companymanagement.data.repositories.taxonomies.TaxonomyRepository
 import com.mars.companymanagement.ext.launchSafeCall
@@ -76,7 +75,7 @@ class ChangeProjectViewModel @Inject constructor(
             name = preliminaryData.name
             description = preliminaryData.description
             deadline = preliminaryData.deadline
-            budget = preliminaryData.budget
+            budget = preliminaryData.salary
             ownerId = preliminaryData.projectOwner.id
             employees = preliminaryData.employees.map { it.createEmployee() }
             statusId = preliminaryData.status.id
@@ -87,7 +86,7 @@ class ChangeProjectViewModel @Inject constructor(
         _preliminaryCustomerLiveData.value = PreliminaryProjectViewData(
             preliminaryData.name,
             preliminaryData.description,
-            preliminaryData.budget.toString(),
+            preliminaryData.salary.toString(),
             formatDeadline(preliminaryData.deadline),
             preliminaryData.projectOwner.fullName,
             preliminaryData.status.name
