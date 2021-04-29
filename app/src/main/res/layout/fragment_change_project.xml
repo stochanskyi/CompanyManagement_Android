@@ -65,12 +65,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <AutoCompleteTextView
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:id="@+id/deadline_editText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="none"
+                android:focusable="false"
                 android:hint="@string/deadline" />
 
         </com.google.android.material.textfield.TextInputLayout>

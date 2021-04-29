@@ -54,6 +54,9 @@ class ChangeProjectViewModel @Inject constructor(
     private val _openCustomerSelectionLiveData: SingleLiveData<Unit> = SingleLiveData()
     val openCustomerSelectionLiveData: LiveData<Unit> = _openCustomerSelectionLiveData
 
+    private val _formattedDeadlineLiveData: MutableLiveData<String> = MutableLiveData()
+     val formattedDeadlineLiveData: LiveData<String> = _formattedDeadlineLiveData
+
     fun setup(behaviour: ChangeProjectBehaviour) {
         this.behaviour = behaviour
 
@@ -95,6 +98,7 @@ class ChangeProjectViewModel @Inject constructor(
 
     fun deadlineChanged(deadline: LocalDate) {
         changes.deadline = deadline
+        _formattedDeadlineLiveData.value = formatDeadline(deadline)
     }
 
     fun ownerIdChanged(id: String) {

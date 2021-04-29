@@ -1,5 +1,7 @@
 package com.mars.companymanagement.presentation.screens.projects.modify
 
+import android.app.DatePickerDialog
+import android.app.DatePickerDialog.OnDateSetListener
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
@@ -20,9 +22,9 @@ import com.mars.companymanagement.presentation.screens.projects.customerselectio
 import com.mars.companymanagement.presentation.screens.projects.employeeselection.EmployeeSelectionFragment
 import com.mars.companymanagement.presentation.screens.projects.modify.adapter.ProjectEmployeesAdapter
 import com.mars.companymanagement.presentation.screens.projects.modify.models.PreliminaryProjectViewData
-import com.mars.companymanagement.presentation.views.IdentifiableArrayAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import okhttp3.internal.notifyAll
+import java.time.LocalDate
+
 
 @AndroidEntryPoint
 class ChangeProjectFragment : Fragment(R.layout.fragment_change_project), ToolbarMenuListener {
@@ -71,6 +73,9 @@ class ChangeProjectFragment : Fragment(R.layout.fragment_change_project), Toolba
         binding.editEmployeesButton.setOnClickListener { viewModel.openEmployeesSelection() }
 
         binding.customerNameEditText.setOnClickListener { viewModel.openCustomerSelection() }
+
+        binding.deadlineEditText.setOnClickListener { openDatePicker() }
+
     }
 
     private fun initObservers(binding: FragmentChangeProjectBinding) {
@@ -101,7 +106,23 @@ class ChangeProjectFragment : Fragment(R.layout.fragment_change_project), Toolba
             Navigation.findNavController(view ?: return@observe).navigate(action)
         }
         viewModel.openCustomerSelectionLiveData.observe(viewLifecycleOwner) {
-            Navigation.findNavController(view ?: return@observe).navigate(R.id.to_customer_selection)
+            Navigation.findNavController(view
+                ?: return@observe).navigate(R.id.to_customer_selection)
+        }
+        viewModel.formattedDeadlineLiveData.observe(viewLifecycleOwner) {
+            binding.deadlineEditText.setText(it)
+        }
+    }
+
+    private fun openDatePicker() {
+        val d = OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            viewModel.deadlineChanged(LocalDate.of(year, monthOfYear, dayOfMonth))
+        }
+        DatePickerDialog(requireContext()).apply {
+            setOnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                viewModel.deadlineChanged(LocalDate.of(year, monthOfYear, dayOfMonth))
+            }
+            show()
         }
     }
 
