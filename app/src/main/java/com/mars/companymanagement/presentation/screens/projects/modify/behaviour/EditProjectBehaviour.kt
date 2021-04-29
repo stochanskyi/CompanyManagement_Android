@@ -24,6 +24,7 @@ class EditProjectBehaviour(
             preliminaryData.id,
             name ?: return null,
             description ?: return null,
+            budget ?: return null,
             statusId ?: return null,
             deadline ?: return null,
             ownerId ?: return null,

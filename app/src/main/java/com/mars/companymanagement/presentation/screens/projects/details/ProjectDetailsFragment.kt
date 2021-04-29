@@ -70,6 +70,8 @@ class ProjectDetailsFragment : Fragment(R.layout.fragment_project_details), Tool
 
     private fun setProjectDetails(binding: FragmentProjectDetailsBinding, projectDetails: ProjectDetailsViewData) {
         binding.run {
+            budgetTextView.text = getString(R.string.budget_format, projectDetails.budget)
+
             deadlineTextView.text = getString(R.string.project_complete_until, projectDetails.deadline)
             descriptionTextView.text = projectDetails.description
 

@@ -10,6 +10,9 @@ data class CreateProjectRequest(
 	@field:SerializedName("description")
 	val description: String,
 
+	@field:SerializedName("budget")
+	val budget: Float,
+
 	@field:SerializedName("customerId")
 	val customerId: Int,
 

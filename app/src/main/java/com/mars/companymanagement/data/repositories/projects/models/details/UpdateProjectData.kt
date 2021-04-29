@@ -11,6 +11,8 @@ data class UpdateProjectData(
 
     val description: String,
 
+    val budget: Float,
+
     val statusId: String,
 
     val deadline: LocalDate,

@@ -32,7 +32,17 @@
         android:textSize="14sp"
         android:textColor="@color/gray"
         android:textAlignment="center"
-        tools:text="Complete until 2022.08.21" />
+        tools:text="@string/budget_format" />
+
+    <TextView
+        android:id="@+id/budget_textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textSize="14sp"
+        android:textColor="@color/gray"
+        android:textAlignment="center"
+        tools:text="Budget: 2131$" />
 
     <TextView
         android:id="@+id/description_textView"

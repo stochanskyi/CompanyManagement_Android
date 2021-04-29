@@ -20,6 +20,7 @@ class CreateProjectBehaviour : ChangeProjectBehaviour {
         return CreateProjectData(
             name ?: return null,
             description ?: return null,
+            budget ?: return null,
             statusId ?: return null,
             deadline ?: return null,
             ownerId ?: return null,

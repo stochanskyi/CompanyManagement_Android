@@ -125,6 +125,7 @@ class ProjectsRepositoryImpl @Inject constructor(
         projectId.toInt(),
         name,
         description,
+        budget,
         customerId.toInt(),
         statusId.toInt(),
         createTimestamp(deadline),
@@ -134,6 +135,7 @@ class ProjectsRepositoryImpl @Inject constructor(
     private fun CreateProjectData.createRequest() = CreateProjectRequest(
         name,
         description,
+        budget,
         customerId.toInt(),
         statusId.toInt(),
         createTimestamp(deadline),

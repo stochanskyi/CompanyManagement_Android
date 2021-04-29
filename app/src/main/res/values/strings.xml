@@ -30,6 +30,7 @@
     <string name="description">Description</string>
     <string name="deadline">Deadline</string>
     <string name="edit_employees">Edit employees</string>
+    <string name="budget">Budget</string>
 
-
+    <string name="budget_format">Budget: %1$s\$</string>
 </resources>

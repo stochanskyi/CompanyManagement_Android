@@ -1,7 +1,6 @@
 package com.mars.companymanagement.presentation.screens.projects.modify
 
 import android.app.DatePickerDialog
-import android.app.DatePickerDialog.OnDateSetListener
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
@@ -22,6 +21,7 @@ import com.mars.companymanagement.presentation.screens.projects.customerselectio
 import com.mars.companymanagement.presentation.screens.projects.employeeselection.EmployeeSelectionFragment
 import com.mars.companymanagement.presentation.screens.projects.modify.adapter.ProjectEmployeesAdapter
 import com.mars.companymanagement.presentation.screens.projects.modify.models.PreliminaryProjectViewData
+import com.mars.companymanagement.utils.inputfilter.DecimalDigitsInputFilter
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
 
@@ -45,13 +45,6 @@ class ChangeProjectFragment : Fragment(R.layout.fragment_change_project), Toolba
         }
     }
 
-    private fun initViews(binding: FragmentChangeProjectBinding) {
-        binding.employeesRecyclerView.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = ProjectEmployeesAdapter()
-        }
-    }
-
     private fun setupToolbar() {
         (activity as? ToolbarConfigurator)?.apply {
             modifyToolbarConfiguration {
@@ -59,6 +52,14 @@ class ChangeProjectFragment : Fragment(R.layout.fragment_change_project), Toolba
             }
             setMenuItemsListener(viewLifecycleOwner, this@ChangeProjectFragment)
         }
+    }
+
+    private fun initViews(binding: FragmentChangeProjectBinding) {
+        binding.employeesRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = ProjectEmployeesAdapter()
+        }
+        binding.budgetEditText.filters += DecimalDigitsInputFilter(20, 2)
     }
 
     private fun initListeners(binding: FragmentChangeProjectBinding) {
@@ -70,6 +71,8 @@ class ChangeProjectFragment : Fragment(R.layout.fragment_change_project), Toolba
             binding.deadlineLayout.isErrorEnabled = false
             viewModel.descriptionChanged(it.toString())
         }
+        binding.budgetEditText.doAfterTextChanged { viewModel.budgetChanged(it.toString()) }
+
         binding.editEmployeesButton.setOnClickListener { viewModel.openEmployeesSelection() }
 
         binding.customerNameEditText.setOnClickListener { viewModel.openCustomerSelection() }
@@ -139,20 +142,11 @@ class ChangeProjectFragment : Fragment(R.layout.fragment_change_project), Toolba
             }
     }
 
-//    private fun showValidationErrors(binding: FragmentChangeProjectBinding, data: CustomerValidationErrorViewData) {
-//        binding.apply {
-//            data.firstNameValidationError?.let { binding.firstNameLayout.error = it }
-//            data.lastNameValidationError?.let { binding.lastNameLayout.error = it }
-//            data.countryValidationError?.let { binding.countryLayout.error = it }
-//            data.emailValidationError?.let { binding.emailLayout.error = it }
-//            data.phoneNumberValidationError?.let { binding.phoneNumberEditText.error = it }
-//        }
-//    }
-
     private fun setPreliminaryData(binding: FragmentChangeProjectBinding, data: PreliminaryProjectViewData) {
         binding.apply {
             nameEditText.setText(data.name)
             descriptionEditText.setText(data.description)
+            budgetEditText.setText(data.budget)
             deadlineEditText.setText(data.deadline)
             customerNameEditText.setText(data.customerName)
             dropdown.setText(data.status)

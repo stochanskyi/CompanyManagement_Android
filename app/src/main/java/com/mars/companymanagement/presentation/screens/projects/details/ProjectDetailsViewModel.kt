@@ -17,6 +17,7 @@ import com.mars.companymanagement.utils.liveData.SingleLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -25,6 +26,10 @@ import javax.inject.Inject
 class ProjectDetailsViewModel @Inject constructor(
     private val projectsRepository: ProjectsRepository
 ): BaseViewModel() {
+
+    private val moneyFormatter = DecimalFormat("0.00").apply {
+        this.decimalFormatSymbols.currencySymbol = ","
+    }
 
     private val _preliminaryProjectInfoLiveData: MutableLiveData<PreliminaryProjectViewData> = MutableLiveData()
     val preliminaryProjectInfoLiveData: LiveData<PreliminaryProjectViewData> = _preliminaryProjectInfoLiveData
@@ -83,6 +88,7 @@ class ProjectDetailsViewModel @Inject constructor(
     private fun ProjectDetails.toViewData() = ProjectDetailsViewData(
         formatDeadline(deadline),
         description,
+        moneyFormatter.format(budget),
         projectOwner.fullName,
         projectOwner.country
     )

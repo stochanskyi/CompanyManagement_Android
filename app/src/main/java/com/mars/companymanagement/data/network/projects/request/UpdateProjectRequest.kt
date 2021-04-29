@@ -10,9 +10,11 @@ data class UpdateProjectRequest(
 	@field:SerializedName("projectName")
 	val projectName: String,
 
-
 	@field:SerializedName("description")
 	val description: String,
+
+	@field:SerializedName("budget")
+	val budget: Float,
 
 	@field:SerializedName("customerId")
 	val customerId: Int,
