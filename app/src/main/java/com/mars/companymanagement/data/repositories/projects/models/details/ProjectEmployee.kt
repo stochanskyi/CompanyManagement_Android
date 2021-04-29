@@ -1,6 +1,7 @@
 package com.mars.companymanagement.data.repositories.projects.models.details
 
 import android.os.Parcelable
+import com.mars.companymanagement.data.repositories.employees.models.Employee
 import com.mars.companymanagement.data.repositories.employees.models.EmployeePosition
 import kotlinx.parcelize.Parcelize
 
@@ -14,4 +15,8 @@ data class ProjectEmployee(
     val position: EmployeePosition
 ) : Parcelable {
     val fullName: String get() = "$firstName $lastName"
+
+    fun createEmployee(): Employee {
+        return Employee(id, firstName, lastName, email, position)
+    }
 }

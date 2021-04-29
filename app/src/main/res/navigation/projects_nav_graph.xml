@@ -88,7 +88,6 @@
             android:id="@+id/to_customer_selection"
             app:destination="@id/fragment_customer_selection" />
 
-
     </fragment>
 
     <fragment
