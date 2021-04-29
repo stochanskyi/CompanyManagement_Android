@@ -87,7 +87,7 @@ class ProjectsRepositoryImpl @Inject constructor(
         id = id.toString(),
         name = name,
         description = description,
-        salary = salary,
+        budget = budget,
         deadline = parseDate(deadline),
         projectOwner = customer.parse(),
         status = status.parse(),
@@ -115,7 +115,7 @@ class ProjectsRepositoryImpl @Inject constructor(
             id,
             firstName,
             lastName,
-            budget,
+            salary,
             email,
             position.parse()
         )

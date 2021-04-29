@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.mars.companymanagement.data.common.RequestResult
 import com.mars.companymanagement.data.network.common.asRequestResult
 import com.mars.companymanagement.data.network.employees.request.AddEmployeeRequest
+import com.mars.companymanagement.data.network.employees.request.ChangeSalaryRequest
 import com.mars.companymanagement.data.network.employees.request.UpdateEmployeeRequest
 import com.mars.companymanagement.data.network.employees.response.EmployeeResponse
 import javax.inject.Inject
@@ -14,6 +15,8 @@ interface EmployeesDataSource {
     suspend fun updateEmployee(request: UpdateEmployeeRequest): RequestResult<EmployeeResponse>
 
     suspend fun addEmployee(request: AddEmployeeRequest): RequestResult<EmployeeResponse>
+
+    suspend fun setSalary(request: ChangeSalaryRequest): RequestResult<Unit>
 }
 
 class EmployeesDataSourceImpl @Inject constructor(
@@ -31,5 +34,9 @@ class EmployeesDataSourceImpl @Inject constructor(
 
     override suspend fun addEmployee(request: AddEmployeeRequest): RequestResult<EmployeeResponse> {
         return employeesApi.addEmployee(request).asRequestResult(gson)
+    }
+
+    override suspend fun setSalary(request: ChangeSalaryRequest): RequestResult<Unit> {
+        return employeesApi.setSalary(request).asRequestResult(gson)
     }
 }

@@ -1,6 +1,7 @@
 package com.mars.companymanagement.data.network.employees
 
 import com.mars.companymanagement.data.network.employees.request.AddEmployeeRequest
+import com.mars.companymanagement.data.network.employees.request.ChangeSalaryRequest
 import com.mars.companymanagement.data.network.employees.request.UpdateEmployeeRequest
 import com.mars.companymanagement.data.network.employees.response.EmployeeResponse
 import retrofit2.Response
@@ -17,4 +18,7 @@ interface EmployeesApi {
 
     @POST("employees/add")
     suspend fun addEmployee(@Body request: AddEmployeeRequest): Response<EmployeeResponse>
+
+    @POST("employee/set_salary")
+    suspend fun setSalary(@Body request: ChangeSalaryRequest): Response<Unit>
 }

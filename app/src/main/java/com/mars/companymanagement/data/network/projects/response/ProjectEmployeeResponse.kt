@@ -9,8 +9,8 @@ data class ProjectEmployeeResponse(
     val firstName: String,
     @SerializedName("lastName")
     val lastName: String,
-    @SerializedName("budgey")
-    val budget: Float?,
+    @SerializedName("salary")
+    val salary: Float?,
     @SerializedName("email")
     val email: String,
     @SerializedName("position")

@@ -12,13 +12,15 @@ import com.mars.companymanagement.R
 import com.mars.companymanagement.databinding.FragmentProjectDetailsBinding
 import com.mars.companymanagement.presentation.screens.main.toolbar.ToolbarConfigurator
 import com.mars.companymanagement.presentation.screens.main.toolbar.ToolbarMenuListener
+import com.mars.companymanagement.presentation.screens.projects.changesalary.ChangeSalaryDialog
+import com.mars.companymanagement.presentation.screens.projects.changesalary.ChangeSalaryListener
 import com.mars.companymanagement.presentation.screens.projects.details.models.PreliminaryProjectViewData
 import com.mars.companymanagement.presentation.screens.projects.details.models.ProjectDetailsViewData
 import com.mars.companymanagement.presentation.screens.projects.modify.behaviour.EditProjectBehaviour
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ProjectDetailsFragment : Fragment(R.layout.fragment_project_details), ToolbarMenuListener {
+class ProjectDetailsFragment : Fragment(R.layout.fragment_project_details), ToolbarMenuListener, ChangeSalaryListener {
     private val viewModel: ProjectDetailsViewModel by viewModels()
     private val args: ProjectDetailsFragmentArgs by navArgs()
 
@@ -73,6 +75,12 @@ class ProjectDetailsFragment : Fragment(R.layout.fragment_project_details), Tool
             val action = ProjectDetailsFragmentDirections.toChangeProject(EditProjectBehaviour(it))
             Navigation.findNavController(view ?: return@observe).navigate(action)
         }
+        viewModel.openChangeSalary.observe(viewLifecycleOwner) {
+            ChangeSalaryDialog.newInstance(it).show(childFragmentManager, "")
+        }
+        viewModel.updateEmployeeSalary.observe(viewLifecycleOwner) {
+            (binding.employeesRecyclerView.adapter as? ProjectEmployeeAdapter)?.setSalary(it.first, it.second)
+        }
     }
 
     private fun setPreliminaryProjectInfo(binding: FragmentProjectDetailsBinding, preliminaryInfo: PreliminaryProjectViewData) = binding.run {
@@ -98,5 +106,13 @@ class ProjectDetailsFragment : Fragment(R.layout.fragment_project_details), Tool
 
     override fun onItemSelected(itemId: Int) {
         if (itemId == R.id.edit_item_action) viewModel.editProject()
+    }
+
+    override fun salaryChanged(salary: Float) {
+        viewModel.salaryChanged(salary)
+    }
+
+    override fun salaryChangeDismissed() {
+        viewModel.changeSalaryDismissed()
     }
 }

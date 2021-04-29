@@ -33,4 +33,7 @@
     <string name="budget">Budget</string>
 
     <string name="budget_format">Budget: %1$s\$</string>
+    <string name="salary">Salary</string>
+    <string name="cancel">Cancel</string>
+    <string name="submit">Submit</string>
 </resources>

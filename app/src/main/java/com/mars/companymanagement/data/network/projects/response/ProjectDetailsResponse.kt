@@ -18,8 +18,8 @@ data class ProjectDetailsResponse(
 	@field:SerializedName("deadline")
 	val deadline: String,
 
-	@field:SerializedName("salary")
-	val salary: Float,
+	@field:SerializedName("budget")
+	val budget: Float,
 
 	@field:SerializedName("customer")
 	val customer: CustomerResponse,

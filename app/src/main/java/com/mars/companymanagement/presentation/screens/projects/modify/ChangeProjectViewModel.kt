@@ -75,7 +75,7 @@ class ChangeProjectViewModel @Inject constructor(
             name = preliminaryData.name
             description = preliminaryData.description
             deadline = preliminaryData.deadline
-            budget = preliminaryData.salary
+            budget = preliminaryData.budget
             ownerId = preliminaryData.projectOwner.id
             employees = preliminaryData.employees.map { it.createEmployee() }
             statusId = preliminaryData.status.id
@@ -86,7 +86,7 @@ class ChangeProjectViewModel @Inject constructor(
         _preliminaryCustomerLiveData.value = PreliminaryProjectViewData(
             preliminaryData.name,
             preliminaryData.description,
-            preliminaryData.salary.toString(),
+            preliminaryData.budget.toString(),
             formatDeadline(preliminaryData.deadline),
             preliminaryData.projectOwner.fullName,
             preliminaryData.status.name

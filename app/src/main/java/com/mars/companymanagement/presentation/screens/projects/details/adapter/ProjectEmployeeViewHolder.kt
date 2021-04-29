@@ -29,6 +29,10 @@ class ProjectEmployeeViewHolder private constructor(
         }
     }
 
+    fun setSalary(salary: String) {
+        binding.salaryTextView.text = salary
+    }
+
     fun recycle() {
         binding.root.setOnClickListener(null)
     }

@@ -3,6 +3,7 @@ package com.mars.companymanagement.data.repositories.employees
 import com.mars.companymanagement.data.common.RequestResult
 import com.mars.companymanagement.data.network.employees.EmployeesDataSource
 import com.mars.companymanagement.data.network.employees.request.AddEmployeeRequest
+import com.mars.companymanagement.data.network.employees.request.ChangeSalaryRequest
 import com.mars.companymanagement.data.network.employees.request.UpdateEmployeeRequest
 import com.mars.companymanagement.data.network.employees.response.EmployeeResponse
 import com.mars.companymanagement.data.repositories.employees.models.AddEmployeeData
@@ -21,6 +22,7 @@ interface EmployeesRepository {
     suspend fun getEmployees(): RequestResult<List<Employee>>
     suspend fun updateEmployeeInfo(data: UpdateEmployeeData): RequestResult<Employee>
     suspend fun createEmployee(data: AddEmployeeData): RequestResult<Employee>
+    suspend fun setSalary(employeeId: String, projectId: String, salary: Float): RequestResult<Unit>
 }
 
 class EmployeesRepositoryImpl @Inject constructor(
@@ -46,6 +48,16 @@ class EmployeesRepositoryImpl @Inject constructor(
             employeesDataSource.addEmployee(data.createRequest())
                 .map { it.parse() }
                 .suspendOnSuccess { employeeAddedFlow.emit(it) }
+        }
+    }
+
+    override suspend fun setSalary(
+        employeeId: String,
+        projectId: String,
+        salary: Float
+    ): RequestResult<Unit> {
+        return withIoContext {
+            employeesDataSource.setSalary(ChangeSalaryRequest(employeeId.toInt(), projectId.toInt(), salary))
         }
     }
 

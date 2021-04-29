@@ -12,7 +12,7 @@ data class ProjectDetails(
     val id: String,
     val name: String,
     val description: String,
-    val salary: Float,
+    val budget: Float,
     val deadline: LocalDate,
     val status: ProjectStatus,
     val projectOwner: Customer,
