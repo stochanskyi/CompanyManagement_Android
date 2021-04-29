@@ -16,5 +16,5 @@ data class ProjectDetails(
     val deadline: LocalDate,
     val status: ProjectStatus,
     val projectOwner: Customer,
-    val employees: List<Employee> = emptyList()
+    val employees: List<ProjectEmployee> = emptyList()
 ) : Parcelable

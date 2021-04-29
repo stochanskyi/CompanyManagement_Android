@@ -28,6 +28,6 @@ data class ProjectDetailsResponse(
 	val status: ProjectResponse.ProjectStatusResponse,
 
 	@field:SerializedName("employees")
-	val employees: List<EmployeeResponse>
+	val employees: List<ProjectEmployeeResponse>
 
 )

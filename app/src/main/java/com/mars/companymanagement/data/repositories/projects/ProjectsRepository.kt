@@ -2,17 +2,17 @@ package com.mars.companymanagement.data.repositories.projects
 
 import com.mars.companymanagement.data.common.RequestResult
 import com.mars.companymanagement.data.network.customers.response.response.CustomerResponse
-import com.mars.companymanagement.data.network.employees.response.EmployeeResponse
 import com.mars.companymanagement.data.network.projects.ProjectsDataSource
 import com.mars.companymanagement.data.network.projects.request.CreateProjectRequest
 import com.mars.companymanagement.data.network.projects.request.UpdateProjectRequest
 import com.mars.companymanagement.data.network.projects.response.ProjectDetailsResponse
+import com.mars.companymanagement.data.network.projects.response.ProjectEmployeeResponse
 import com.mars.companymanagement.data.network.projects.response.ProjectResponse
 import com.mars.companymanagement.data.repositories.customers.models.Customer
-import com.mars.companymanagement.data.repositories.employees.models.Employee
 import com.mars.companymanagement.data.repositories.employees.models.EmployeePosition
 import com.mars.companymanagement.data.repositories.projects.models.details.CreateProjectData
 import com.mars.companymanagement.data.repositories.projects.models.details.ProjectDetails
+import com.mars.companymanagement.data.repositories.projects.models.details.ProjectEmployee
 import com.mars.companymanagement.data.repositories.projects.models.details.UpdateProjectData
 import com.mars.companymanagement.data.repositories.projects.models.info.Project
 import com.mars.companymanagement.data.repositories.projects.models.info.ProjectStatus
@@ -110,16 +110,17 @@ class ProjectsRepositoryImpl @Inject constructor(
             .toLocalDate()
     }
 
-    private fun EmployeeResponse.parse() =
-        Employee(
+    private fun ProjectEmployeeResponse.parse() =
+        ProjectEmployee(
             id,
             firstName,
             lastName,
+            budget,
             email,
             position.parse()
         )
 
-    private fun EmployeeResponse.EmployeePositionResponse.parse() = EmployeePosition(id, name)
+    private fun ProjectEmployeeResponse.EmployeePositionResponse.parse() = EmployeePosition(id, name)
 
     private fun UpdateProjectData.createRequest() = UpdateProjectRequest(
         projectId.toInt(),

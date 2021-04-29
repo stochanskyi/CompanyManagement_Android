@@ -25,7 +25,6 @@ import com.mars.companymanagement.utils.inputfilter.DecimalDigitsInputFilter
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
 
-
 @AndroidEntryPoint
 class ChangeProjectFragment : Fragment(R.layout.fragment_change_project), ToolbarMenuListener {
     private val viewModel: ChangeProjectViewModel by viewModels()
