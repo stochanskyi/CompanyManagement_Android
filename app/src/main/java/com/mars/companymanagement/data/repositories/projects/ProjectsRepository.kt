@@ -17,6 +17,8 @@ import com.mars.companymanagement.data.repositories.projects.models.details.Upda
 import com.mars.companymanagement.data.repositories.projects.models.info.Project
 import com.mars.companymanagement.data.repositories.projects.models.info.ProjectStatus
 import com.mars.companymanagement.ext.withIoContext
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -26,6 +28,9 @@ import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 interface ProjectsRepository {
+    val projectCreatedFlow: Flow<ProjectDetails>
+    val projectUpdatedFlow: Flow<ProjectDetails>
+
     suspend fun getProjects(): RequestResult<List<Project>>
 
     suspend fun getProjectsForEmployee(employeeId: String): RequestResult<List<Project>>
@@ -46,6 +51,9 @@ class ProjectsRepositoryImpl @Inject constructor(
     private val projectsDataSource: ProjectsDataSource
 ) : ProjectsRepository {
 
+    override val projectCreatedFlow: MutableSharedFlow<ProjectDetails> = MutableSharedFlow()
+    override val projectUpdatedFlow: MutableSharedFlow<ProjectDetails> = MutableSharedFlow()
+
     override suspend fun getProjects(): RequestResult<List<Project>> = withIoContext {
         projectsDataSource.getProjects().map { it.parse() }
     }
@@ -60,10 +68,14 @@ class ProjectsRepositoryImpl @Inject constructor(
         withIoContext { projectsDataSource.getCustomerProjects(customerId.toInt()).map { it.parse() } }
 
     override suspend fun updateProject(date: UpdateProjectData): RequestResult<ProjectDetails> =
-        withIoContext { projectsDataSource.updateProject(date.createRequest()) }.map { it.parse() }
+        withIoContext { projectsDataSource.updateProject(date.createRequest()) }
+            .map { it.parse() }
+            .suspendOnSuccess { projectUpdatedFlow.emit(it) }
 
     override suspend fun createProject(date: CreateProjectData): RequestResult<ProjectDetails> =
-        withIoContext { projectsDataSource.createProject(date.createRequest()) }.map { it.parse() }
+        withIoContext { projectsDataSource.createProject(date.createRequest()) }
+            .map { it.parse() }
+            .suspendOnSuccess { projectCreatedFlow.emit(it) }
 
     private fun List<ProjectResponse>.parse() = map { it.parse() }
 

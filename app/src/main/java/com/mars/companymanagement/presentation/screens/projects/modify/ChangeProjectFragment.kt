@@ -76,6 +76,7 @@ class ChangeProjectFragment : Fragment(R.layout.fragment_change_project), Toolba
 
         binding.deadlineEditText.setOnClickListener { openDatePicker() }
 
+        binding.dropdown.doAfterTextChanged { viewModel.statusChanged(it.toString()) }
     }
 
     private fun initObservers(binding: FragmentChangeProjectBinding) {
@@ -115,9 +116,6 @@ class ChangeProjectFragment : Fragment(R.layout.fragment_change_project), Toolba
     }
 
     private fun openDatePicker() {
-        val d = OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-            viewModel.deadlineChanged(LocalDate.of(year, monthOfYear, dayOfMonth))
-        }
         DatePickerDialog(requireContext()).apply {
             setOnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 viewModel.deadlineChanged(LocalDate.of(year, monthOfYear, dayOfMonth))

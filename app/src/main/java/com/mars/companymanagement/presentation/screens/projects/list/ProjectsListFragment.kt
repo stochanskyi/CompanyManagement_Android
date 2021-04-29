@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mars.companymanagement.R
 import com.mars.companymanagement.databinding.FragmentProjectsBinding
 import com.mars.companymanagement.presentation.screens.projects.list.adapter.ProjectsAdapter
+import com.mars.companymanagement.presentation.screens.projects.modify.behaviour.CreateProjectBehaviour
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,7 +21,15 @@ class ProjectsListFragment : Fragment(R.layout.fragment_projects) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         FragmentProjectsBinding.bind(view).run {
             initViews(this)
+            initListeners(this)
             initObservers(this)
+        }
+    }
+
+    private fun initListeners(binding: FragmentProjectsBinding) {
+        binding.addProjectButton.setOnClickListener {
+            val action = ProjectsListFragmentDirections.toChangeProject(CreateProjectBehaviour())
+            Navigation.findNavController(view ?: return@setOnClickListener).navigate(action)
         }
     }
 

@@ -3,9 +3,9 @@ package com.mars.companymanagement.presentation.screens.projects.modify
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.mars.companymanagement.R
 import com.mars.companymanagement.data.repositories.employees.models.Employee
 import com.mars.companymanagement.data.repositories.projects.ProjectsRepository
+import com.mars.companymanagement.data.repositories.projects.models.info.ProjectStatus
 import com.mars.companymanagement.data.repositories.taxonomies.TaxonomyRepository
 import com.mars.companymanagement.ext.launchSafeCall
 import com.mars.companymanagement.presentation.screens.base.BaseViewModel
@@ -29,6 +29,8 @@ class ChangeProjectViewModel @Inject constructor(
     private val changes = ProjectChanges()
 
     private lateinit var behaviour: ChangeProjectBehaviour
+
+    private lateinit var projectStatuses: List<ProjectStatus>
 
     private val _projectStatusesLiveData: MutableLiveData<List<String>> = MutableLiveData()
     val projectStatusesLiveData: MutableLiveData<List<String>> = _projectStatusesLiveData
@@ -60,7 +62,8 @@ class ChangeProjectViewModel @Inject constructor(
     fun setup(behaviour: ChangeProjectBehaviour) {
         this.behaviour = behaviour
 
-        _projectStatusesLiveData.value = taxonomyRepository.getProjectStatuses().map { it.name }
+        projectStatuses = taxonomyRepository.getProjectStatuses()
+        _projectStatusesLiveData.value = projectStatuses.map { it.name }
 
         applyPreliminaryData()
     }
@@ -99,6 +102,11 @@ class ChangeProjectViewModel @Inject constructor(
     fun deadlineChanged(deadline: LocalDate) {
         changes.deadline = deadline
         _formattedDeadlineLiveData.value = formatDeadline(deadline)
+    }
+
+    fun statusChanged(statusName: String) {
+        val status = projectStatuses.firstOrNull { it.name == statusName } ?: return
+        changes.statusId = status.id
     }
 
     fun ownerIdChanged(id: String) {

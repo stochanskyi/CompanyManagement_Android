@@ -28,7 +28,7 @@ interface ProjectsApi {
     @POST("projects/update")
     suspend fun updateProject(@Body request: UpdateProjectRequest): Response<ProjectDetailsResponse>
 
-    @POST("projects/update")
+    @POST("projects/add")
     suspend fun createProject(@Body request: CreateProjectRequest): Response<ProjectDetailsResponse>
 
 }

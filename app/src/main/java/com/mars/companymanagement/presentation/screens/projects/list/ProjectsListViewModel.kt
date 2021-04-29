@@ -9,6 +9,7 @@ import com.mars.companymanagement.presentation.screens.base.BaseViewModel
 import com.mars.companymanagement.presentation.screens.projects.list.models.ProjectViewData
 import com.mars.companymanagement.utils.liveData.SingleLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,9 +27,36 @@ class ProjectsListViewModel @Inject constructor(
     private val _openProjectDetailsLiveData: MutableLiveData<Project> = SingleLiveData()
     val openProjectDetailsLiveData: LiveData<Project> = _openProjectDetailsLiveData
 
-    private var projects: List<Project> = emptyList()
+    private val projects: MutableList<Project> = mutableListOf()
 
     init {
+        viewModelScope.launch {
+            projectsRepository.projectUpdatedFlow.collect { changedProject ->
+                val projectIndex = projects.indexOfFirst { it.id == changedProject.id }.takeIf { it >= 0 } ?: return@collect
+                val newProject = projects[projectIndex].copy(
+                    name = changedProject.name,
+                    status = changedProject.status
+                )
+
+                projects.apply {
+                    removeAt(projectIndex)
+                    add(projectIndex, newProject)
+                }
+
+                _projectsLiveData.value = projects.map { it.toViewData() }
+            }
+        }
+
+        viewModelScope.launch {
+            projectsRepository.projectCreatedFlow.collect {
+                val newProject = Project(it.id, it.name, it.status)
+
+                projects += newProject
+
+                _projectsLiveData.value = projects.map { it.toViewData() }
+            }
+        }
+
         loadProjects()
     }
 
@@ -38,9 +66,15 @@ class ProjectsListViewModel @Inject constructor(
 
     private fun loadProjects() {
         viewModelScope.launch {
-            projects = safeRequestCallWithLoading(_projectsLoadingLiveData) {
+            val loadedProjects = safeRequestCallWithLoading(_projectsLoadingLiveData) {
                 projectsRepository.getProjects()
             } ?: return@launch
+
+            projects.apply {
+                clear()
+                addAll(loadedProjects)
+            }
+
             _projectsLiveData.value = projects.map { it.toViewData() }
         }
     }

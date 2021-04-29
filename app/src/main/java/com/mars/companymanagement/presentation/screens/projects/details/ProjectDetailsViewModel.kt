@@ -15,6 +15,8 @@ import com.mars.companymanagement.presentation.screens.projects.details.models.P
 import com.mars.companymanagement.presentation.screens.projects.details.models.ProjectDetailsViewData
 import com.mars.companymanagement.utils.liveData.SingleLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -40,6 +42,18 @@ class ProjectDetailsViewModel @Inject constructor(
     val openEditProjectLiveData: LiveData<ProjectDetails> = _openEditProjectLiveData
 
     private lateinit var projectDetails: ProjectDetails
+
+    init {
+        viewModelScope.launch {
+            projectsRepository.projectUpdatedFlow.collect {
+                if (projectDetails.id != it.id) return@collect
+
+                projectDetails = it
+                _preliminaryProjectInfoLiveData.value = PreliminaryProjectViewData(projectDetails.name, projectDetails.status.name)
+                _projectDetailsLiveData.value = projectDetails.toViewData()
+            }
+        }
+    }
 
     fun setup(project: Project) {
         _preliminaryProjectInfoLiveData.value = project.toViewData()
