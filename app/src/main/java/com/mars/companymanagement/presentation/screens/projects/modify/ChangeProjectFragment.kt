@@ -11,15 +11,18 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mars.companymanagement.R
+import com.mars.companymanagement.data.repositories.customers.models.Customer
 import com.mars.companymanagement.data.repositories.employees.models.Employee
 import com.mars.companymanagement.databinding.FragmentChangeProjectBinding
 import com.mars.companymanagement.presentation.screens.main.toolbar.ToolbarConfigurator
 import com.mars.companymanagement.presentation.screens.main.toolbar.ToolbarMenuListener
+import com.mars.companymanagement.presentation.screens.projects.customerselection.CustomerSelectionFragment
 import com.mars.companymanagement.presentation.screens.projects.employeeselection.EmployeeSelectionFragment
 import com.mars.companymanagement.presentation.screens.projects.modify.adapter.ProjectEmployeesAdapter
 import com.mars.companymanagement.presentation.screens.projects.modify.models.PreliminaryProjectViewData
 import com.mars.companymanagement.presentation.views.IdentifiableArrayAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.internal.notifyAll
 
 @AndroidEntryPoint
 class ChangeProjectFragment : Fragment(R.layout.fragment_change_project), ToolbarMenuListener {
@@ -66,14 +69,12 @@ class ChangeProjectFragment : Fragment(R.layout.fragment_change_project), Toolba
             viewModel.descriptionChanged(it.toString())
         }
         binding.editEmployeesButton.setOnClickListener { viewModel.openEmployeesSelection() }
+
+        binding.customerNameEditText.setOnClickListener { viewModel.openCustomerSelection() }
     }
 
     private fun initObservers(binding: FragmentChangeProjectBinding) {
-        Navigation.findNavController(requireView()).currentBackStackEntry?.savedStateHandle
-            ?.getLiveData<List<Employee>>(EmployeeSelectionFragment.SELECTED_EMPLOYEES_DATA_KEY)
-            ?.observe(viewLifecycleOwner) {
-                viewModel.employeesChanged(it)
-            }
+        initSaveStateHandleObservers(binding)
 
         viewModel.preliminaryCustomerLiveData.observe(viewLifecycleOwner) {
             setPreliminaryData(binding, it)
@@ -99,6 +100,24 @@ class ChangeProjectFragment : Fragment(R.layout.fragment_change_project), Toolba
             val action = ChangeProjectFragmentDirections.toEmployeesSelection(it.toTypedArray())
             Navigation.findNavController(view ?: return@observe).navigate(action)
         }
+        viewModel.openCustomerSelectionLiveData.observe(viewLifecycleOwner) {
+            Navigation.findNavController(view ?: return@observe).navigate(R.id.to_customer_selection)
+        }
+    }
+
+    private fun initSaveStateHandleObservers(binding: FragmentChangeProjectBinding) {
+        val navController = Navigation.findNavController(requireView())
+
+        navController.currentBackStackEntry?.savedStateHandle
+            ?.getLiveData<List<Employee>>(EmployeeSelectionFragment.SELECTED_EMPLOYEES_DATA_KEY)
+            ?.observe(viewLifecycleOwner, viewModel::employeesChanged)
+
+        navController.currentBackStackEntry?.savedStateHandle
+            ?.getLiveData<Customer>(CustomerSelectionFragment.SELECTED_USER_DATA_KEY)
+            ?.observe(viewLifecycleOwner) {
+                binding.customerNameEditText.setText(it.fullName)
+                viewModel.ownerIdChanged(it.id)
+            }
     }
 
 //    private fun showValidationErrors(binding: FragmentChangeProjectBinding, data: CustomerValidationErrorViewData) {

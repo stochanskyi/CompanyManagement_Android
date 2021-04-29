@@ -51,6 +51,9 @@ class ChangeProjectViewModel @Inject constructor(
     private val _openEmployeesSelectionLiveData: MutableLiveData<List<String>> = SingleLiveData()
     val openEmployeesSelectionLiveData: LiveData<List<String>> = _openEmployeesSelectionLiveData
 
+    private val _openCustomerSelectionLiveData: SingleLiveData<Unit> = SingleLiveData()
+    val openCustomerSelectionLiveData: LiveData<Unit> = _openCustomerSelectionLiveData
+
     fun setup(behaviour: ChangeProjectBehaviour) {
         this.behaviour = behaviour
 
@@ -121,6 +124,11 @@ class ChangeProjectViewModel @Inject constructor(
     fun openEmployeesSelection() {
         _openEmployeesSelectionLiveData.value = changes.employees?.map { it.id } ?: emptyList()
     }
+
+    fun openCustomerSelection() {
+        _openCustomerSelectionLiveData.call()
+    }
+
 
 //    private fun getValidationErrorData(): CustomerValidationErrorViewData? {
 //        val firstNameError = if (changes.firstName.isNullOrBlank()) R.string.first_name_error else null

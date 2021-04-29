@@ -80,6 +80,11 @@
             android:id="@+id/to_employees_selection"
             app:destination="@id/fragment_employee_selection" />
 
+        <action
+            android:id="@+id/to_customer_selection"
+            app:destination="@id/fragment_customer_selection" />
+
+
     </fragment>
 
     <fragment
@@ -92,5 +97,10 @@
             app:argType="string[]" />
 
     </fragment>
+
+    <fragment
+        android:id="@+id/fragment_customer_selection"
+        android:name="com.mars.companymanagement.presentation.screens.projects.customerselection.CustomerSelectionFragment"
+        tools:layout="@layout/fragment_customer_selection" />
 
 </navigation>
