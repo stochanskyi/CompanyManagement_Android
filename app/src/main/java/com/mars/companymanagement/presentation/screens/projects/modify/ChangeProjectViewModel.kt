@@ -147,32 +147,6 @@ class ChangeProjectViewModel @Inject constructor(
         _openCustomerSelectionLiveData.call()
     }
 
-
-//    private fun getValidationErrorData(): CustomerValidationErrorViewData? {
-//        val firstNameError = if (changes.firstName.isNullOrBlank()) R.string.first_name_error else null
-//        val lastNameError = if (changes.lastName.isNullOrBlank()) R.string.last_name_error else null
-//        val countryError = if (changes.country.isNullOrBlank()) R.string.country_error else null
-//        val emailError = if (changes.email.isNullOrBlank()) R.string.email_error else null
-//        val phoneNumberError = if (changes.phoneNumber.isNullOrBlank()) R.string.phone_number_error else null
-//
-//        if (firstNameError == null &&
-//            lastNameError == null &&
-//            countryError == null &&
-//            emailError == null &&
-//            phoneNumberError == null
-//        ) {
-//            return null
-//        }
-//
-//        return CustomerValidationErrorViewData(
-//            firstNameError?.let { stringProvider.getString(it) },
-//            lastNameError?.let { stringProvider.getString(it) },
-//            countryError?.let { stringProvider.getString(it) },
-//            emailError?.let { stringProvider.getString(it) },
-//            phoneNumberError?.let { stringProvider.getString(it) }
-//        )
-//    }
-
     private fun formatDeadline(date: LocalDate): String {
         val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
         return date.format(formatter)
