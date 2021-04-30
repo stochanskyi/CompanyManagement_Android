@@ -1,6 +1,7 @@
-package com.mars.companymanagement.presentation.screens.main.bottomnavigation.items
+package com.mars.companymanagement.presentation.screens.main.bottomnavigation.items.admin
 
 import com.mars.companymanagement.R
+import com.mars.companymanagement.presentation.screens.main.bottomnavigation.items.NavigationItem
 
 class EmployeesNavigationItem : NavigationItem {
 

@@ -17,4 +17,7 @@
     <color name="colorSecondaryDark">#81b9bf</color>
     <color name="colorSecondaryLight">#e5ffff</color>
 
+    <color name="colorRed">#AC0000</color>
+    <color name="colorGreen">#008700</color>
+
 </resources>

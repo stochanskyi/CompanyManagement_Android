@@ -4,18 +4,18 @@ import com.google.gson.annotations.SerializedName
 
 data class TransactionResponse(
 
-	@field:SerializedName("date")
+	@SerializedName("date")
 	val date: String,
 
-	@field:SerializedName("amount")
+	@SerializedName("amount")
 	val amount: Float,
 
-	@field:SerializedName("isIncome")
+	@SerializedName("isIncome")
 	val isIncome: Boolean,
 
-	@field:SerializedName("person")
+	@SerializedName("person")
 	val person: String,
 
-	@field:SerializedName("id")
+	@SerializedName("id")
 	val id: Int
 )

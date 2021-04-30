@@ -19,6 +19,7 @@ abstract class BaseViewModel : ViewModel() {
         return try {
             processRequestResult(safeCall())
         } catch (e: Throwable) {
+            e.printStackTrace()
             if (handleCallError()) return null
 
             showError("")

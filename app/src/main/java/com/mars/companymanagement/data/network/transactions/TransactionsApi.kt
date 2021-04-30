@@ -14,17 +14,17 @@ import retrofit2.http.Query
 interface TransactionsApi {
 
     @GET("transactions/all")
-    fun getAllTransactions(): Response<List<TransactionResponse>>
+    suspend fun getAllTransactions(): Response<List<TransactionResponse>>
 
     @POST("transactions/incoming/add")
-    fun addCustomerTransaction(@Body request: CustomerTransacctionRequest): Response<TransactionResponse>
+    suspend fun addCustomerTransaction(@Body request: CustomerTransacctionRequest): Response<TransactionResponse>
 
     @POST("transactions/outgoing/add")
-    fun addEmployeeTransaction(@Body request: EmployeeTransactionRequest): Response<TransactionResponse>
+    suspend fun addEmployeeTransaction(@Body request: EmployeeTransactionRequest): Response<TransactionResponse>
 
     @GET("transaction/outgoing/details")
-    fun getEmployeeTransactionDetails(@Query("id") id: Int): Response<EmployeeDetailsResponse>
+    suspend fun getEmployeeTransactionDetails(@Query("id") id: Int): Response<EmployeeDetailsResponse>
 
     @GET("transaction/incoming/details")
-    fun getCustomerTransactionDetails(@Query("id") id: Int): Response<CustomerDetailResponse>
+    suspend fun getCustomerTransactionDetails(@Query("id") id: Int): Response<CustomerDetailResponse>
 }

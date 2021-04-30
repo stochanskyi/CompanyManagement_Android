@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/all_transactions_nav_graph"
+    app:startDestination="@id/fragment_transactions">
+
+    <fragment
+        android:id="@+id/fragment_transactions"
+        android:name="com.mars.companymanagement.presentation.screens.transactions.list.TransactionsFragment"
+        tools:layout="@layout/fragment_transactions" />
+
+</navigation>
