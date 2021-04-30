@@ -10,6 +10,8 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mars.companymanagement.R
 import com.mars.companymanagement.databinding.FragmentTransactionsBinding
+import com.mars.companymanagement.presentation.screens.transactions.create.type.TransactionTypeDialog
+import com.mars.companymanagement.presentation.screens.transactions.create.type.TransactionTypeListener
 import com.mars.companymanagement.presentation.screens.transactions.list.adapter.TransactionsAdapter
 import com.mars.companymanagement.presentation.screens.transactions.list.behaviour.AllTransactionsBehaviour
 import com.mars.companymanagement.presentation.screens.transactions.list.behaviour.IncomingTransactionsBehaviour
@@ -17,7 +19,7 @@ import com.mars.companymanagement.presentation.screens.transactions.list.behavio
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TransactionsFragment : Fragment(R.layout.fragment_transactions) {
+class TransactionsFragment : Fragment(R.layout.fragment_transactions), TransactionTypeListener {
     private val viewModel: TransactionsViewModel by viewModels()
     private val args: TransactionsFragmentArgs by navArgs()
 
@@ -62,5 +64,16 @@ class TransactionsFragment : Fragment(R.layout.fragment_transactions) {
         viewModel.openCreateCustomerTransaction.observe(viewLifecycleOwner) {
             Navigation.findNavController(view ?: return@observe).navigate(R.id.to_create_customer_transaction)
         }
+        viewModel.openSelectTransactionTypeLiveData.observe(viewLifecycleOwner) {
+            TransactionTypeDialog().show(childFragmentManager, "Type_Fragment")
+        }
+    }
+
+    override fun onIncomingSelected() {
+        Navigation.findNavController(view ?: return).navigate(R.id.to_create_customer_transaction)
+    }
+
+    override fun onOutgoingSelected() {
+        Navigation.findNavController(view ?: return).navigate(R.id.to_create_employee_transaction)
     }
 }

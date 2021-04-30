@@ -16,6 +16,54 @@
             app:argType="string"
             android:defaultValue="All" />
 
+        <action
+            android:id="@+id/to_create_employee_transaction"
+            app:destination="@id/fragment_create_employee_transaction" />
+
+        <action
+            android:id="@+id/to_create_customer_transaction"
+            app:destination="@id/fragment_create_customer_transaction" />
+
     </fragment>
+
+    <fragment
+        android:id="@+id/fragment_create_customer_transaction"
+        android:name="com.mars.companymanagement.presentation.screens.transactions.create.customertransaction.CreateCustomerTransactionFragment"
+        tools:layout="@layout/fragment_create_customer_transaction">
+
+        <action
+            android:id="@+id/to_customer_selection"
+            app:destination="@id/fragment_customer_selection" />
+
+        <action
+            android:id="@+id/to_project_selection"
+            app:destination="@id/fragment_project_selection" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_customer_selection"
+        android:name="com.mars.companymanagement.presentation.screens.projects.customerselection.CustomerSelectionFragment"
+        tools:layout="@layout/fragment_customer_selection" />
+
+    <fragment
+        android:id="@+id/fragment_project_selection"
+        android:name="com.mars.companymanagement.presentation.screens.projectselection.SingleProjectSelectionFragment"
+        tools:layout="@layout/fragment_customer_selection" />
+
+    <fragment
+        android:id="@+id/fragment_create_employee_transaction"
+        android:name="com.mars.companymanagement.presentation.screens.transactions.create.employeetransaction.CreateEmployeeTransactionFragment"
+        tools:layout="@layout/fragment_create_employee_transaction">
+
+        <action
+            android:id="@+id/to_employees_selection"
+            app:destination="@id/fragment_employee_selection" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_employee_selection"
+        android:name="com.mars.companymanagement.presentation.screens.employeeSelection.SingleEmployeeSelectionFragment"
+        tools:layout="@layout/fragment_customer_selection" />
 
 </navigation>
