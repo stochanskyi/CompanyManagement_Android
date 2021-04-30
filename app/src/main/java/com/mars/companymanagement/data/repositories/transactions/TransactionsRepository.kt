@@ -10,6 +10,7 @@ import com.mars.companymanagement.data.network.transactions.response.EmployeeDet
 import com.mars.companymanagement.data.network.transactions.response.TransactionResponse
 import com.mars.companymanagement.data.repositories.transactions.model.*
 import com.mars.companymanagement.ext.withIoContext
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import java.time.LocalDate
@@ -54,6 +55,7 @@ class TransactionsRepositoryImpl @Inject constructor(
     override val outgoingTransactionFlow: MutableSharedFlow<Transaction> = MutableSharedFlow()
 
     override suspend fun getTransactions(): RequestResult<List<Transaction>> = withIoContext {
+        delay(1000)
         transactionsDataSource.getAllTransactions().map { it.parse() }
     }
 

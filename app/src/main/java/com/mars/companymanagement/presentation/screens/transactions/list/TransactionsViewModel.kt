@@ -68,7 +68,7 @@ class TransactionsViewModel @Inject constructor(
 
     private fun loadTransactions() {
         viewModelScope.launchSafeCall(_loadingLiveData) {
-            val loadedTransactions = safeRequestCall { transactionsRepository.getTransactions() } ?: return@launchSafeCall
+            val loadedTransactions = safeRequestCall { behaviour.loadTransactions(transactionsRepository) } ?: return@launchSafeCall
 
             transactions.apply {
                 clear()

@@ -40,4 +40,5 @@
     <string name="all">All</string>
     <string name="incoming">Incoming</string>
     <string name="outgoing">Outgoing</string>
+
 </resources>

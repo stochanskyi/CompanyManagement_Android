@@ -2,19 +2,19 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/all_transactions_nav_graph"
+    android:id="@+id/outgoing_transactions_nav_graph"
     app:startDestination="@id/fragment_transactions">
 
     <fragment
         android:id="@+id/fragment_transactions"
         android:name="com.mars.companymanagement.presentation.screens.transactions.list.TransactionsFragment"
         tools:layout="@layout/fragment_transactions"
-        android:label="@string/all">
+        android:label="@string/outgoing">
 
     <argument
             android:name="behaviourTitle"
             app:argType="string"
-            android:defaultValue="All" />
+            android:defaultValue="Incoming" />
 
     </fragment>
 

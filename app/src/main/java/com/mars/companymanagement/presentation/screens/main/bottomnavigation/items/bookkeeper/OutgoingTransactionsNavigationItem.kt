@@ -12,5 +12,5 @@ class OutgoingTransactionsNavigationItem : NavigationItem {
 
     override val menuId: Int = R.id.action_outgoing_transactions
 
-    override val navigationGraphId: Int = R.navigation.all_transactions_nav_graph
+    override val navigationGraphId: Int = R.navigation.outgoing_transactions_nav_graph
 }
