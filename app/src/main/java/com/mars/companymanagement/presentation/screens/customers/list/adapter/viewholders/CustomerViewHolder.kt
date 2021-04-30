@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mars.companymanagement.databinding.ViewHolderCustomerBinding
-import com.mars.companymanagement.presentation.screens.customers.list.models.CustomerViewData
+import com.mars.companymanagement.presentation.screens.customers.list.models.ItemViewData
 
 class CustomerViewHolder private constructor(
     private val binding: ViewHolderCustomerBinding
@@ -16,7 +16,7 @@ class CustomerViewHolder private constructor(
         )
     }
 
-    fun bind(model: CustomerViewData, clickBlock: (String) -> Unit) {
+    fun bind(model: ItemViewData, clickBlock: (String) -> Unit) {
         binding.run {
             nameTextView.text = model.name
             countryTextView.text = model.country

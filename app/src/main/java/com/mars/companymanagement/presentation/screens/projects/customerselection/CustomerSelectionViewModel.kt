@@ -7,7 +7,7 @@ import com.mars.companymanagement.data.repositories.customers.CustomersRepositor
 import com.mars.companymanagement.data.repositories.customers.models.Customer
 import com.mars.companymanagement.ext.launchSafeCall
 import com.mars.companymanagement.presentation.screens.base.BaseViewModel
-import com.mars.companymanagement.presentation.screens.customers.list.models.CustomerViewData
+import com.mars.companymanagement.presentation.screens.customers.list.models.ItemViewData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -19,8 +19,8 @@ class CustomerSelectionViewModel @Inject constructor(
     private val _customersLoadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val customersLoadingLiveData: LiveData<Boolean> = _customersLoadingLiveData
 
-    private val _customersLiveData: MutableLiveData<List<CustomerViewData>> = MutableLiveData()
-    val customersLiveData: LiveData<List<CustomerViewData>> = _customersLiveData
+    private val _customersLiveData: MutableLiveData<List<ItemViewData>> = MutableLiveData()
+    val customersLiveData: LiveData<List<ItemViewData>> = _customersLiveData
 
     private val _customerSelectedLiveData: MutableLiveData<Customer> = MutableLiveData()
     val customerSelectedLiveData: LiveData<Customer> = _customerSelectedLiveData
@@ -40,7 +40,7 @@ class CustomerSelectionViewModel @Inject constructor(
         viewModelScope.launchSafeCall(_customersLoadingLiveData) {
             customers = safeRequestCall { customersRepository.getCustomers() } ?: return@launchSafeCall
 
-            _customersLiveData.value = customers.map { CustomerViewData(it.id, it.fullName, it.country) }
+            _customersLiveData.value = customers.map { ItemViewData(it.id, it.fullName, it.country) }
         }
     }
 

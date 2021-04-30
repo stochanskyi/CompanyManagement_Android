@@ -18,6 +18,7 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
+import kotlin.random.Random
 
 interface TransactionsRepository {
 
@@ -55,7 +56,7 @@ class TransactionsRepositoryImpl @Inject constructor(
     override val outgoingTransactionFlow: MutableSharedFlow<Transaction> = MutableSharedFlow()
 
     override suspend fun getTransactions(): RequestResult<List<Transaction>> = withIoContext {
-        delay(1000)
+        delay(Random.nextLong(1000, 4000))
         transactionsDataSource.getAllTransactions().map { it.parse() }
     }
 

@@ -3,15 +3,15 @@ package com.mars.companymanagement.presentation.screens.customers.list.adapter
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mars.companymanagement.presentation.screens.customers.list.adapter.viewholders.CustomerViewHolder
-import com.mars.companymanagement.presentation.screens.customers.list.models.CustomerViewData
+import com.mars.companymanagement.presentation.screens.customers.list.models.ItemViewData
 
 class CustomersAdapter(
     private val itemClickBlock: (id: String) -> Unit
 ): RecyclerView.Adapter<CustomerViewHolder>() {
 
-    private val items: MutableList<CustomerViewData> = mutableListOf()
+    private val items: MutableList<ItemViewData> = mutableListOf()
 
-    fun setItems(items: List<CustomerViewData>) {
+    fun setItems(items: List<ItemViewData>) {
         this.items.apply {
             clear()
             addAll(items)

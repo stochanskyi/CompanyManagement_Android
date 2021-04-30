@@ -5,6 +5,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mars.companymanagement.R
@@ -43,6 +44,9 @@ class TransactionsFragment : Fragment(R.layout.fragment_transactions) {
         binding.transactionsRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = TransactionsAdapter(viewModel::openTransactionDetails)
+        }
+        binding.addTransactionButton.setOnClickListener {
+            Navigation.findNavController(view ?: return@setOnClickListener).navigate(R.id.to_create_employee_transaction)
         }
     }
 

@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.mars.companymanagement.data.repositories.customers.CustomersRepository
 import com.mars.companymanagement.data.repositories.customers.models.Customer
 import com.mars.companymanagement.presentation.screens.base.BaseViewModel
-import com.mars.companymanagement.presentation.screens.customers.list.models.CustomerViewData
+import com.mars.companymanagement.presentation.screens.customers.list.models.ItemViewData
 import com.mars.companymanagement.utils.liveData.SingleLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
@@ -20,8 +20,8 @@ class CustomersListViewModel @Inject constructor(
     private val _customersLoadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val customersLoadingLiveData: LiveData<Boolean> = _customersLoadingLiveData
 
-    private val _customersLiveData: MutableLiveData<List<CustomerViewData>> = MutableLiveData()
-    val customersLiveData: LiveData<List<CustomerViewData>> = _customersLiveData
+    private val _customersLiveData: MutableLiveData<List<ItemViewData>> = MutableLiveData()
+    val customersLiveData: LiveData<List<ItemViewData>> = _customersLiveData
 
     private val _openCustomerDetailsLiveData: MutableLiveData<Customer> = SingleLiveData()
     val openCustomerDetailsLiveData: LiveData<Customer> = _openCustomerDetailsLiveData
@@ -68,6 +68,6 @@ class CustomersListViewModel @Inject constructor(
         }
     }
 
-    private fun Customer.toViewData() = CustomerViewData(id, fullName, country)
+    private fun Customer.toViewData() = ItemViewData(id, fullName, country)
 
 }

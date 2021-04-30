@@ -2,6 +2,7 @@ package com.mars.companymanagement.app.di
 
 import com.google.gson.Gson
 import com.mars.companymanagement.data.network.auth.AuthApi
+import com.mars.companymanagement.data.network.common.AuthorizationInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,8 +29,10 @@ class NetworkModule {
     @Provides
     fun provideHttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor,
+        authorizationInterceptor: AuthorizationInterceptor
     ): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(httpLoggingInterceptor)
+        .addNetworkInterceptor(authorizationInterceptor)
         .build()
 
     @Provides

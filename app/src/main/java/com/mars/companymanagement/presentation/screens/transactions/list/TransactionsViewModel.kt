@@ -51,7 +51,7 @@ class TransactionsViewModel @Inject constructor(
     private fun observeIncomingTransactions() {
         viewModelScope.launch {
             transactionsRepository.incomingTransactionFlow.collect {
-                transactions.add(it)
+                transactions.add(0, it)
                 updateTransactionsList()
             }
         }
@@ -60,7 +60,7 @@ class TransactionsViewModel @Inject constructor(
     private fun observeOutgoingTransactions() {
         viewModelScope.launch {
             transactionsRepository.outgoingTransactionFlow.collect {
-                transactions.add(it)
+                transactions.add(0, it)
                 updateTransactionsList()
             }
         }
