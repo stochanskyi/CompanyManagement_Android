@@ -15,7 +15,6 @@ import com.mars.companymanagement.presentation.screens.transactions.list.behavio
 import com.mars.companymanagement.presentation.screens.transactions.list.behaviour.IncomingTransactionsBehaviour
 import com.mars.companymanagement.presentation.screens.transactions.list.behaviour.OutgoingTransactionsBehaviour
 import dagger.hilt.android.AndroidEntryPoint
-import java.lang.IllegalStateException
 
 @AndroidEntryPoint
 class TransactionsFragment : Fragment(R.layout.fragment_transactions) {
@@ -46,7 +45,7 @@ class TransactionsFragment : Fragment(R.layout.fragment_transactions) {
             adapter = TransactionsAdapter(viewModel::openTransactionDetails)
         }
         binding.addTransactionButton.setOnClickListener {
-            Navigation.findNavController(view ?: return@setOnClickListener).navigate(R.id.to_create_employee_transaction)
+            viewModel.addTransaction()
         }
     }
 
@@ -56,6 +55,12 @@ class TransactionsFragment : Fragment(R.layout.fragment_transactions) {
         }
         viewModel.transactionsLiveData.observe(viewLifecycleOwner) {
             (binding.transactionsRecyclerView.adapter as? TransactionsAdapter)?.setItems(it)
+        }
+        viewModel.openCreateEmployeeTransaction.observe(viewLifecycleOwner) {
+            Navigation.findNavController(view ?: return@observe).navigate(R.id.to_create_employee_transaction)
+        }
+        viewModel.openCreateCustomerTransaction.observe(viewLifecycleOwner) {
+            Navigation.findNavController(view ?: return@observe).navigate(R.id.to_create_customer_transaction)
         }
     }
 }

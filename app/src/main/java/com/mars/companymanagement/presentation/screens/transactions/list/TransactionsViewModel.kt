@@ -7,8 +7,12 @@ import com.mars.companymanagement.data.repositories.transactions.TransactionsRep
 import com.mars.companymanagement.data.repositories.transactions.model.Transaction
 import com.mars.companymanagement.ext.launchSafeCall
 import com.mars.companymanagement.presentation.screens.base.BaseViewModel
+import com.mars.companymanagement.presentation.screens.transactions.list.behaviour.AllTransactionsBehaviour
+import com.mars.companymanagement.presentation.screens.transactions.list.behaviour.IncomingTransactionsBehaviour
+import com.mars.companymanagement.presentation.screens.transactions.list.behaviour.OutgoingTransactionsBehaviour
 import com.mars.companymanagement.presentation.screens.transactions.list.behaviour.TransactionsBehaviour
 import com.mars.companymanagement.presentation.screens.transactions.list.model.TransactionViewData
+import com.mars.companymanagement.utils.liveData.SingleLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -33,6 +37,15 @@ class TransactionsViewModel @Inject constructor(
         MutableLiveData()
     val transactionsLiveData: LiveData<List<TransactionViewData>> = _transactionsLiveData
 
+    private val _openCreateEmployeeTransaction: SingleLiveData<Unit> = SingleLiveData()
+    val openCreateEmployeeTransaction: LiveData<Unit> = _openCreateEmployeeTransaction
+
+    private val _openCreateCustomerTransaction: SingleLiveData<Unit> = SingleLiveData()
+    val openCreateCustomerTransaction: LiveData<Unit> = _openCreateCustomerTransaction
+
+    private val _openSelectTransactionTypeLiveData: SingleLiveData<Unit> = SingleLiveData()
+    val openSelectTransactionTypeLiveData: LiveData<Unit> = _openSelectTransactionTypeLiveData
+
     private val transactions: MutableList<Transaction> = mutableListOf()
 
     private lateinit var behaviour: TransactionsBehaviour
@@ -41,6 +54,14 @@ class TransactionsViewModel @Inject constructor(
         this.behaviour = behaviour
         observeChanges()
         loadTransactions()
+    }
+
+    fun addTransaction() {
+        when (behaviour) {
+            is AllTransactionsBehaviour -> _openSelectTransactionTypeLiveData.call()
+            is IncomingTransactionsBehaviour -> _openCreateCustomerTransaction.call()
+            is OutgoingTransactionsBehaviour -> _openCreateEmployeeTransaction.call()
+        }
     }
 
     private fun observeChanges() {

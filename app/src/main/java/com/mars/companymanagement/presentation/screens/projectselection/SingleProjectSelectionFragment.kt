@@ -1,4 +1,4 @@
-package com.mars.companymanagement.presentation.screens.employeeSelection
+package com.mars.companymanagement.presentation.screens.projectselection
 
 import android.os.Bundle
 import android.view.View
@@ -13,13 +13,13 @@ import com.mars.companymanagement.presentation.screens.customers.list.adapter.Cu
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SingleEmployeeSelectionFragment : Fragment(R.layout.fragment_customer_selection) {
+class SingleProjectSelectionFragment : Fragment(R.layout.fragment_customer_selection) {
 
     companion object {
-        const val SELECTED_EMPLOYEE_DATA_KEY = "selected_employee_data_key"
+        const val SELECTED_PROJECT_DATA_KEY = "selected_project_data_key"
     }
 
-    private val viewModel: SingleEmployeeSelectionViewModel by viewModels()
+    private val viewModel: SingleProjectSelectionViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         FragmentCustomerSelectionBinding.bind(view).run {
@@ -31,20 +31,20 @@ class SingleEmployeeSelectionFragment : Fragment(R.layout.fragment_customer_sele
     private fun initViews(binding: FragmentCustomerSelectionBinding) {
         binding.customersRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = CustomersAdapter(viewModel::selectCustomer)
+            adapter = CustomersAdapter(viewModel::selectProject)
         }
     }
 
     private fun initObservers(binding: FragmentCustomerSelectionBinding) {
-        viewModel.employeesLoadingLiveData.observe(viewLifecycleOwner) {
+        viewModel.projectsLoadingLiveData.observe(viewLifecycleOwner) {
             binding.progressBar.isVisible = it
         }
-        viewModel.employeesLiveData.observe(viewLifecycleOwner) {
+        viewModel.projectsLiveData.observe(viewLifecycleOwner) {
             (binding.customersRecyclerView.adapter as? CustomersAdapter)?.setItems(it)
         }
-        viewModel.customerSelectedLiveData.observe(viewLifecycleOwner) {
+        viewModel.projectSelectedLiveData.observe(viewLifecycleOwner) {
             val navController = Navigation.findNavController(view ?: return@observe)
-            navController.previousBackStackEntry?.savedStateHandle?.set(SELECTED_EMPLOYEE_DATA_KEY, it)
+            navController.previousBackStackEntry?.savedStateHandle?.set(SELECTED_PROJECT_DATA_KEY, it)
             navController.navigateUp()
         }
     }
