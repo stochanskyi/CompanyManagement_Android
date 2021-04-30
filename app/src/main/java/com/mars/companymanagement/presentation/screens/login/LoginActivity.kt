@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isInvisible
 import androidx.core.widget.doAfterTextChanged
+import com.mars.companymanagement.R
 import com.mars.companymanagement.databinding.ActivityLoginBinding
 import com.mars.companymanagement.presentation.screens.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,8 +31,14 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun initListeners(binding: ActivityLoginBinding) = binding.run {
-        emailEditText.doAfterTextChanged { viewModel.changeEmail(it.toString()) }
-        passwordEditText.doAfterTextChanged { viewModel.changePassword(it.toString()) }
+        emailEditText.doAfterTextChanged {
+            viewModel.changeEmail(it.toString())
+            emailLayout.isErrorEnabled = false
+        }
+        passwordEditText.doAfterTextChanged {
+            viewModel.changePassword(it.toString())
+            passwordLayout.isErrorEnabled = false
+        }
         submitButton.setOnClickListener { viewModel.login() }
     }
 
@@ -41,14 +48,20 @@ class LoginActivity : AppCompatActivity() {
         }
         viewModel.loginLoadingLiveData.observe(this) {
             binding.apply {
-                emailEditText.isInvisible = it
-                passwordEditText.isInvisible = it
+                emailLayout.isInvisible = it
+                passwordLayout.isInvisible = it
                 submitButton.isInvisible = it
                 progressBar.isInvisible = !it
             }
         }
         viewModel.requestErrorLiveData.observe(this) {
             Toast.makeText(this, it, LENGTH_SHORT).show()
+        }
+        viewModel.emailNotValidLiveData.observe(this) {
+            binding.emailLayout.error = getString(R.string.email_validation_error)
+        }
+        viewModel.passwordNotValidLiveData.observe(this) {
+            binding.passwordLayout.error = getString(R.string.password_validation_error)
         }
     }
 }

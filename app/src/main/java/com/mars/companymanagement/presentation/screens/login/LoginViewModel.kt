@@ -21,6 +21,12 @@ class LoginViewModel @Inject constructor(
     private val _loginSuccessLiveData: SingleLiveData<Unit> = SingleLiveData()
     val loginSuccessLiveData: LiveData<Unit> = _loginSuccessLiveData
 
+    private val _emailNotValidLiveData: SingleLiveData<Unit> = SingleLiveData()
+    val emailNotValidLiveData: LiveData<Unit> = _emailNotValidLiveData
+
+    private val _passwordNotValidLiveData: SingleLiveData<Unit> = SingleLiveData()
+    val passwordNotValidLiveData: LiveData<Unit> = _passwordNotValidLiveData
+
     private var email: String = ""
     private var password: String = ""
 
@@ -33,6 +39,20 @@ class LoginViewModel @Inject constructor(
     }
 
     fun login() {
+        var inputsValid = true
+
+        if (email.isBlank()) {
+            inputsValid = false
+            _emailNotValidLiveData.call()
+        }
+
+        if (password.isBlank()) {
+            inputsValid = false
+            _passwordNotValidLiveData.call()
+        }
+
+        if (!inputsValid) return
+
         viewModelScope.launch {
             safeRequestCallWithLoading(_loginLoadingLiveData) { loginRepository.login(email, password) }?.let {
                 _loginSuccessLiveData.call()
