@@ -96,7 +96,7 @@ class ChangeEmployeeFragment : Fragment(R.layout.fragment_change_employee), Tool
             firstNameEditText.setText(data.firstName)
             lastNameEditText.setText(data.lastName)
             emailEditText.setText(data.email)
-            dropdown.setText(data.position)
+            dropdown.setText(data.position, false)
         }
     }
 

@@ -1,5 +1,6 @@
 package com.mars.companymanagement.presentation.screens.login
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
@@ -20,14 +21,9 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         ActivityLoginBinding.inflate(layoutInflater).run {
             setContentView(root)
-            initViews(this)
             initListeners(this)
             initObservers(this)
         }
-    }
-
-    private fun initViews(binding: ActivityLoginBinding) {
-
     }
 
     private fun initListeners(binding: ActivityLoginBinding) = binding.run {
@@ -62,6 +58,13 @@ class LoginActivity : AppCompatActivity() {
         }
         viewModel.passwordNotValidLiveData.observe(this) {
             binding.passwordLayout.error = getString(R.string.password_validation_error)
+        }
+        viewModel.requestErrorLiveData.observe(this) {
+            AlertDialog.Builder(this)
+                .setTitle("Error")
+                .setMessage(it)
+                .create()
+                .show()
         }
     }
 }

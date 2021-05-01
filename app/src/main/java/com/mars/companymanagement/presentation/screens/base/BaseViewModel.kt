@@ -44,6 +44,6 @@ abstract class BaseViewModel : ViewModel() {
     protected open fun handleCallError(): Boolean = false
 
     protected open fun showError(message: String) {
-
+        _requestErrorLiveData.value = message
     }
 }
