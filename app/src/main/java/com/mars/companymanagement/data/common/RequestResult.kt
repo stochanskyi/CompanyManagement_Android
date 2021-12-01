@@ -1,7 +1,7 @@
 package com.mars.companymanagement.data.common
 
 sealed class RequestResult<out T> {
-    class Success<T>(val data: T) : RequestResult<T>()
+    data class Success<T>(val data: T) : RequestResult<T>()
 
     open class Error(val message: String) : RequestResult<Nothing>()
 
