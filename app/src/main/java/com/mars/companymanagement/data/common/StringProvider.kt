@@ -12,5 +12,5 @@ interface StringProvider {
 class StringProviderImpl @Inject constructor(
     @ApplicationContext private val context: Context
 ): StringProvider {
-    override fun getString(resInt: Int, vararg args: Any): String = context.getString(resInt, args)
+    override fun getString(resInt: Int, vararg args: Any): String = context.getString(resInt, *args)
 }
