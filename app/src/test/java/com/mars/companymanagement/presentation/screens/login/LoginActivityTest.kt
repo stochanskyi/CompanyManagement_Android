@@ -2,66 +2,54 @@ package com.mars.companymanagement.presentation.screens.login
 
 import android.widget.Button
 import androidx.lifecycle.Lifecycle
-import androidx.test.core.app.launchActivity
+import androidx.test.core.app.ActivityScenario
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.mars.companymanagement.R
-import com.mars.companymanagement.data.repositories.login.LoginRepository
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
-import dagger.hilt.components.SingletonComponent
-import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import org.junit.Assert.*
-import org.junit.Before
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.Mockito.RETURNS_MOCKS
-import org.mockito.Mockito.mock
-import org.mockito.MockitoAnnotations
-import org.mockito.stubbing.Answer
 import org.robolectric.annotation.Config
-import javax.inject.Inject
 
 @RunWith(AndroidJUnit4::class)
-@Config(application = HiltTestApplication::class)
+@Config(
+    application = HiltTestApplication::class,
+)
 @HiltAndroidTest
 class LoginActivityTest {
 
     @get:Rule
     val hiltRule = HiltAndroidRule(this)
 
-    private val repo: LoginRepository = mock(LoginRepository::class.java)
+    @get:Rule
+    val activityScenarioRule = ActivityScenarioRule(LoginActivity::class.java)
+
+    private val activityScenario: ActivityScenario<LoginActivity> get() = activityScenarioRule.scenario
 
     @BindValue
     @JvmField
-    val loginViewModel: LoginViewModel = LoginViewModel(repo)
-
-    @Before
-    fun setup() {
-        hiltRule.inject()
-    }
+    val loginViewModel: LoginViewModel = mockk(relaxed = true)
 
     @Test
     fun test() {
-//        Mockito.`when`(loginViewModel.toString()).thenReturn("TEST")
-        val scenario = launchActivity<LoginActivity>()
 
-        scenario.moveToState(Lifecycle.State.CREATED)
-        scenario.onActivity { activity ->
-            activity.findViewById<Button>(R.id.submit_button).performClick()
+        activityScenario.moveToState(Lifecycle.State.RESUMED)
 
+        onView(withId(R.id.submit_button)).perform(click())
+
+        activityScenario.onActivity { activity ->
             assertTrue(activity.findViewById<Button>(R.id.submit_button).hasOnClickListeners())
-//            Mockito.verify(loginViewModel).login()
-//            verify { loginViewModel.login() }
         }
+        verify { loginViewModel.login() }
     }
 }

@@ -50,7 +50,7 @@ class GsonParserKtTest {
 
         val response = Response.error<Nothing>(500, errorMessageJson.toResponseBody(jsonMediaType))
 
-        val expectedResult = RequestResult.Error("Wrong email or password")
+        val expectedResult = RequestResult.Error(errorMessage)
         val actualResult = response.asRequestResult(gson)
 
         assertTrue(actualResult is RequestResult.Error)

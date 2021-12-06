@@ -39,8 +39,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun initObservers(binding: ActivityLoginBinding) {
-        viewModel.toString()
-
         viewModel.loginSuccessLiveData.observe(this) {
             MainActivity.start(this)
         }
