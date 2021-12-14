@@ -4,15 +4,16 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.mars.companymanagement.data.common.RequestResult
 import com.mars.companymanagement.data.repositories.login.LoginRepository
-import com.mars.rules.MainCoroutineRule
-import io.mockk.verifyAll
+import com.mars.rules.MainDispatcherRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.*
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnit
+import org.mockito.junit.MockitoRule
 import org.mockito.kotlin.*
 
-@OptIn(ExperimentalCoroutinesApi::class)
+@ExperimentalCoroutinesApi
 class LoginViewModelTest {
 
     companion object {
@@ -21,10 +22,10 @@ class LoginViewModelTest {
     }
 
     @get:Rule
-    val mockitoRule = MockitoJUnit.rule()
+    val mockitoRule: MockitoRule = MockitoJUnit.rule()
 
     @get:Rule
-    val coroutinesRule = MainCoroutineRule()
+    val coroutinesRule = MainDispatcherRule(TestCoroutineDispatcher())
 
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
