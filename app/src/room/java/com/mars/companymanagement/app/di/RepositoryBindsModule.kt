@@ -1,7 +1,7 @@
 package com.mars.companymanagement.app.di
 
 import com.mars.companymanagement.data.repositories.login.LoginRepository
-import com.mars.companymanagement.data.repositories.login.LoginRepositoryImpl
+import com.mars.companymanagement.data.repositories.login.RoomLoginRepositoryImpl
 import com.mars.companymanagement.data.repositories.customers.CustomersRepository
 import com.mars.companymanagement.data.repositories.customers.CustomersRepositoryImpl
 import com.mars.companymanagement.data.repositories.employees.EmployeesRepository
@@ -25,7 +25,7 @@ import javax.inject.Singleton
 abstract class RepositoryBindsModule {
 
     @Binds
-    abstract fun bindLoginRepository(repository: LoginRepositoryImpl): LoginRepository
+    abstract fun bindLoginRepository(repository: RoomLoginRepositoryImpl): LoginRepository
 
     @Binds
     @Singleton

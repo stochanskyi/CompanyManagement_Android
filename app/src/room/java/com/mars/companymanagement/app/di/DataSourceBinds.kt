@@ -1,5 +1,11 @@
 package com.mars.companymanagement.app.di
 
+import com.mars.companymanagement.data.database.feature.taxonomy.positions.PositionsDataSource
+import com.mars.companymanagement.data.database.feature.taxonomy.positions.PositionsDataSourceImpl
+import com.mars.companymanagement.data.database.feature.taxonomy.project.ProjectStatusesDataSource
+import com.mars.companymanagement.data.database.feature.taxonomy.project.ProjectStatusesDataSourceImpl
+import com.mars.companymanagement.data.database.feature.user.UserDataSource
+import com.mars.companymanagement.data.database.feature.user.UserDataSourceImpl
 import com.mars.companymanagement.data.network.auth.LoginDataSource
 import com.mars.companymanagement.data.network.auth.LoginDataSourceImpl
 import com.mars.companymanagement.data.network.customers.response.CustomersDataSource
@@ -20,6 +26,15 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class DataSourceBinds {
+
+    @Binds
+    abstract fun bindUserDataSource(userDataSource: UserDataSourceImpl): UserDataSource
+
+    @Binds
+    abstract fun bindPositionsDataSource(userDataSource: PositionsDataSourceImpl): PositionsDataSource
+
+    @Binds
+    abstract fun bindProjectStatusesDataSource(projectStatusesDataSource: ProjectStatusesDataSourceImpl): ProjectStatusesDataSource
 
     @Binds
     abstract fun bindLoginDataSource(loginDataSource: LoginDataSourceImpl): LoginDataSource
