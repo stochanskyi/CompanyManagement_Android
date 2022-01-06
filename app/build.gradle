@@ -37,6 +37,27 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    flavorDimensions "dblocation"
+
+    productFlavors {
+        create("web") {
+            dimension = "dblocation"
+            applicationIdSuffix = ".web"
+        }
+        create("room") {
+            dimension = "dblocation"
+            applicationIdSuffix = ".room"
+        }
+        create("firestore") {
+            dimension = "dblocation"
+            applicationIdSuffix = ".firestore"
+        }
+        create("realm") {
+            dimension = "dblocation"
+            applicationIdSuffix = ".realm"
+        }
+    }
 }
 
 dependencies {
