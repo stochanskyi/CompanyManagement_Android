@@ -72,8 +72,9 @@ class ProjectDetailsFragment : Fragment(R.layout.fragment_project_details), Tool
             Navigation.findNavController(view ?: return@observe).navigate(action)
         }
         viewModel.openEditProjectLiveData.observe(viewLifecycleOwner) {
-            val action = ProjectDetailsFragmentDirections.toChangeProject(EditProjectBehaviour(it))
-            Navigation.findNavController(view ?: return@observe).navigate(action)
+            //TODO Fix navigation graph
+//            val action = ProjectDetailsFragmentDirections.toChangeProject(EditProjectBehaviour(it))
+//            Navigation.findNavController(view ?: return@observe).navigate(action)
         }
         viewModel.openChangeSalary.observe(viewLifecycleOwner) {
             ChangeSalaryDialog.newInstance(it).show(childFragmentManager, "")
