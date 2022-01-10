@@ -1,8 +1,6 @@
 package com.mars.companymanagement.data.repositories.login
 
 import com.mars.companymanagement.data.common.RequestResult
-import com.mars.companymanagement.data.database.feature.taxonomy.positions.PositionEntity
-import com.mars.companymanagement.data.database.feature.taxonomy.project.ProjectStatusEntity
 import com.mars.companymanagement.data.database.feature.user.UserDataSource
 import com.mars.companymanagement.data.database.feature.user.entities.UserWithAccessLevelEntity
 import com.mars.companymanagement.data.network.taxonomy.models.TaxonomyResponse
@@ -32,11 +30,12 @@ class RoomLoginRepositoryImpl @Inject constructor(
             user.userId.toString(),
             user.userName,
             user.email,
-            UserDataModel.AccessLevelDataModel(accessLevel.levelId.toString(), accessLevel.levelName),
+            UserDataModel.AccessLevelDataModel(
+                accessLevel.levelId.toString(),
+                accessLevel.levelName
+            ),
             ""
         )
     }
-
-    private fun TaxonomyResponse.TaxonomyItemResponse.parse() = TaxonomyItem(id.toString(), name)
 
 }

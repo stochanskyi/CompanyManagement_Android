@@ -51,8 +51,10 @@ class ChangeEmployeeViewModel @Inject constructor(
     fun setup(behaviour: ChangeEmployeeBehaviour) {
         this.behaviour = behaviour
 
-        positions = taxonomyRepository.getPositions()
-        _positionsLiveData.value = positions.map { IdentifiableAdapterItem(it.id, it.name) }
+        viewModelScope.launch {
+            positions = taxonomyRepository.getPositions()
+            _positionsLiveData.value = positions.map { IdentifiableAdapterItem(it.id, it.name) }
+        }
 
         applyPreliminaryData()
     }

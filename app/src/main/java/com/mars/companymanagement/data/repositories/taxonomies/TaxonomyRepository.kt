@@ -6,16 +6,16 @@ import com.mars.companymanagement.data.storages.taxonomy.TaxonomyStorage
 import javax.inject.Inject
 
 interface TaxonomyRepository {
-    fun getPositions(): List<EmployeePosition>
-    fun getProjectStatuses(): List<ProjectStatus>
+    suspend fun getPositions(): List<EmployeePosition>
+    suspend fun getProjectStatuses(): List<ProjectStatus>
 }
 
 class TaxonomyRepositoryImpl @Inject constructor(
     private val taxonomyStorage: TaxonomyStorage
 ) : TaxonomyRepository {
-    override fun getPositions(): List<EmployeePosition> =
+    override suspend fun getPositions(): List<EmployeePosition> =
         taxonomyStorage.getPositions().map { EmployeePosition(it.id, it.name) }
 
-    override fun getProjectStatuses(): List<ProjectStatus> =
+    override suspend fun getProjectStatuses(): List<ProjectStatus> =
         taxonomyStorage.getProjectStatuses().map { ProjectStatus(it.id, it.name) }
 }

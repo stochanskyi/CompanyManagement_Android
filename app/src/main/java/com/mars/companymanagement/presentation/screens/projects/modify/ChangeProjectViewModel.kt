@@ -16,6 +16,7 @@ import com.mars.companymanagement.presentation.screens.projects.modify.models.Pr
 import com.mars.companymanagement.presentation.screens.projects.modify.models.ProjectChanges
 import com.mars.companymanagement.utils.liveData.SingleLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -62,8 +63,10 @@ class ChangeProjectViewModel @Inject constructor(
     fun setup(behaviour: ChangeProjectBehaviour) {
         this.behaviour = behaviour
 
-        projectStatuses = taxonomyRepository.getProjectStatuses()
-        _projectStatusesLiveData.value = projectStatuses.map { it.name }
+        viewModelScope.launch {
+            projectStatuses = taxonomyRepository.getProjectStatuses()
+            _projectStatusesLiveData.value = projectStatuses.map { it.name }
+        }
 
         applyPreliminaryData()
     }

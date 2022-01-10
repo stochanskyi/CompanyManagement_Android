@@ -9,7 +9,7 @@ import com.mars.companymanagement.data.repositories.employees.EmployeesRepositor
 import com.mars.companymanagement.data.repositories.projects.ProjectsRepository
 import com.mars.companymanagement.data.repositories.projects.ProjectsRepositoryImpl
 import com.mars.companymanagement.data.repositories.taxonomies.TaxonomyRepository
-import com.mars.companymanagement.data.repositories.taxonomies.TaxonomyRepositoryImpl
+import com.mars.companymanagement.data.repositories.taxonomies.RoomTaxonomyRepositoryImpl
 import com.mars.companymanagement.data.repositories.transactions.TransactionsRepository
 import com.mars.companymanagement.data.repositories.transactions.TransactionsRepositoryImpl
 import com.mars.companymanagement.data.repositories.user.UserRepository
@@ -48,5 +48,5 @@ abstract class RepositoryBindsModule {
     abstract fun bindTransactionsRepository(transactionsRepositoryImpl: TransactionsRepositoryImpl): TransactionsRepository
 
     @Binds
-    abstract fun bindTaxonomyRepository(taxonomyRepository: TaxonomyRepositoryImpl): TaxonomyRepository
+    abstract fun bindTaxonomyRepository(taxonomyRepository: RoomTaxonomyRepositoryImpl): TaxonomyRepository
 }

@@ -1,9 +1,7 @@
 package com.mars.companymanagement.app.di
 
-import com.mars.companymanagement.data.database.feature.taxonomy.positions.PositionsDataSource
-import com.mars.companymanagement.data.database.feature.taxonomy.positions.PositionsDataSourceImpl
-import com.mars.companymanagement.data.database.feature.taxonomy.project.ProjectStatusesDataSource
-import com.mars.companymanagement.data.database.feature.taxonomy.project.ProjectStatusesDataSourceImpl
+import com.mars.companymanagement.data.database.feature.taxonomy.RoomTaxonomyDataSource
+import com.mars.companymanagement.data.database.feature.taxonomy.RoomTaxonomyDataSourceImpl
 import com.mars.companymanagement.data.database.feature.user.UserDataSource
 import com.mars.companymanagement.data.database.feature.user.UserDataSourceImpl
 import com.mars.companymanagement.data.network.auth.LoginDataSource
@@ -31,10 +29,9 @@ abstract class DataSourceBinds {
     abstract fun bindUserDataSource(userDataSource: UserDataSourceImpl): UserDataSource
 
     @Binds
-    abstract fun bindPositionsDataSource(userDataSource: PositionsDataSourceImpl): PositionsDataSource
+    abstract fun bindTaxonomiesDataSource(projectStatusesDataSource: RoomTaxonomyDataSourceImpl): RoomTaxonomyDataSource
 
-    @Binds
-    abstract fun bindProjectStatusesDataSource(projectStatusesDataSource: ProjectStatusesDataSourceImpl): ProjectStatusesDataSource
+    //Web
 
     @Binds
     abstract fun bindLoginDataSource(loginDataSource: LoginDataSourceImpl): LoginDataSource
