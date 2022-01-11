@@ -5,6 +5,6 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "access_level")
 data class AccessLevelEntity(
-    @PrimaryKey(autoGenerate = true) val levelId: Int = -1,
+    @PrimaryKey(autoGenerate = true) val levelId: Int = 0,
     val levelName: String
 )

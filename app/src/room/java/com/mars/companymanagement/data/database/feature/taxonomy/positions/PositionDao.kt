@@ -13,4 +13,10 @@ interface PositionDao {
     @Insert
     suspend fun insertPositions(positions: List<PositionEntity>)
 
+    @Insert
+    suspend fun insertPosition(position: PositionEntity)
+
+    @Query("DELETE FROM position")
+    suspend fun clearPositions()
+
 }

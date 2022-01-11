@@ -2,6 +2,8 @@ package com.mars.companymanagement.app.di
 
 import android.content.Context
 import com.mars.companymanagement.data.database.common.CompanyDatabase
+import com.mars.companymanagement.data.database.common.initialization.DatabaseInitializer
+import com.mars.companymanagement.data.database.common.initialization.DatabaseInitializerImpl
 import com.mars.companymanagement.data.database.feature.employees.EmployeeDao
 import com.mars.companymanagement.data.database.feature.taxonomy.positions.PositionDao
 import com.mars.companymanagement.data.database.feature.taxonomy.project.ProjectStatusDao
@@ -16,6 +18,9 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class DatabaseModule {
+
+    @Provides
+    fun getDatabaseInitializer(): DatabaseInitializer = DatabaseInitializerImpl()
 
     @Provides
     @Singleton
