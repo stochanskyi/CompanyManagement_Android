@@ -2,6 +2,7 @@ package com.mars.companymanagement.app.di
 
 import android.content.Context
 import com.mars.companymanagement.data.database.common.CompanyDatabase
+import com.mars.companymanagement.data.database.feature.employees.EmployeeDao
 import com.mars.companymanagement.data.database.feature.taxonomy.positions.PositionDao
 import com.mars.companymanagement.data.database.feature.taxonomy.project.ProjectStatusDao
 import com.mars.companymanagement.data.database.feature.user.UserDao
@@ -36,6 +37,11 @@ class DatabaseModule {
     @Provides
     fun getProjectStatusDao(database: CompanyDatabase): ProjectStatusDao {
         return database.projectStatusDao()
+    }
+
+    @Provides
+    fun getEmployeeDao(database: CompanyDatabase): EmployeeDao {
+        return database.employeeDao()
     }
 
 }

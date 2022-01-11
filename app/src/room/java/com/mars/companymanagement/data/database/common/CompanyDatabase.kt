@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.mars.companymanagement.data.database.feature.employees.EmployeeDao
+import com.mars.companymanagement.data.database.feature.employees.entities.EmployeeEntity
 import com.mars.companymanagement.data.database.feature.taxonomy.positions.PositionDao
 import com.mars.companymanagement.data.database.feature.taxonomy.positions.PositionEntity
 import com.mars.companymanagement.data.database.feature.taxonomy.project.ProjectStatusDao
@@ -13,7 +15,13 @@ import com.mars.companymanagement.data.database.feature.user.entities.AccessLeve
 import com.mars.companymanagement.data.database.feature.user.entities.UserEntity
 
 @Database(
-    entities = [UserEntity::class, PositionEntity::class, ProjectStatusEntity::class, AccessLevelEntity::class],
+    entities = [
+        UserEntity::class,
+        PositionEntity::class,
+        ProjectStatusEntity::class,
+        AccessLevelEntity::class,
+        EmployeeEntity::class
+    ],
     version = 1
 )
 abstract class CompanyDatabase : RoomDatabase() {
@@ -36,4 +44,5 @@ abstract class CompanyDatabase : RoomDatabase() {
 
     abstract fun positionsDao(): PositionDao
 
+    abstract fun employeeDao(): EmployeeDao
 }

@@ -6,6 +6,7 @@ import com.mars.companymanagement.data.repositories.customers.CustomersRepositor
 import com.mars.companymanagement.data.repositories.customers.CustomersRepositoryImpl
 import com.mars.companymanagement.data.repositories.employees.EmployeesRepository
 import com.mars.companymanagement.data.repositories.employees.EmployeesRepositoryImpl
+import com.mars.companymanagement.data.repositories.employees.RoomEmployeesRepository
 import com.mars.companymanagement.data.repositories.projects.ProjectsRepository
 import com.mars.companymanagement.data.repositories.projects.ProjectsRepositoryImpl
 import com.mars.companymanagement.data.repositories.taxonomies.TaxonomyRepository
@@ -33,7 +34,7 @@ abstract class RepositoryBindsModule {
 
     @Binds
     @Singleton
-    abstract fun bindEmployeesRepository(employeesRepository: EmployeesRepositoryImpl): EmployeesRepository
+    abstract fun bindEmployeesRepository(employeesRepository: RoomEmployeesRepository): EmployeesRepository
 
     @Binds
     @Singleton

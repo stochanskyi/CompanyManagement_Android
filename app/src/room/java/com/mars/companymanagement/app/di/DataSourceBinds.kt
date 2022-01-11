@@ -1,5 +1,7 @@
 package com.mars.companymanagement.app.di
 
+import com.mars.companymanagement.data.database.feature.employees.RoomEmployeeDataSource
+import com.mars.companymanagement.data.database.feature.employees.RoomEmployeeDataSourceImpl
 import com.mars.companymanagement.data.database.feature.taxonomy.RoomTaxonomyDataSource
 import com.mars.companymanagement.data.database.feature.taxonomy.RoomTaxonomyDataSourceImpl
 import com.mars.companymanagement.data.database.feature.user.UserDataSource
@@ -30,6 +32,9 @@ abstract class DataSourceBinds {
 
     @Binds
     abstract fun bindTaxonomiesDataSource(projectStatusesDataSource: RoomTaxonomyDataSourceImpl): RoomTaxonomyDataSource
+
+    @Binds
+    abstract fun bindEmployeeDataSource(employeesDataSource: RoomEmployeeDataSourceImpl): RoomEmployeeDataSource
 
     //Web
 
