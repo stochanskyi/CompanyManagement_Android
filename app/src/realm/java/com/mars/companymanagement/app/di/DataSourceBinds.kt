@@ -1,5 +1,7 @@
 package com.mars.companymanagement.app.di
 
+import com.mars.companymanagement.data.database.features.login.RealmUserDataSource
+import com.mars.companymanagement.data.database.features.login.RealmUserDataSourceImpl
 import com.mars.companymanagement.data.network.auth.LoginDataSource
 import com.mars.companymanagement.data.network.auth.LoginDataSourceImpl
 import com.mars.companymanagement.data.network.customers.response.CustomersDataSource
@@ -19,23 +21,26 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class DataSourceBinds {
+interface DataSourceBinds {
 
     @Binds
-    abstract fun bindLoginDataSource(loginDataSource: LoginDataSourceImpl): LoginDataSource
+    fun bindRealmUserDataSource(realmUserDataSource: RealmUserDataSourceImpl): RealmUserDataSource
 
     @Binds
-    abstract fun bindEmployeesDataSource(employeesDataSource: EmployeesDataSourceImpl): EmployeesDataSource
+    fun bindLoginDataSource(loginDataSource: LoginDataSourceImpl): LoginDataSource
 
     @Binds
-    abstract fun bindProjectsDataSource(projectsDataSource: ProjectsDataSourceImpl): ProjectsDataSource
+    fun bindEmployeesDataSource(employeesDataSource: EmployeesDataSourceImpl): EmployeesDataSource
 
     @Binds
-    abstract fun bindCustomersDataSource(customersDataSource: CustomersDataSourceImpl): CustomersDataSource
+    fun bindProjectsDataSource(projectsDataSource: ProjectsDataSourceImpl): ProjectsDataSource
 
     @Binds
-    abstract fun bindTaxonomiesDataStore(taxonomiesDataStore: TaxonomyDataSourceImpl): TaxonomyDataSource
+    fun bindCustomersDataSource(customersDataSource: CustomersDataSourceImpl): CustomersDataSource
 
     @Binds
-    abstract fun bindTransactionsDataStore(transactionsDataSource: TransactionsDataSourceImpl): TransactionsDataSource
+    fun bindTaxonomiesDataStore(taxonomiesDataStore: TaxonomyDataSourceImpl): TaxonomyDataSource
+
+    @Binds
+    fun bindTransactionsDataStore(transactionsDataSource: TransactionsDataSourceImpl): TransactionsDataSource
 }

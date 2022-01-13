@@ -31,6 +31,12 @@ sealed class RequestResult<out T> {
     }
 }
 
+inline fun <T> T?.asRequestResult(block: () -> String): RequestResult<T> {
+    return this
+        ?.let { RequestResult.Success(this) }
+        ?: RequestResult.Error(block())
+}
+
 fun <T> RequestResult<T?>.takeIfDataNotNull(): RequestResult<T> = when (this) {
     is RequestResult.Error -> this
     is RequestResult.Success -> this.data?.let { RequestResult.Success(it) }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.mars.companymanagement">
+
+    <application
+        android:name=".app.RealmCompanyManagementApplication"
+        tools:replace="android:name" />
+
+</manifest>
