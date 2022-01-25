@@ -17,6 +17,6 @@ class LoginDataSourceImpl @Inject constructor(
 ) : LoginDataSource {
 
     override suspend fun login(request: LoginRequest): RequestResult<LoginResponse> {
-        return authApi.login(request).asRequestResult(gson)
+        return authApi.login(request)
     }
 }

@@ -3,6 +3,7 @@ package com.mars.companymanagement.app.di
 import com.google.gson.Gson
 import com.mars.companymanagement.data.network.auth.AuthApi
 import com.mars.companymanagement.data.network.common.AuthorizationInterceptor
+import com.mars.companymanagement.data.network.common.adapter.RequestResultCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -41,6 +42,7 @@ class NetworkModule {
         val serverUrl = "https://companymanagementapi.azurewebsites.net/"
         return Retrofit.Builder()
             .baseUrl(serverUrl)
+            .addCallAdapterFactory(RequestResultCallAdapterFactory(gson))
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(client)
             .build()

@@ -16,15 +16,15 @@ abstract class BaseViewModel : ViewModel() {
     }
 
     protected suspend fun <T> safeRequestCall(safeCall: suspend () -> RequestResult<T>): T? {
-        return try {
-            processRequestResult(safeCall())
-        } catch (e: Throwable) {
-            e.printStackTrace()
-            if (handleCallError()) return null
-
-            showError("")
-            null
-        }
+//        return try {
+            return processRequestResult(safeCall())
+//        } catch (e: Throwable) {
+//            e.printStackTrace()
+//            if (handleCallError()) return null
+//
+//            showError("")
+//            null
+//        }
     }
 
     private fun <T> processRequestResult(result: RequestResult<T>): T? {
