@@ -50,9 +50,6 @@ class LoginActivity : AppCompatActivity() {
                 progressBar.isInvisible = !it
             }
         }
-        viewModel.requestErrorLiveData.observe(this) {
-            Toast.makeText(this, it, LENGTH_SHORT).show()
-        }
         viewModel.emailNotValidLiveData.observe(this) {
             binding.emailLayout.error = getString(R.string.email_validation_error)
         }
